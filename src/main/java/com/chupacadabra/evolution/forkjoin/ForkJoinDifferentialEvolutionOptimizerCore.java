@@ -30,7 +30,7 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.TimeUnit;
 
 import com.chupacadabra.evolution.Candidate;
-import com.chupacadabra.evolution.DifferentialEvolutionPolicies;
+import com.chupacadabra.evolution.DifferentialEvolutionSettings;
 import com.chupacadabra.evolution.DifferentialEvolutionProblem;
 import com.chupacadabra.evolution.DifferentialEvolutionResult;
 import com.chupacadabra.evolution.DifferentialEvolutionState;
@@ -49,7 +49,7 @@ import com.chupacadabra.evolution.util.TimeLength;
  * <p>
  * Instances of this class are <i>not</i> safe for use by multiple threads.
  */
-public final class ForkJoinDifferentialEvolutionOptimizerCore implements DifferentialEvolutionState
+final class ForkJoinDifferentialEvolutionOptimizerCore implements DifferentialEvolutionState
 {
 	
 	// invariant.
@@ -67,7 +67,7 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 	/**
 	 * The policies.
 	 */
-	private final DifferentialEvolutionPolicies policies;
+	private final DifferentialEvolutionSettings settings;
 
 	/**
 	 * The start time in nanoseconds.
@@ -85,25 +85,20 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 	private volatile CandidatePool currentPool;
 
 	/**
-	 * The next pool of candidates.
-	 */
-	private volatile CandidatePool nextPool;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param forkJoinPool The pool to use.
 	 * @param problem The problem.
-	 * @param policies The policies.
+	 * @param settings The settings.
 	 */
-	public ForkJoinDifferentialEvolutionOptimizerCore(
+	ForkJoinDifferentialEvolutionOptimizerCore(
 			final ForkJoinPool forkJoinPool, 
 			final DifferentialEvolutionProblem problem,
-			final DifferentialEvolutionPolicies policies)
+			final DifferentialEvolutionSettings settings)
 	{
 		this.forkJoinPool = forkJoinPool;
 		this.problem = problem;
-		this.policies = policies;
+		this.settings = settings;
 	}
 	
 	/**
@@ -122,7 +117,7 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 			initializePool();
 			
 			// run each generation.
-			int maximumGeneration = policies.getMaximumGeneration();
+			int maximumGeneration = settings.getMaximumGeneration();
 			
 			while(true)
 			{
@@ -133,7 +128,7 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 				}
 				
 				// check user-defined termination criteria.
-				for(TerminationCriterion criterion : policies.getTerminationCriteria()) 
+				for(TerminationCriterion criterion : settings.getTerminationCriteria()) 
 				{
 					if(criterion.isMet(this))
 					{
@@ -148,7 +143,7 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 		}
 		catch(final RuntimeException re)
 		{
-			switch(policies.getExceptionHandlingPolicy()) 
+			switch(settings.getExceptionBehavior())
 			{
 				case TERMINATE:
 					// prepare a solution.
@@ -186,7 +181,7 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 	private CandidatePool createCandidatePool() 
 	{
 		// first create an array pool.
-		int poolSize = policies.getCandidatePoolSize();
+		int poolSize = settings.getCandidatePoolSize();
 		ArrayCandidatePool arrayPool = new ArrayCandidatePool(poolSize);
 		
 		// and wrap up in a threadsafe decorator.
@@ -200,19 +195,16 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 	 */
 	private void initializePool()
 	{
-		int candidateCount = policies.getCandidatePoolSize();
+		int candidateCount = settings.getCandidatePoolSize();
 		
 		// make a new pool.
 		currentPool = createCandidatePool();
 		
-		// hack in case we explode during candidate creation.
-		nextPool = currentPool;
-
 		// spawn a task to generate a candidate for each index.
 		List<ForkJoinTask<Void>> tasks = new ArrayList<ForkJoinTask<Void>>(candidateCount);		
 		for(int index = 0; index < candidateCount; index++)
 		{
-			GenerateRandomFeasibleCandidateTask task = new GenerateRandomFeasibleCandidateTask(problem, policies, index, currentPool);
+			GenerateRandomFeasibleCandidateTask task = new GenerateRandomFeasibleCandidateTask(problem, settings, index, currentPool);
 			tasks.add(forkJoinPool.submit(task));
 		}
 		
@@ -228,15 +220,16 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 	 */
 	private void iterate()
 	{
-		int poolSize = policies.getCandidatePoolSize();
+		// potentially create a new pool.
+		CandidatePool nextPool = getNextCandidatePool();
+		
+		int poolSize = settings.getCandidatePoolSize();
 		List<ForkJoinTask<Void>> tasks = new ArrayList<ForkJoinTask<Void>>(poolSize);
-		
-		nextPool = getNextCandidatePool();
-		
+				
 		// spawn a task for each index...
 		for(int index = 0; index < poolSize; index++)
 		{
-			CandidateIndexAction task = new CandidateIndexAction();			
+			CandidateIndexAction task = new CandidateIndexAction(problem, settings, this, index, currentPool, nextPool);			
 			tasks.add(forkJoinPool.submit(task));
 		}
 		
@@ -246,7 +239,7 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 			tasks.get(index).join();
 		}
 				
-		// finally, just set the current pool to the next pool.
+		// and we have a new pool.
 		currentPool = nextPool;
 	}
 
@@ -257,10 +250,9 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 	 */
 	private CandidatePool getNextCandidatePool()
 	{
-		switch(policies.getPoolReplacementPolicy())
+		switch(settings.getPoolReplacement())
 		{
 			case AFTER:
-				// create a new pool that is a clone of the old one.
 				CandidatePool newPool = createCandidatePool();
 				
 				return newPool;
@@ -271,6 +263,8 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 				throw new InternalError();
 		}
 	}
+	
+	// state implementation.
 
 	/**
 	 * @see com.chupacadabra.evolution.DifferentialEvolutionState#getDimension()
@@ -305,7 +299,7 @@ public final class ForkJoinDifferentialEvolutionOptimizerCore implements Differe
 	@Override
 	public int getMaximumGeneration()
 	{
-		return policies.getMaximumGeneration();
+		return settings.getMaximumGeneration();
 	}
 
 	/**

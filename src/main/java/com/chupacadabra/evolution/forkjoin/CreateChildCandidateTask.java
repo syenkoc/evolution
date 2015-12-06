@@ -26,7 +26,7 @@ package com.chupacadabra.evolution.forkjoin;
 import java.util.concurrent.RecursiveTask;
 
 import com.chupacadabra.evolution.Candidate;
-import com.chupacadabra.evolution.DifferentialEvolutionPolicies;
+import com.chupacadabra.evolution.DifferentialEvolutionSettings;
 import com.chupacadabra.evolution.DifferentialEvolutionProblem;
 import com.chupacadabra.evolution.DifferentialEvolutionState;
 import com.chupacadabra.evolution.DifferentiationPolicy;
@@ -57,9 +57,9 @@ final class CreateChildCandidateTask
 	private final DifferentialEvolutionProblem problem;
 	
 	/**
-	 * The policies.
+	 * The settings.
 	 */
-	private final DifferentialEvolutionPolicies policies;
+	private final DifferentialEvolutionSettings settings;
 
 	/**
 	 * The state.
@@ -86,13 +86,13 @@ final class CreateChildCandidateTask
 	 * @param candidatePool The candidate pool.
 	 */
 	CreateChildCandidateTask(final DifferentialEvolutionProblem problem,
-			final DifferentialEvolutionPolicies policies,
+			final DifferentialEvolutionSettings policies,
 			final DifferentialEvolutionState state, 
 			final int index,
 			final CandidatePool candidatePool)
 	{
 		this.problem = problem;
-		this.policies = policies;
+		this.settings = policies;
 		this.state = state;
 		this.index = index;
 		this.candidatePool = candidatePool;
@@ -109,12 +109,12 @@ final class CreateChildCandidateTask
 		double[] parentParameters = parent.getParameters();
 		
 		// first, differentiate to get trial parameters.
-		RandomSource randomSource = policies.getRandomSource();
-		DifferentiationPolicy diffentiationPolicy = policies.getDifferentiationPolicy();		
+		RandomSource randomSource = settings.getRandomSource();
+		DifferentiationPolicy diffentiationPolicy = settings.getDifferentiationPolicy();		
 		double[] trial = diffentiationPolicy.differentiate(state, randomSource, parent, index, candidatePool);
 		
 		// perform recombination to get child parameters.
-		RecombinationPolicy recombinationPolicy = policies.getRecombinationPolicy();
+		RecombinationPolicy recombinationPolicy = settings.getRecombinationPolicy();
 		double[] child = recombinationPolicy.recombine(state, randomSource, parentParameters, trial);
 		
 		// classify the child parameters.

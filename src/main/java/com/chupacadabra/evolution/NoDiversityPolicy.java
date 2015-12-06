@@ -29,7 +29,7 @@ package com.chupacadabra.evolution;
 public final class NoDiversityPolicy
 	implements DiversityPolicy
 {
-
+	
 	/**
 	 * @see com.chupacadabra.evolution.DiversityPolicy#getDiversity(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource)
 	 */

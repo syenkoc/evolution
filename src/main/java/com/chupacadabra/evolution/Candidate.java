@@ -113,12 +113,25 @@ public final class Candidate
 
 	/**
 	 * Get the parameters.
+	 * <p>
+	 * The returned vector is a clone and so can be modified in place without
+	 * affecting <code>this</code>.
 	 * 
 	 * @return The parameters The parameters.
 	 */
 	public double[] getParameters()
 	{
 		return parameters.clone();
+	}
+	
+	/**
+	 * Get the parameters without making a clone.
+	 * 
+	 * @return The parameters.
+	 */
+	double[] getParametersReference() 
+	{
+		return parameters;
 	}
 
 	/**

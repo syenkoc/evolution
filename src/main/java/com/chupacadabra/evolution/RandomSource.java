@@ -23,57 +23,63 @@
  */
 package com.chupacadabra.evolution;
 
+import com.chupacadabra.evolution.util.MachineEpsilon;
+
 /**
- * A differential evolution problem.
+ * A source of randomness.
+ * <p>
+ * This class is basically an abstraction of {@link java.util.Random}.
  */
-public interface DifferentialEvolutionProblem
+public interface RandomSource
 {
 
 	/**
-	 * Get the dimension of the problem.
+	 * Get the next psuedo-random integer, uniformly distributed in
+	 * <code>[0, n)</code>.
 	 * 
-	 * @return The dimension.
+	 * @param n The (exclusive) max.
+	 * @return The next integer.
 	 */
-	public int getDimension();
-	
-	/**
-	 * Get the function that creates random parameter vectors.
-	 * 
-	 * @return The random parameter vector function.
-	 */
-	public RandomParametersFunction getRandomParametersFunction();
+	public int nextInt(int n);
 
 	/**
-	 * Get the fitness function.
-	 * 
-	 * @return The fitness function.
+	 * Get the next psuedo-random boolean.
+	 *
+	 * @return The next boolean.
 	 */
-	public FitnessFunction getFitnessFunction();
-
-	/**
-	 * Get the feasibility function.
-	 * <p>
-	 * This default implementation returns a function that classifies all
-	 * candidates as feasible.
-	 * 
-	 * @return The feasibility function.
-	 */
-	public default FeasibilityFunction getFeasibilityFunction()
+	public default boolean nextBoolean()
 	{
-		return (double[] candidate) -> FeasibilityType.FEASIBLE;
+		return (nextInt(1) == 0);
 	}
 
 	/**
-	 * Get the violation function.
-	 * <p>
-	 * The default implementation returns a function that assigns <code>0</code>
-	 * to all candidates.
+	 * Get the next pseudo-random double, uniformly distributed in
+	 * <code>[0, 1)</code>.
 	 * 
-	 * @return The violation function.
+	 * @return The next double.
 	 */
-	public default ViolationFunction getViolationFunction()
+	public double nextDouble();
+
+	/**
+	 * Get the next pseudo-random double, uniformly distributed in
+	 * <code>(0, 1)</code>.
+	 * 
+	 * @return The next double.
+	 */
+	public default double nextDoubleOpen()
 	{
-		return (double[] candidate) -> 0;
+		double e = MachineEpsilon.DOUBLE_VALUE;
+		double r = ((1d - e) * nextDouble()) + e;
+		
+		return r;
 	}
+
+	/**
+	 * Get the next pseudo-random Gaussian (standard normal, <i>i.e.</i> normal
+	 * with mean 0 and standard deviation 1).
+	 * 
+	 * @return The next Gaussian.
+	 */
+	public double nextGaussian();
 
 }

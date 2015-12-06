@@ -21,54 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.chupacadabra.evolution.threadsafe;
-
-import com.chupacadabra.evolution.RandomSource;
+package com.chupacadabra.evolution;
 
 /**
- * Threadsafe decorator provider strategy.
+ * Exception handling.
  */
-public interface Threadsafe
+public enum ExceptionBehavior
 {
 
 	/**
-	 * Get a threadsafe decorator provider that ensures threadsafety using
-	 * synchronization.
-	 * 
-	 * @return A provider of the aforementioned nature.
+	 * Allow the exception to propogate out.
+	 * <p>
+	 * This is the default behavior.
 	 */
-	public static Threadsafe synchronization()
-	{
-		return Synchronization.getInstance();
-	}
+	PROPOGATE,
 
 	/**
-	 * Get a threadsafe provider that ensures threadsafety using unfair locking.
-	 * 
-	 * @return A locking threadsafe provider.
+	 * Terminate the optimization, returning the current result.
 	 */
-	public static Threadsafe locking()
-	{
-		return locking(false);
-	}
-
-	/**
-	 * Get a threadsafe provider that ensures threadsafety using locking.
-	 * 
-	 * @param fair The locking fairness.
-	 * @return A locking threadsafe provider.
-	 */
-	public static Threadsafe locking(final boolean fair)
-	{
-		return Locking.getInstance(fair);
-	}
-
-	/**
-	 * Create a threadsafe wrapper around the specified object.
-	 * 
-	 * @param randomSource The object to wrap.
-	 * @return A threadsafe view.
-	 */
-	public RandomSource threadsafe(RandomSource randomSource);
+	TERMINATE;
 
 }

@@ -23,36 +23,46 @@
  */
 package com.chupacadabra.evolution;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.chupacadabra.evolution.util.JavaUtilRandomSource;
 
 /**
- * Policies for the differential evolution optimizer.
+ * Settings and policies for the differential evolution optimizer.
  * <p>
  * Using the default constructor of this class will create a reasonable set of
  * default policies suitable for a wide variety of problems. In addition, all of
  * the default policies are safe for use by multiple threads.
+ * <p>
+ * The setter methods throws {@link NullPointerException NullPointerExceptions} 
+ * if the the value is <code>null</code>.
  */
-public final class DifferentialEvolutionPolicies
+public final class DifferentialEvolutionSettings
+	implements Serializable
 {
 
 	/**
 	 * Default maximum generation: {@value}
 	 */
-	public static final int DEFAULT_MAXIMUM_GENERATION = 3333;
+	public static final int DEFAULT_MAXIMUM_GENERATION = 333;
 
 	/**
 	 * Default candidate pool size: {@value}
 	 */
-	public static final int DEFAULT_CANDIDATE_POOL_SIZE = 50;
+	public static final int DEFAULT_CANDIDATE_POOL_SIZE = 71;
 
 	/**
 	 * Default children per candidate: {@value}
 	 */
-	public static final int DEFAULT_CHILDREN_PER_CANDIDATE = 5;
+	public static final int DEFAULT_CHILDREN_PER_CANDIDATE = 1;
 
+	/**
+	 * Serial ID. 
+	 */
+	private static final long serialVersionUID = 4738577104948484276L;
+	
 	/**
 	 * Maximum generation.
 	 */
@@ -94,14 +104,14 @@ public final class DifferentialEvolutionPolicies
 	private DiversityPolicy diversityPolicy;
 
 	/**
-	 * Pool replacement policy.
+	 * Pool replacement.
 	 */
-	private PoolReplacementPolicy poolReplacementPolicy;
+	private PoolReplacement poolReplacement;
 
 	/**
-	 * Exception handling policy.
+	 * Exception behavior.
 	 */
-	private ExceptionHandlingPolicy exceptionHandlingPolicy;
+	private ExceptionBehavior exceptionBehavior;
 
 	/**
 	 * User-defined termination criteria.
@@ -111,7 +121,7 @@ public final class DifferentialEvolutionPolicies
 	/**
 	 * Constructor.
 	 */
-	public DifferentialEvolutionPolicies()
+	public DifferentialEvolutionSettings()
 	{
 		maximumGeneration = DEFAULT_MAXIMUM_GENERATION;
 		candidatePoolSize = DEFAULT_CANDIDATE_POOL_SIZE;
@@ -122,13 +132,16 @@ public final class DifferentialEvolutionPolicies
 		differentiationPolicy = new BestDifferentiationPolicy();
 		recombinationPolicy = new BinomialRecombinationPolicy();
 		diversityPolicy = new NoDiversityPolicy();
+		
+		// the only selection policy we know about!
+		selectionPolicy = new DebSelectionPolicy();
 
-		// replace candidates immediately.
-		poolReplacementPolicy = PoolReplacementPolicy.IMMEDIATELY;
+		// this generally results in faster convergence.
+		poolReplacement = PoolReplacement.IMMEDIATELY;
 
 		// any exceptions will terminate the optimization and be throw to the
 		// invoker.
-		exceptionHandlingPolicy = ExceptionHandlingPolicy.PROPOGATE;
+		exceptionBehavior = ExceptionBehavior.PROPOGATE;
 
 		// use the only implementation we know of.
 		randomSource = new JavaUtilRandomSource();
@@ -151,9 +164,16 @@ public final class DifferentialEvolutionPolicies
 	 * Set the maximum generation.
 	 * 
 	 * @param maximumGeneration The value.
+	 * @throws IllegalArgumentException If <code>maximumGeneration</code> is no
+	 *             strictly positive.
 	 */
 	public void setMaximumGeneration(final int maximumGeneration)
 	{
+		if(maximumGeneration <= 0) 
+		{
+			throw new IllegalArgumentException("maximumGeneration must be positive");
+		}
+		
 		this.maximumGeneration = maximumGeneration;
 	}
 
@@ -171,9 +191,15 @@ public final class DifferentialEvolutionPolicies
 	 * Set the candidate pool size.
 	 * 
 	 * @param candidatePoolSize The new pool size.
+	 * @throws IllegalArgumentException If <code>candidatePoolSize</code> is less than 1.
 	 */
 	public void setCandidatePoolSize(final int candidatePoolSize)
 	{
+		if(candidatePoolSize < 1) 
+		{
+			throw new IllegalArgumentException("candidatePoolSize must be greater than 0");
+		}
+		
 		this.candidatePoolSize = candidatePoolSize;
 	}
 
@@ -191,9 +217,16 @@ public final class DifferentialEvolutionPolicies
 	 * Set the number of children to generate per candidate.
 	 * 
 	 * @param childrenPerCandidate The new number of children.
+	 * @throws IllegalArgumentException If <code>childrenPerCandidate</code> is
+	 *             less than 1
 	 */
 	public void setChildrenPerCandidate(final int childrenPerCandidate)
 	{
+		if(childrenPerCandidate < 1)
+		{
+			throw new IllegalArgumentException("childrenPerCandidate must be greater than 0");
+		}
+		
 		this.childrenPerCandidate = childrenPerCandidate;
 	}
 
@@ -211,9 +244,15 @@ public final class DifferentialEvolutionPolicies
 	 * Set the source of randomness.
 	 * 
 	 * @param randomSource The new source.
+	 * @throws NullPointerException If <code>randomSource</code> is <code>null</code>.
 	 */
 	public void setRandomSource(final RandomSource randomSource)
 	{
+		if(randomSource == null)
+		{
+			throw new NullPointerException("randomSource");
+		}
+		
 		this.randomSource = randomSource;
 	}
 
@@ -279,27 +318,6 @@ public final class DifferentialEvolutionPolicies
 	}
 
 	/**
-	 * Get the exception handling policy.
-	 * 
-	 * @return The exception handling policy.
-	 */
-	public ExceptionHandlingPolicy getExceptionHandlingPolicy()
-	{
-		return exceptionHandlingPolicy;
-	}
-
-	/**
-	 * Set the exception handling policy.
-	 * 
-	 * @param exceptionHandlingPolicy The new exception handling policy.
-	 */
-	public void setExceptionHandlingPolicy(
-			final ExceptionHandlingPolicy exceptionHandlingPolicy)
-	{
-		this.exceptionHandlingPolicy = exceptionHandlingPolicy;
-	}
-
-	/**
 	 * Set the selection policy.
 	 * 
 	 * @return The selection policy.
@@ -318,26 +336,51 @@ public final class DifferentialEvolutionPolicies
 	{
 		this.selectionPolicy = selectionPolicy;
 	}
-
+	
 	/**
-	 * @return The poolReplacementPolicy
+	 * Get the pool replacement type.
+	 * 
+	 * @return The pool replacement. 
 	 */
-	public PoolReplacementPolicy getPoolReplacementPolicy()
+	public PoolReplacement getPoolReplacement()
 	{
-		return poolReplacementPolicy;
+		return poolReplacement;
+	}
+	
+	/**
+	 * Set the pool replacement type.
+	 * 
+	 * @param poolReplacement The value.
+	 */
+	public void setPoolReplacement(final PoolReplacement poolReplacement)
+	{
+		this.poolReplacement = poolReplacement;
+	}
+	
+	/**
+	 * Get the exception behavior.
+	 * 
+	 * @return The exception behavior.
+	 */
+	public ExceptionBehavior getExceptionBehavior()
+	{
+		return exceptionBehavior;
+	}
+	
+	/**
+	 * Set the exception behavior.
+	 * 
+	 * @param exceptionBehavior The value.
+	 */
+	public void setExceptionBehavior(final ExceptionBehavior exceptionBehavior)
+	{
+		this.exceptionBehavior = exceptionBehavior;
 	}
 
 	/**
-	 * @param poolReplacementPolicy The value.
-	 */
-	public void setPoolReplacementPolicy(
-			PoolReplacementPolicy poolReplacementPolicy)
-	{
-		this.poolReplacementPolicy = poolReplacementPolicy;
-	}
-
-	/**
-	 * @return The terminationCriteria
+	 * Get the termination criteria.
+	 * 
+	 * @return The termination criteria
 	 */
 	public List<TerminationCriterion> getTerminationCriteria()
 	{
@@ -345,7 +388,9 @@ public final class DifferentialEvolutionPolicies
 	}
 
 	/**
-	 * @param terminationCriteria The value.
+	 * Set the termination criteria.
+	 * 
+	 * @param terminationCriteria The new criteria.
 	 */
 	public void setTerminationCriteria(
 			final List<TerminationCriterion> terminationCriteria)

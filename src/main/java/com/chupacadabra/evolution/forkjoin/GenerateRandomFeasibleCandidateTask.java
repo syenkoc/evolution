@@ -26,7 +26,7 @@ package com.chupacadabra.evolution.forkjoin;
 import java.util.concurrent.RecursiveAction;
 
 import com.chupacadabra.evolution.Candidate;
-import com.chupacadabra.evolution.DifferentialEvolutionPolicies;
+import com.chupacadabra.evolution.DifferentialEvolutionSettings;
 import com.chupacadabra.evolution.DifferentialEvolutionProblem;
 import com.chupacadabra.evolution.FeasibilityFunction;
 import com.chupacadabra.evolution.FeasibilityType;
@@ -54,9 +54,9 @@ final class GenerateRandomFeasibleCandidateTask
 	private final DifferentialEvolutionProblem problem;
 	
 	/**
-	 * The policies.
+	 * The settings.
 	 */
-	private final DifferentialEvolutionPolicies policies;
+	private final DifferentialEvolutionSettings settings;
 	
 	/**
 	 * The index in the pool, for which to generate the candidate.
@@ -72,18 +72,18 @@ final class GenerateRandomFeasibleCandidateTask
 	 * Constructor.
 	 * 
 	 * @param problem The problem.
-	 * @param policies The policies.
+	 * @param settings The settings.
 	 * @param index The index.
 	 * @param candidatePool The candidate pool.
 	 */
 	GenerateRandomFeasibleCandidateTask(
 			final DifferentialEvolutionProblem problem,
-			final DifferentialEvolutionPolicies policies, 
+			final DifferentialEvolutionSettings settings, 
 			final int index,
 			final CandidatePool candidatePool)
 	{
 		this.problem = problem;
-		this.policies = policies;
+		this.settings = settings;
 		this.index = index;
 		this.candidatePool = candidatePool;
 	}
@@ -96,7 +96,7 @@ final class GenerateRandomFeasibleCandidateTask
 	{
 		RandomParametersFunction parameterFunction = problem.getRandomParametersFunction();
 		FeasibilityFunction feasibilityFunction = problem.getFeasibilityFunction();
-		RandomSource randomSource = policies.getRandomSource();
+		RandomSource randomSource = settings.getRandomSource();
 		
 		generating:
 		while(true) 
@@ -110,22 +110,19 @@ final class GenerateRandomFeasibleCandidateTask
 			switch(feasibilityType)
 			{
 				case FEASIBLE:
-					break;
+					FitnessFunction fitnessFunction = problem.getFitnessFunction();
+					double fitness = fitnessFunction.getFitness(parameters);
+					
+					// now just wrap up in candidate and store in the pool.
+					Candidate candidate = Candidate.feasible(parameters, fitness);
+					candidatePool.setCandidate(index, candidate);
+					
+					break generating;
 				case INFEASIBLE:
 				case VIOLATING:
 				default:
 					continue generating;
 			}
-			
-			// at this point we know we have a feasible candidate!
-			FitnessFunction fitnessFunction = problem.getFitnessFunction();
-			double fitness = fitnessFunction.getFitness(parameters);
-			
-			// now just wrap up in candidate and store in the pool.
-			Candidate candidate = Candidate.feasible(parameters, fitness);
-			candidatePool.setCandidate(index, candidate);
-			
-			break generating;
 		}
 	}
 	

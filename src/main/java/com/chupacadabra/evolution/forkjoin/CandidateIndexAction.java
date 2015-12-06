@@ -29,7 +29,7 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
 
 import com.chupacadabra.evolution.Candidate;
-import com.chupacadabra.evolution.DifferentialEvolutionPolicies;
+import com.chupacadabra.evolution.DifferentialEvolutionSettings;
 import com.chupacadabra.evolution.DifferentialEvolutionProblem;
 import com.chupacadabra.evolution.DifferentialEvolutionState;
 import com.chupacadabra.evolution.DiversityPolicy;
@@ -55,9 +55,9 @@ final class CandidateIndexAction
 	private DifferentialEvolutionProblem problem;
 
 	/**
-	 * The policies.
+	 * The settings.
 	 */
-	private DifferentialEvolutionPolicies policies;
+	private DifferentialEvolutionSettings settings;
 
 	/**
 	 * The current state.
@@ -78,6 +78,31 @@ final class CandidateIndexAction
 	 * Next pool.
 	 */
 	private CandidatePool nextPool;
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param problem The problem.
+	 * @param settings The settings.
+	 * @param state State.
+	 * @param parentIndex The index to process.
+	 * @param currentPool The current pool.
+	 * @param nextPool The next pool.
+	 */
+	CandidateIndexAction(final DifferentialEvolutionProblem problem,
+			final DifferentialEvolutionSettings settings,
+			final DifferentialEvolutionState state, 
+			final int parentIndex,
+			final CandidatePool currentPool, 
+			final CandidatePool nextPool)
+	{
+		this.problem = problem;
+		this.settings = settings;
+		this.state = state;
+		this.parentIndex = parentIndex;
+		this.currentPool = currentPool;
+		this.nextPool = nextPool;
+	}
 
 	/**
 	 * @see java.util.concurrent.RecursiveAction#compute()
@@ -96,8 +121,8 @@ final class CandidateIndexAction
 		}
 
 		// now grab the best child.
-		SelectionPolicy selectionPolicy = policies.getSelectionPolicy();
-		RandomSource randomSource = policies.getRandomSource();
+		SelectionPolicy selectionPolicy = settings.getSelectionPolicy();
+		RandomSource randomSource = settings.getRandomSource();
 		Candidate bestChild = selectionPolicy.select(state, randomSource, children);
 
 		// see if best child should replace parent in the pool.
@@ -117,7 +142,7 @@ final class CandidateIndexAction
 		{
 			// check diversity policy to see if we should compare based only on
 			// fitenss.
-			DiversityPolicy diversityPolicy = policies.getDiversityPolicy();
+			DiversityPolicy diversityPolicy = settings.getDiversityPolicy();
 			double diversity = diversityPolicy.getDiversity(state, randomSource);
 			double ud = randomSource.nextDouble();
 
@@ -146,7 +171,7 @@ final class CandidateIndexAction
 	 */
 	private List<Candidate> getChildren()
 	{
-		int childCount = policies.getChildrenPerCandidate();
+		int childCount = settings.getChildrenPerCandidate();
 		List<ForkJoinTask<Candidate>> childTasks = new ArrayList<ForkJoinTask<Candidate>>(
 				childCount);
 
@@ -154,7 +179,7 @@ final class CandidateIndexAction
 		for(int index = 0; index < childCount; index++)
 		{
 			CreateChildCandidateTask childTask = new CreateChildCandidateTask(
-					problem, policies, state, index, currentPool);
+					problem, settings, state, index, currentPool);
 			childTasks.add(childTask.fork());
 		}
 

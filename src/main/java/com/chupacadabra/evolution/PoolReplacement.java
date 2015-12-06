@@ -24,21 +24,22 @@
 package com.chupacadabra.evolution;
 
 /**
- * Exception handling policy.
+ * Pool replacement policy.
  */
-public enum ExceptionHandlingPolicy
+public enum PoolReplacement
 {
 
 	/**
-	 * Allow the exception to propogate out.
+	 * Replace candidates in the pool immediately.
 	 * <p>
-	 * This is the default behavior.
+	 * This is the default policy.
 	 */
-	PROPOGATE,
+	IMMEDIATELY,
 
 	/**
-	 * Terminate the optimization, returning the current result.
+	 * Replace candidates inter-generationally, <i>i.e.</i> after the current
+	 * generation completes.
 	 */
-	TERMINATE;
+	AFTER;
 
 }

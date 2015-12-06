@@ -21,49 +21,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.chupacadabra.evolution;
+package com.chupacadabra.evolution.threadsafe;
+
+import com.chupacadabra.evolution.RandomSource;
 
 /**
- * A source of randomness.
- * <p>
- * This class is basically an abstraction of {@link java.util.Random}.
+ * Threadsafe decorator provider strategy.
  */
-public interface RandomSource
+public interface Threadsafe
 {
 
 	/**
-	 * Get the next psuedo-random integer, uniformly distributed in
-	 * <code>[0, n)</code>.
+	 * Get a threadsafe decorator provider that ensures threadsafety using
+	 * synchronization.
 	 * 
-	 * @param n The (exclusive) max.
-	 * @return The next integer.
+	 * @return A provider of the aforementioned nature.
 	 */
-	public int nextInt(int n);
-
-	/**
-	 * Get the next psuedo-random boolean.
-	 *
-	 * @return The next boolean.
-	 */
-	public default boolean nextBoolean()
+	public static Threadsafe synchronization()
 	{
-		return (nextInt(1) == 0);
+		return Synchronization.getInstance();
 	}
 
 	/**
-	 * Get the next pseudo-random double, uniformly distributed in
-	 * <code>[0, 1]</code>.
+	 * Get a threadsafe provider that ensures threadsafety using unfair locking.
 	 * 
-	 * @return The next double.
+	 * @return A locking threadsafe provider.
 	 */
-	public double nextDouble();
+	public static Threadsafe locking()
+	{
+		return locking(false);
+	}
 
 	/**
-	 * Get the next pseudo-random Gaussian (standard normal, <i>i.e.</i> normal
-	 * with mean 0 and standard deviation 1).
+	 * Get a threadsafe provider that ensures threadsafety using locking.
 	 * 
-	 * @return The next Gaussian.
+	 * @param fair The locking fairness.
+	 * @return A locking threadsafe provider.
 	 */
-	public double nextGaussian();
+	public static Threadsafe locking(final boolean fair)
+	{
+		return Locking.getInstance(fair);
+	}
+	
+	// functions.
+	
+	
+	// policies.
+	
+
+	/**
+	 * Create a threadsafe wrapper around the specified object.
+	 * 
+	 * @param randomSource The object to wrap.
+	 * @return A threadsafe view.
+	 */
+	public RandomSource threadsafe(RandomSource randomSource);
 
 }

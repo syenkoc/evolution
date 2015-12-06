@@ -23,6 +23,8 @@
  */
 package com.chupacadabra.evolution;
 
+import java.io.Serializable;
+
 /**
  * Deb's selection rule.
  * <p>
@@ -36,8 +38,14 @@ package com.chupacadabra.evolution;
  *      better (lower) fitness.</li>
  * </ol>
  */
-public final class DebSelectionPolicy implements SelectionPolicy
+public final class DebSelectionPolicy 
+	implements SelectionPolicy, Serializable
 {
+	
+	/**
+	 * Serial ID.
+	 */
+	private static final long serialVersionUID = -3165185355597729717L;
 
 	/**
 	 * @see com.chupacadabra.evolution.SelectionPolicy#select(DifferentialEvolutionState, RandomSource, com.chupacadabra.evolution.Candidate, com.chupacadabra.evolution.Candidate)

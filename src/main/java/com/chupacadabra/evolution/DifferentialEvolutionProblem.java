@@ -21,56 +21,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.chupacadabra.evolution.util;
-
-import java.util.concurrent.TimeUnit;
+package com.chupacadabra.evolution;
 
 /**
- * A length of time.
+ * A differential evolution problem.
  */
-public final class TimeLength implements Comparable<TimeLength>
+public interface DifferentialEvolutionProblem
 {
 
 	/**
-	 * Value.
-	 */
-	private final long value;
-
-	/**
-	 * Unit.
-	 */
-	private final TimeUnit timeUnit;
-
-	/**
-	 * Constructor.
+	 * Get the dimension of the problem.
 	 * 
-	 * @param value The value.
-	 * @param timeUnit The unit.
+	 * @return The dimension.
 	 */
-	public TimeLength(final long value, final TimeUnit timeUnit)
+	public int getDimension();
+	
+	/**
+	 * Get the function that creates random parameter vectors.
+	 * 
+	 * @return The random parameter vector function.
+	 */
+	public RandomParametersFunction getRandomParametersFunction();
+
+	/**
+	 * Get the fitness function.
+	 * 
+	 * @return The fitness function.
+	 */
+	public FitnessFunction getFitnessFunction();
+
+	/**
+	 * Get the feasibility function.
+	 * <p>
+	 * This default implementation returns a function that classifies all
+	 * candidates as feasible.
+	 * 
+	 * @return The feasibility function.
+	 */
+	public default FeasibilityFunction getFeasibilityFunction()
 	{
-		this.value = value;
-		this.timeUnit = timeUnit;
+		return AllFeasibilityFunction.getInstance();
 	}
 
 	/**
-	 * Get the value in the specified unit.
+	 * Get the violation function.
+	 * <p>
+	 * The default implementation returns a function that assigns <code>0</code>
+	 * to all candidates.
 	 * 
-	 * @param unit The desired time unit
-	 * @return The value
+	 * @return The violation function.
 	 */
-	public long getValue(final TimeUnit unit)
+	public default ViolationFunction getViolationFunction()
 	{
-		return unit.convert(value, timeUnit);
-	}
-
-	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	@Override
-	public int compareTo(final TimeLength that)
-	{
-		return Long.compare(getValue(TimeUnit.NANOSECONDS), that.getValue(TimeUnit.NANOSECONDS)); 
+		return ZeroViolationFunction.getInstance();
 	}
 
 }

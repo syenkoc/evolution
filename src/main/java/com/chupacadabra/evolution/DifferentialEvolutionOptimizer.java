@@ -23,24 +23,31 @@
  */ 
 package com.chupacadabra.evolution;
 
-import com.chupacadabra.evolution.pool.CandidatePool;
-
-
 /**
- * The best differentiation policy.
+ * The main optimizer interface.
  */
-public class BestDifferentiationPolicy implements DifferentiationPolicy 
+public interface DifferentialEvolutionOptimizer
 {
+	
+	/**
+	 * Optimize the specified problem.
+	 * 
+	 * @param problem The problem.
+	 * @param settings The settings.
+	 * @return The result.
+	 */
+	public DifferentialEvolutionResult optimize(DifferentialEvolutionProblem problem,
+			DifferentialEvolutionSettings settings);
 
 	/**
-	 * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState, RandomSource, com.chupacadabra.evolution.Candidate, int, com.chupacadabra.evolution.pool.CandidatePool)
+	 * Optimize the specified problem using default settings.
+	 * 
+	 * @param problem The problem.
+	 * @return The optimization result.
 	 */
-	@Override
-	public double[] differentiate(DifferentialEvolutionState state, RandomSource randomSource,
-			Candidate parent, int parentIndex, CandidatePool pool)
+	public default DifferentialEvolutionResult optimize(final DifferentialEvolutionProblem problem) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return optimize(problem, new DifferentialEvolutionSettings());
 	}
 
 }

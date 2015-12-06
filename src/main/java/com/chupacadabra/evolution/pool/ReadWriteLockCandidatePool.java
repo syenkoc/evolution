@@ -29,13 +29,16 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import com.chupacadabra.evolution.Candidate;
 import com.chupacadabra.evolution.RandomSource;
 
-
 /**
  * Uses a {@link ReadWriteLock} to ensure theadsafety of an underlying pool.
  * <p>
+ * All methods are read locked except for {@link #setCandidate(int, Candidate)},
+ * which is write-locked.
+ * <p>
  * This class uses the decorator design pattern.
  */
-public final class ReadWriteLockCandidatePool implements CandidatePool
+public final class ReadWriteLockCandidatePool 
+	implements CandidatePool
 {
 	
 	/**

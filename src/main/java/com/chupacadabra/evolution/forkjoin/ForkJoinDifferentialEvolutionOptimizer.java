@@ -21,11 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.chupacadabra.evolution;
+package com.chupacadabra.evolution.forkjoin;
 
 import java.util.concurrent.ForkJoinPool;
 
-import com.chupacadabra.evolution.forkjoin.ForkJoinDifferentialEvolutionOptimizerCore;
+import com.chupacadabra.evolution.DifferentialEvolutionOptimizer;
+import com.chupacadabra.evolution.DifferentialEvolutionSettings;
+import com.chupacadabra.evolution.DifferentialEvolutionProblem;
+import com.chupacadabra.evolution.DifferentialEvolutionResult;
 
 /**
  * A multi-threaded differential evolution optimizer that uses a fork/join pool.
@@ -65,12 +68,12 @@ public class ForkJoinDifferentialEvolutionOptimizer
 
 	/**
 	 * @see com.chupacadabra.evolution.DifferentialEvolutionOptimizer#optimize(com.chupacadabra.evolution.DifferentialEvolutionProblem,
-	 *      com.chupacadabra.evolution.DifferentialEvolutionPolicies)
+	 *      com.chupacadabra.evolution.DifferentialEvolutionSettings)
 	 */
 	@Override
 	public DifferentialEvolutionResult optimize(
 			final DifferentialEvolutionProblem problem,
-			final DifferentialEvolutionPolicies policies)
+			final DifferentialEvolutionSettings policies)
 	{
 		// create a NEW core optimizer.
 		ForkJoinDifferentialEvolutionOptimizerCore coreOptimizer = new ForkJoinDifferentialEvolutionOptimizerCore(forkJoinPool, problem, policies);

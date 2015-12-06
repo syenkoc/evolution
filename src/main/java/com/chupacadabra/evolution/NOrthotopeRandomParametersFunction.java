@@ -25,8 +25,10 @@ package com.chupacadabra.evolution;
 
 /**
  * <i>n</i>-orthotope random parameter function.
+ * <p>
+ * 
  */
-public class NOrthotopeRandomParametersFunction 
+public final class NOrthotopeRandomParametersFunction 
 	implements RandomParametersFunction
 {
 
@@ -55,8 +57,8 @@ public class NOrthotopeRandomParametersFunction
 	 * Set the parameter range for the specified variable.
 	 * 
 	 * @param index The variable index.
-	 * @param lowerBound The lower bound.
-	 * @param upperBound The upper bound.
+	 * @param lowerBound The open lower bound.
+	 * @param upperBound The open upper bound.
 	 */
 	public void setParameterRange(final int index, final double lowerBound, final double upperBound)
 	{
@@ -75,7 +77,7 @@ public class NOrthotopeRandomParametersFunction
 			double[] box = boxes[index];
 			double min = box[0];
 			double max = box[1];
-			double randomValue = min + ((max - min) * randomSource.nextDouble());
+			double randomValue = min + ((max - min) * randomSource.nextDoubleOpen());
 			parameters[index] = randomValue;
 		}
 		

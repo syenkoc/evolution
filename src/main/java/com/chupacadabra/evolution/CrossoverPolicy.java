@@ -40,5 +40,4 @@ public interface CrossoverPolicy
 	public double getCrossover(DifferentialEvolutionState state,
 			RandomSource randomSource);
 
-
 }
