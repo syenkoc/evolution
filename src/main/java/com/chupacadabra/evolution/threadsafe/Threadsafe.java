@@ -68,7 +68,6 @@ public interface Threadsafe
 	
 	// policies.
 	
-
 	/**
 	 * Create a threadsafe wrapper around the specified object.
 	 * 

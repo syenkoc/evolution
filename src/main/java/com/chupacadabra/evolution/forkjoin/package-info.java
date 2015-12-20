@@ -21,7 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 /**
- * 
+ * This package houses the fork/join based differential evolution optimizer.
  */
 package com.chupacadabra.evolution.forkjoin;

@@ -6,6 +6,11 @@
 	<artifactId>evolution</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -22,6 +27,17 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+				<configuration>
+					<outputDirectory>${basedir}</outputDirectory>
+					<reportOutputDirectory>${basedir}</reportOutputDirectory>
+					<destDir>apidocs</destDir>
+					<show>public</show>
 				</configuration>
 			</plugin>
 		</plugins>
