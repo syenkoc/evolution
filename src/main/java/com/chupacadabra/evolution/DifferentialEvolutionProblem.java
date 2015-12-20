@@ -23,6 +23,9 @@
  */
 package com.chupacadabra.evolution;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A differential evolution problem.
  */
@@ -75,5 +78,17 @@ public interface DifferentialEvolutionProblem
 	{
 		return ZeroViolationFunction.getInstance();
 	}
-
+	
+	/**
+	 * Get the termination criteria.
+	 * <p>
+	 * The default implementation returns an empty list.
+	 * 
+	 * @return The termination criteria.
+	 */
+	public default List<TerminationCriterion> getTerminationCriteria() 
+	{
+		return Collections.emptyList();
+	}
+	
 }

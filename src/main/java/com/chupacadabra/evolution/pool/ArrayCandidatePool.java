@@ -108,7 +108,4 @@ public final class ArrayCandidatePool implements CandidatePool
 		return bestCandidateIndex;
 	}
 
-
-
-
 }

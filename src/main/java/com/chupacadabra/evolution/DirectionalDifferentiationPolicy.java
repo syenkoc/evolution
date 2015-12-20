@@ -57,6 +57,8 @@ public class DirectionalDifferentiationPolicy
 	
 	/**
 	 * Default constructor.
+	 * <p>
+	 * Uses a {@linkplain #DEFAULT_FIXED_WEIGHT fixed weight policy}.
 	 */
 	public DirectionalDifferentiationPolicy()
 	{
@@ -101,7 +103,7 @@ public class DirectionalDifferentiationPolicy
 		double f = weightPolicy.getWeight(state, randomSource) / (double)count;
 
 		// do pairwise summing.
-		PairwiseWeightedParameterSum.computeInPlace(f, trial, randomCandidates);
+		PairwiseWeightedParameterSum.computeInPlace(f, trial, 0, randomCandidates);
 		
 		return trial;
 	}

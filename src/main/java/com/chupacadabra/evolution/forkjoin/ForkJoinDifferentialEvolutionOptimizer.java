@@ -76,10 +76,10 @@ public class ForkJoinDifferentialEvolutionOptimizer
 			final DifferentialEvolutionSettings policies)
 	{
 		// create a NEW core optimizer.
-		ForkJoinDifferentialEvolutionOptimizerCore coreOptimizer = new ForkJoinDifferentialEvolutionOptimizerCore(forkJoinPool, problem, policies);
+		ForkJoinDifferentialEvolutionOptimizerCore core = new ForkJoinDifferentialEvolutionOptimizerCore(forkJoinPool, problem, policies);
 		
 		// and now just get the results.
-		DifferentialEvolutionResult result = coreOptimizer.optimize();
+		DifferentialEvolutionResult result = core.optimize();
 		
 		return result;
 	}

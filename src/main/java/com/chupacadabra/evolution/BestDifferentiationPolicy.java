@@ -88,7 +88,7 @@ public class BestDifferentiationPolicy
 		// the trial vector starts at the current best candidate.
 		int bestIndex = pool.getBestCandidateIndex();
 		Candidate best = pool.getCandidate(bestIndex);
-		double[] trial = best.getParameters().clone();
+		double[] trial = best.getParameters();
 
 		// select the desired number of random candidates, excluding the parent and best candidate.
 		int total = 2 * count;
@@ -98,7 +98,7 @@ public class BestDifferentiationPolicy
 		double f = weightPolicy.getWeight(state, randomSource);		
 		
 		// sum up the parameters.
-		PairwiseWeightedParameterSum.computeInPlace(f, trial, candidates);
+		PairwiseWeightedParameterSum.computeInPlace(f, trial, 0, candidates);
 				
 		return trial;
 	}

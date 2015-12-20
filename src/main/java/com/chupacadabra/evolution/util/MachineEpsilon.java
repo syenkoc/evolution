@@ -25,6 +25,8 @@ package com.chupacadabra.evolution.util;
 
 /**
  * JVM machine epsilon.
+ * <p>
+ * This class is stateless and cannot be instantiated.
  */
 public final class MachineEpsilon
 {

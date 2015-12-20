@@ -37,16 +37,18 @@ final class PairwiseWeightedParameterSum
 	 * 
 	 * @param f The weight.
 	 * @param trial The vector in which to store the results.
+	 * @param offset Array offset.
 	 * @param candidates The candidates.
 	 */
 	static void computeInPlace(final double f, 
 			final double[] trial,
+			final int offset,
 			final Candidate... candidates)
 	{
 		int total = candidates.length;
 		int dimension = trial.length;
 
-		for(int index = 0; index < total; index += 2)
+		for(int index = offset; index < total; index += 2)
 		{
 			double[] x1 = candidates[index].getParametersReference();
 			double[] x2 = candidates[(index + 1)].getParametersReference();
@@ -57,7 +59,7 @@ final class PairwiseWeightedParameterSum
 			}
 		}
 	}
-
+	
 	/**
 	 * 
 	 */

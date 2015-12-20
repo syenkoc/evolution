@@ -38,7 +38,6 @@ import com.chupacadabra.evolution.RecombinationPolicy;
 import com.chupacadabra.evolution.ViolationFunction;
 import com.chupacadabra.evolution.pool.CandidatePool;
 
-
 /**
  * Create a child candidate task.
  */

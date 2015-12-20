@@ -35,7 +35,6 @@ import com.chupacadabra.evolution.RandomParametersFunction;
 import com.chupacadabra.evolution.RandomSource;
 import com.chupacadabra.evolution.pool.CandidatePool;
 
-
 /**
  * Task to generate a random feasible candidate and insert it into the pool.
  */
@@ -101,7 +100,7 @@ final class GenerateRandomFeasibleCandidateTask
 		generating:
 		while(true) 
 		{
-			// create a parameters.
+			// create a parameter vector.
 			double[] parameters = parameterFunction.createRandomParameters(randomSource);
 			
 			// check feasibility.

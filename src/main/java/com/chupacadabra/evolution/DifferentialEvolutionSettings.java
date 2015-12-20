@@ -24,8 +24,6 @@
 package com.chupacadabra.evolution;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.chupacadabra.evolution.util.JavaUtilRandomSource;
 
@@ -114,11 +112,6 @@ public final class DifferentialEvolutionSettings
 	private ExceptionBehavior exceptionBehavior;
 
 	/**
-	 * User-defined termination criteria.
-	 */
-	private List<TerminationCriterion> terminationCriteria;
-
-	/**
 	 * Constructor.
 	 */
 	public DifferentialEvolutionSettings()
@@ -145,9 +138,6 @@ public final class DifferentialEvolutionSettings
 
 		// use the only implementation we know of.
 		randomSource = new JavaUtilRandomSource();
-
-		// empty!
-		terminationCriteria = new ArrayList<TerminationCriterion>();
 	}
 
 	/**
@@ -375,27 +365,6 @@ public final class DifferentialEvolutionSettings
 	public void setExceptionBehavior(final ExceptionBehavior exceptionBehavior)
 	{
 		this.exceptionBehavior = exceptionBehavior;
-	}
-
-	/**
-	 * Get the termination criteria.
-	 * 
-	 * @return The termination criteria
-	 */
-	public List<TerminationCriterion> getTerminationCriteria()
-	{
-		return terminationCriteria;
-	}
-
-	/**
-	 * Set the termination criteria.
-	 * 
-	 * @param terminationCriteria The new criteria.
-	 */
-	public void setTerminationCriteria(
-			final List<TerminationCriterion> terminationCriteria)
-	{
-		this.terminationCriteria = terminationCriteria;
 	}
 
 }

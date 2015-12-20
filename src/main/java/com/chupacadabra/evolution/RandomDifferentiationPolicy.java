@@ -38,12 +38,7 @@ public class RandomDifferentiationPolicy
 	 * Default count.
 	 */
 	public static final int DEFAULT_COUNT = 1;
-	
-	/**
-	 * Default fixed weight.
-	 */
-	public static final double DEFAULT_WEIGHT = 0.5d;
-		
+			
 	/**
 	 * The count.
 	 */
@@ -59,7 +54,7 @@ public class RandomDifferentiationPolicy
 	 */
 	public RandomDifferentiationPolicy()
 	{
-		this(DEFAULT_COUNT, new FixedWeightPolicy(DEFAULT_WEIGHT));
+		this(DEFAULT_COUNT, new DitheringWeightPolicy());
 	}
 	
 	/**
@@ -85,11 +80,16 @@ public class RandomDifferentiationPolicy
 			final int parentIndex,
 			final CandidatePool pool)
 	{
+		// we start from a randomly selected candidate that is not the parent.
+		int total = 2 * count + 1;
+		Candidate[] candidates = pool.selectCandidates(randomSource, total, parentIndex);
+		double[] trial = candidates[0].getParameters();
 		
-		
-		
-		// TODO Auto-generated method stub
-		return null;
+		// now just do the summing excluding the trial candidate obviously.
+		double f = weightPolicy.getWeight(state, randomSource);
+		PairwiseWeightedParameterSum.computeInPlace(f, trial, 1, candidates);
+				
+		return trial;
 	}
 
 }

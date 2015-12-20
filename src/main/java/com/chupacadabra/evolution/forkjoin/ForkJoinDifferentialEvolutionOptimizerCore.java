@@ -49,7 +49,8 @@ import com.chupacadabra.evolution.util.TimeLength;
  * <p>
  * Instances of this class are <i>not</i> safe for use by multiple threads.
  */
-final class ForkJoinDifferentialEvolutionOptimizerCore implements DifferentialEvolutionState
+final class ForkJoinDifferentialEvolutionOptimizerCore 
+	implements DifferentialEvolutionState
 {
 	
 	// invariant.
@@ -106,7 +107,7 @@ final class ForkJoinDifferentialEvolutionOptimizerCore implements DifferentialEv
 	 * 
 	 * @return The results.
 	 */
-	public DifferentialEvolutionResult optimize() 
+	DifferentialEvolutionResult optimize() 
 	{
 		try
 		{
@@ -128,7 +129,7 @@ final class ForkJoinDifferentialEvolutionOptimizerCore implements DifferentialEv
 				}
 				
 				// check user-defined termination criteria.
-				for(TerminationCriterion criterion : settings.getTerminationCriteria()) 
+				for(TerminationCriterion criterion : problem.getTerminationCriteria()) 
 				{
 					if(criterion.isMet(this))
 					{
@@ -225,7 +226,7 @@ final class ForkJoinDifferentialEvolutionOptimizerCore implements DifferentialEv
 		
 		int poolSize = settings.getCandidatePoolSize();
 		List<ForkJoinTask<Void>> tasks = new ArrayList<ForkJoinTask<Void>>(poolSize);
-				
+						
 		// spawn a task for each index...
 		for(int index = 0; index < poolSize; index++)
 		{
@@ -240,7 +241,7 @@ final class ForkJoinDifferentialEvolutionOptimizerCore implements DifferentialEv
 		}
 				
 		// and we have a new pool.
-		currentPool = nextPool;
+		currentPool = nextPool;		
 	}
 
 	/**
