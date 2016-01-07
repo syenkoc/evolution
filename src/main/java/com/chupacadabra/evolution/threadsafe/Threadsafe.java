@@ -23,10 +23,15 @@
  */
 package com.chupacadabra.evolution.threadsafe;
 
+import com.chupacadabra.evolution.DifferentialEvolutionOptimizer;
+import com.chupacadabra.evolution.LockFairness;
 import com.chupacadabra.evolution.RandomSource;
 
 /**
  * Threadsafe decorator provider strategy.
+ * <p>
+ * Unless otherwise noted, all methods throw a {@link NullPointerException} if
+ * the target object is <code>null</code>.
  */
 public interface Threadsafe
 {
@@ -49,25 +54,35 @@ public interface Threadsafe
 	 */
 	public static Threadsafe locking()
 	{
-		return locking(false);
+		return locking(LockFairness.UNFAIR);
 	}
 
 	/**
 	 * Get a threadsafe provider that ensures threadsafety using locking.
 	 * 
-	 * @param fair The locking fairness.
+	 * @param lockFairness The lock fairness.
 	 * @return A locking threadsafe provider.
 	 */
-	public static Threadsafe locking(final boolean fair)
+	public static Threadsafe locking(final LockFairness lockFairness)
 	{
-		return Locking.getInstance(fair);
+		return Locking.getInstance(lockFairness.getReentrantLockValue());
 	}
-	
+
+	// optimizer.
+
+	/**
+	 * Get a threadsafe decorator around the specified optimizer.
+	 * 
+	 * @param optimizer The optimizer to wrap.
+	 * @return A threadsafe view.
+	 */
+	public DifferentialEvolutionOptimizer threadsafe(
+			DifferentialEvolutionOptimizer optimizer);
+
 	// functions.
-	
-	
+
 	// policies.
-	
+
 	/**
 	 * Create a threadsafe wrapper around the specified object.
 	 * 

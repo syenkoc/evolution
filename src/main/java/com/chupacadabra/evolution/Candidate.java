@@ -23,13 +23,16 @@
  */
 package com.chupacadabra.evolution;
 
+import java.io.Serializable;
+
 /**
- * A candidate.
+ * A candidate parameter vector.
  * <p>
  * This is really just a tuple of a parameter vector, fitness measure, and
  * violation measure (if the candidate is invalid).
  */
 public final class Candidate
+	implements Serializable
 {
 
 	/**
@@ -59,6 +62,11 @@ public final class Candidate
 	{
 		return new Candidate(parameters, fitness, violation);
 	}
+
+	/**
+	 * Serial version.
+	 */
+	private static final long serialVersionUID = 8831083522182647457L;
 
 	/**
 	 * The parameter vector.
@@ -126,6 +134,8 @@ public final class Candidate
 	
 	/**
 	 * Get the parameters without making a clone.
+	 * <p>
+	 * This is package-protected for a reason.
 	 * 
 	 * @return The parameters.
 	 */

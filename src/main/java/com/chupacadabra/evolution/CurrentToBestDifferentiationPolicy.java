@@ -23,17 +23,67 @@
  */ 
 package com.chupacadabra.evolution;
 
+import com.chupacadabra.evolution.pool.CandidatePool;
 
 /**
+ * The current-to-best differentiation policy.
+ * <p>
  * 
+ * <p>
+ * This policy is typically used in conjunction with the
+ * {@linkplain TrialRecombinationPolicy trial recombination policy}.
  */
-public class CurrentToBestDifferentiationPolicy
+public final class CurrentToBestDifferentiationPolicy
+	implements DifferentiationPolicy
 {
 	
+	/**
+	 * Default count.
+	 */
+	public static final int DEFAULT_COUNT = 1;
+			
+	/**
+	 * The count.
+	 */
+	private final int count;
 	
-	
+	/**
+	 * Weight for the current.
+	 */
 	private WeightPolicy currentToRandomWeightPolicy;
 	
+	/**
+	 * Weight for the random candidate.
+	 */
 	private WeightPolicy randomWeightPolicy;
+
+	/**
+	 * @param count
+	 * @param currentToRandomWeightPolicy
+	 * @param randomWeightPolicy
+	 */
+	public CurrentToBestDifferentiationPolicy(
+			final int count,
+			final WeightPolicy currentToRandomWeightPolicy,
+			final WeightPolicy randomWeightPolicy)
+	{
+		this.count = count;
+		this.currentToRandomWeightPolicy = currentToRandomWeightPolicy;
+		this.randomWeightPolicy = randomWeightPolicy;
+	}
+
+	/**
+	 * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource, int, com.chupacadabra.evolution.pool.CandidatePool)
+	 */
+	@Override
+	public double[] differentiate(
+			final DifferentialEvolutionState state,
+			final RandomSource randomSource, 
+			final int parentIndex, 
+			final CandidatePool pool)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

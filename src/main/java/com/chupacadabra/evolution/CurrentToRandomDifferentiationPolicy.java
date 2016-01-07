@@ -23,9 +23,11 @@
  */ 
 package com.chupacadabra.evolution;
 
-
 /**
- * 
+ * The current-to-best differentiation policy.
+ * <p>
+ * This policy generates trial parameter vectors according to:<br> 
+ * $$\vec{u}_{i} = \vec{x}_{i} + G \cdot (\vec{x}_{r_{3}} - \vec{x}_{i}) + F \cdot \sum_{j = 0}^{p}{(\vec{x}_{r^{j}_{2}} - \vec{x}_{r^{j}_{3}})}$$
  */
 public class CurrentToRandomDifferentiationPolicy
 {

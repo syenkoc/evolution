@@ -25,11 +25,21 @@ package com.chupacadabra.evolution;
 
 import com.chupacadabra.evolution.pool.CandidatePool;
 
-
 /**
- * The best differentiation policy.
+ * The random differentiation policy. 
+ * <p>
+ * Trial candidates of the i<sup>th</sup> parent vector are 
+ * constructed according to the formula:<br>
+ * $$\vec{u}_{i} = \vec{x}_{best} + F \cdot \sum_{j = 0}^{p}{(\vec{x}_{r^{j}_{2}} - \vec{x}_{r^{j}_{3}})}$$
+ * <br>
+ * Here, <code>p &gt; 0</code> is the vector count and <code>F</code> is the 
+ * weight. The randomly chosen candidate vectors are neither the parent nor 
+ * the best candidate.
+ * <p>
+ * By default, we choose <code>p = 1</code> and use a 
+ * {@linkplain DitheringWeightPolicy dithering weight policy}. 
  */
-public class BestDifferentiationPolicy 
+public final class BestDifferentiationPolicy 
 	implements DifferentiationPolicy 
 {
 
@@ -75,13 +85,12 @@ public class BestDifferentiationPolicy
 	}
 	
 	/**
-	 * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState, RandomSource, com.chupacadabra.evolution.Candidate, int, com.chupacadabra.evolution.pool.CandidatePool)
+	 * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState, RandomSource, int, com.chupacadabra.evolution.pool.CandidatePool)
 	 */
 	@Override
 	public double[] differentiate(
 			final DifferentialEvolutionState state, 
 			final RandomSource randomSource,
-			final Candidate parent, 
 			final int parentIndex, 
 			final CandidatePool pool)
 	{		

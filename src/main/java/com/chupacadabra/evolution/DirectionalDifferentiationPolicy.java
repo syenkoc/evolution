@@ -30,8 +30,13 @@ import com.chupacadabra.evolution.util.CandidateFitnessComparator;
 
 /**
  * The directional differentiation policy.
+ * <p>
+ * Trial vectors 
+ * <p>
+ * This policy is typically used in conjunction with the
+ * {@linkplain TrialRecombinationPolicy trial recombination policy}.
  */
-public class DirectionalDifferentiationPolicy
+public final class DirectionalDifferentiationPolicy
 	implements DifferentiationPolicy
 {
 	
@@ -78,14 +83,13 @@ public class DirectionalDifferentiationPolicy
 	}
 
 	/**
-	 * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource, com.chupacadabra.evolution.Candidate, int, com.chupacadabra.evolution.pool.CandidatePool)
+	 * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource, int, com.chupacadabra.evolution.pool.CandidatePool)
 	 */
 	@Override
 	public double[] differentiate(
 			final DifferentialEvolutionState state,
 			final RandomSource randomSource, 
-			final Candidate parent, 
-			final int parentIndex,
+			final int parentIndex, 
 			final CandidatePool pool)
 	{
 		// grab the desired number of random candidates, making sure exclude the parent.

@@ -23,11 +23,12 @@
  */ 
 package com.chupacadabra.evolution.simple;
 
+import com.chupacadabra.evolution.DifferentialEvolutionOptimizer;
 import com.chupacadabra.evolution.DifferentialEvolutionResult;
 import com.chupacadabra.evolution.FitnessFunction;
 import com.chupacadabra.evolution.NOrthotopeRandomParametersFunction;
+import com.chupacadabra.evolution.SerialDifferentialEvolutionOptimizer;
 import com.chupacadabra.evolution.SimpleDifferentialEvolutionProblem;
-import com.chupacadabra.evolution.forkjoin.ForkJoinDifferentialEvolutionOptimizer;
 
 /**
  * A simple example.
@@ -50,8 +51,8 @@ public final class SimpleExample
 		problem.setRandomParametersFunction(parameterFunction);
 		problem.setFitnessFunction(fitnessFunction);
 		
-		// create a new optimizer. 
-		ForkJoinDifferentialEvolutionOptimizer optimizer = new ForkJoinDifferentialEvolutionOptimizer();
+		// create a suitable optimizer.
+		DifferentialEvolutionOptimizer optimizer = new SerialDifferentialEvolutionOptimizer();		
 		
 		// now just get the result!
 		DifferentialEvolutionResult result = optimizer.optimize(problem);

@@ -31,7 +31,7 @@ public final class DitheringWeightPolicy
 {
 	
 	/**
-	 * Default minimum.
+	 * Default minimum: {@value}
 	 */
 	public static final double DEFAULT_MINIMUM = 0.5d;
 	

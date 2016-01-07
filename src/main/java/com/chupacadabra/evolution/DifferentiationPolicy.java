@@ -24,9 +24,24 @@
 package com.chupacadabra.evolution;
 
 import com.chupacadabra.evolution.pool.CandidatePool;
+import com.chupacadabra.evolution.threadsafe.Threadsafe;
 
 /**
- * Differentiation policy.
+ * A differentiation policy.
+ * <p>
+ * The differentiation policy generates <i>trial</i> parameter vectors that are
+ * then <i>recombined</i> (using the {@linkplain RecombinationPolicy
+ * recombination policy}) to generate <i>child</i> vectors.
+ * <p>
+ * Note that the state of the candidate pool will be <i>invariant</i> -
+ * essentially read-locked - during the execution of the differentiation step.
+ * This allows you to make multiple calls to the pool knowing that its state
+ * will not change.
+ * <p>
+ * Implementations of this interface <i>must</i> be safe for use by multiple
+ * threads if they are used in the parallel optimizer. You can obtain a
+ * threadsafe decorator around any implementation of this interface using the
+ * {@link Threadsafe} framework.
  */
 @FunctionalInterface
 public interface DifferentiationPolicy
@@ -37,12 +52,11 @@ public interface DifferentiationPolicy
 	 * 
 	 * @param state The state.
 	 * @param randomSource A source of randomness.
-	 * @param parent The parent.
 	 * @param parentIndex The index of the parent in the pool.
 	 * @param pool The pool.
-	 * @return Child parameters.
+	 * @return The trial or differentiated parameters.
 	 */
-	public double[] differentiate(DifferentialEvolutionState state, RandomSource randomSource,
-			Candidate parent, int parentIndex, CandidatePool pool);
+	public double[] differentiate(DifferentialEvolutionState state,
+			RandomSource randomSource, int parentIndex, CandidatePool pool);
 
 }

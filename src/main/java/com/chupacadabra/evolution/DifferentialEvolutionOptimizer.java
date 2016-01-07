@@ -28,7 +28,7 @@ package com.chupacadabra.evolution;
  */
 public interface DifferentialEvolutionOptimizer
 {
-	
+		
 	/**
 	 * Optimize the specified problem.
 	 * 

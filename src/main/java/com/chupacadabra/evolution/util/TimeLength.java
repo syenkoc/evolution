@@ -28,7 +28,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * A length of time.
  */
-public final class TimeLength implements Comparable<TimeLength>
+public final class TimeLength 
+	implements Comparable<TimeLength>
 {
 
 	/**
@@ -91,6 +92,4 @@ public final class TimeLength implements Comparable<TimeLength>
 		return builder.toString();
 	}
 	
-	
-
 }

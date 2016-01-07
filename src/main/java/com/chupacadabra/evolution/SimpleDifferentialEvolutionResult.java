@@ -23,50 +23,79 @@
  */
 package com.chupacadabra.evolution;
 
+import com.chupacadabra.evolution.util.TimeLength;
+
 /**
- * Pairwise weighted parameter sum utility class.
- * <p>
- * This class is stateless - and hence safe for use by multiple threads - and
- * cannot be instantiated.
+ * Simple mutable result implementation.
  */
-final class PairwiseWeightedParameterSum
+public final class SimpleDifferentialEvolutionResult
+	implements DifferentialEvolutionResult
 {
 
 	/**
-	 * Perform weighted pair-wise sum of the specified candidates.
-	 * <p>
-	 * As the name suggests, the sum is computed in-place and stored in the
-	 * vector <code>trial</code>.
-	 * 
-	 * @param f The weight.
-	 * @param trial The vector in which to store the results.
-	 * @param offset Array offset.
-	 * @param candidates The candidates.
+	 * The best candidate.
 	 */
-	static void computeInPlace(final double f, 
-			final double[] trial,
-			final int offset,
-			final Candidate... candidates)
-	{
-		int total = candidates.length;
-		int dimension = trial.length;
+	private Candidate bestCandidate;
 
-		for(int index = offset; index < total; index += 2)
-		{
-			double[] x1 = candidates[index].getParametersReference();
-			double[] x2 = candidates[(index + 1)].getParametersReference();
+	/**
+	 * Termination reason.
+	 */
+	private TerminationReason terminationReason;
 
-			for(int jindex = 0; jindex < dimension; jindex++)
-			{
-				trial[jindex] += f * (x1[jindex] - x2[jindex]);
-			}
-		}
-	}
+	/**
+	 * Time taken.
+	 */
+	private TimeLength timeTaken;
 	
 	/**
-	 * 
+	 * @return The bestCandidate
 	 */
-	private PairwiseWeightedParameterSum()
+	@Override
+	public Candidate getBestCandidate()
 	{
+		return bestCandidate;
 	}
+
+	/**
+	 * @param bestCandidate The value.
+	 */
+	public void setBestCandidate(Candidate bestCandidate)
+	{
+		this.bestCandidate = bestCandidate;
+	}
+
+	/**
+	 * @return The terminationReason
+	 */
+	@Override
+	public TerminationReason getTerminationReason()
+	{
+		return terminationReason;
+	}
+
+	/**
+	 * @param terminationReason The value.
+	 */
+	public void setTerminationReason(TerminationReason terminationReason)
+	{
+		this.terminationReason = terminationReason;
+	}
+
+	/**
+	 * @return The timeTaken
+	 */
+	@Override
+	public TimeLength getTimeTaken()
+	{
+		return timeTaken;
+	}
+
+	/**
+	 * @param timeTaken The value.
+	 */
+	public void setTimeTaken(TimeLength timeTaken)
+	{
+		this.timeTaken = timeTaken;
+	}
+
 }

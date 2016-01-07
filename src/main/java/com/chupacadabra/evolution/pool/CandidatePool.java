@@ -27,7 +27,7 @@ import com.chupacadabra.evolution.Candidate;
 import com.chupacadabra.evolution.RandomSource;
 
 /**
- * A read-only view of the pool of candidate.
+ * A read-only pool of candidates.
  */
 public interface CandidatePool
 {
@@ -48,14 +48,6 @@ public interface CandidatePool
 	public Candidate getCandidate(int index);
 	
 	/**
-	 * Set the candidate at the specified index.
-	 * 
-	 * @param index The index.
-	 * @param candidate The candidate.
-	 */
-	public void setCandidate(int index, Candidate candidate);
-	
-	/**
 	 * Get the index of the best candidate.
 	 * 
 	 * @return The best candidate index.
@@ -73,8 +65,8 @@ public interface CandidatePool
 	}
 	
 	/**
-	 * Randomly select <code>count</code> candidates, making sure to exclude the
-	 * candidates of indices <code>exclude</code>.
+	 * Randomly select <code>count</code> unique candidates, making sure to
+	 * exclude the candidates of indices <code>exclude</code>.
 	 * 
 	 * @param randomSource The source of randomness to use.
 	 * @param count The count.
@@ -83,10 +75,15 @@ public interface CandidatePool
 	 */
 	public default Candidate[] selectCandidates(final RandomSource randomSource, final int count, final int... exclude) 
 	{
-		Candidate[] candidates = new Candidate[count];
-		int[] selected = new int[count];
 		int size = getSize();
+		if((count + exclude.length) > size)
+		{
+			String message = String.format("Cannot select more than %1$s candidates", size);
+			throw new IllegalArgumentException(message);
+		}
 		
+		Candidate[] candidates = new Candidate[count];
+		int[] selected = new int[count];		
 		int selecting = 0;
 		
 		selecting:

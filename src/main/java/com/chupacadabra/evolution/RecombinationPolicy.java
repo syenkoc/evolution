@@ -23,8 +23,19 @@
  */
 package com.chupacadabra.evolution;
 
+import com.chupacadabra.evolution.threadsafe.Threadsafe;
+
 /**
- * Recombination policy.
+ * A parameter vector recombination policy.
+ * <p>
+ * This policy recombines a parent parameter vector and a trial vector
+ * {@linkplain DifferentiationPolicy differentiated} from it to produce a
+ * <i>child</i> parameter vector.
+ * <p>
+ * Implementations of this interface <i>must</i> be safe for use by multiple
+ * threads if they are used in the parallel optimizer. You can obtain a
+ * threadsafe decorator around any implementation of this interface using the
+ * {@link Threadsafe} framework.
  */
 @FunctionalInterface
 public interface RecombinationPolicy
@@ -34,7 +45,7 @@ public interface RecombinationPolicy
 	 * Recombine the specified trials vectors.
 	 * 
 	 * @param parent Parent vector.
-	 * @param trial Trial vector.
+	 * @param trial The trial vector differentiated from the parent.
 	 * @param state Current state.
 	 * @param randomSource A source of randomness.
 	 * @return Recombined vector.

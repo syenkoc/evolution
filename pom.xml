@@ -38,6 +38,8 @@
 					<reportOutputDirectory>${basedir}</reportOutputDirectory>
 					<destDir>apidocs</destDir>
 					<show>public</show>
+					<additionalparam>-header &apos;&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;&lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;&lt;script type=&quot;text/javascript&quot; src=&quot;http://syenkoc.github.io/evolution/javadocs/jaxconfig.js&quot;&gt;&lt;/script&gt;&apos;</additionalparam>
+					<excludePackageNames>com.chupacadabra.evolution.engine.*</excludePackageNames>
 				</configuration>
 			</plugin>
 		</plugins>

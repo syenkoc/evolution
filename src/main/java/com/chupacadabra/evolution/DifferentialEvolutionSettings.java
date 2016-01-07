@@ -105,6 +105,11 @@ public final class DifferentialEvolutionSettings
 	 * Pool replacement.
 	 */
 	private PoolReplacement poolReplacement;
+	
+	/**
+	 * Fairness policy when locking the candidate pools.
+	 */
+	private LockFairness poolLockFairness;
 
 	/**
 	 * Exception behavior.
@@ -135,6 +140,9 @@ public final class DifferentialEvolutionSettings
 		// any exceptions will terminate the optimization and be throw to the
 		// invoker.
 		exceptionBehavior = ExceptionBehavior.PROPOGATE;
+		
+		// use unfair locking because it should be faster.
+		poolLockFairness = LockFairness.UNFAIR;
 
 		// use the only implementation we know of.
 		randomSource = new JavaUtilRandomSource();
@@ -181,13 +189,13 @@ public final class DifferentialEvolutionSettings
 	 * Set the candidate pool size.
 	 * 
 	 * @param candidatePoolSize The new pool size.
-	 * @throws IllegalArgumentException If <code>candidatePoolSize</code> is less than 1.
+	 * @throws IllegalArgumentException If <code>candidatePoolSize</code> is less than 4.
 	 */
 	public void setCandidatePoolSize(final int candidatePoolSize)
 	{
-		if(candidatePoolSize < 1) 
+		if(candidatePoolSize < 4) 
 		{
-			throw new IllegalArgumentException("candidatePoolSize must be greater than 0");
+			throw new IllegalArgumentException("candidatePoolSize must be greater than 4");
 		}
 		
 		this.candidatePoolSize = candidatePoolSize;
@@ -264,6 +272,11 @@ public final class DifferentialEvolutionSettings
 	public void setDifferentiationPolicy(
 			final DifferentiationPolicy differentiationPolicy)
 	{
+		if(differentiationPolicy == null)
+		{
+			throw new NullPointerException("differentiationPolicy");
+		}
+		
 		this.differentiationPolicy = differentiationPolicy;
 	}
 
@@ -284,6 +297,11 @@ public final class DifferentialEvolutionSettings
 	 */
 	public void setRecombinationPolicy(final RecombinationPolicy recombinationPolicy)
 	{
+		if(recombinationPolicy == null)
+		{
+			throw new NullPointerException("recombinatonPolicy");
+		}
+		
 		this.recombinationPolicy = recombinationPolicy;
 	}
 
@@ -304,6 +322,11 @@ public final class DifferentialEvolutionSettings
 	 */
 	public void setDiversityPolicy(final DiversityPolicy diversityPolicy)
 	{
+		if(diversityPolicy == null)
+		{
+			throw new NullPointerException("diversityPolicy");
+		}
+		
 		this.diversityPolicy = diversityPolicy;
 	}
 
@@ -361,10 +384,41 @@ public final class DifferentialEvolutionSettings
 	 * Set the exception behavior.
 	 * 
 	 * @param exceptionBehavior The value.
+	 * @throws NullPointerException If <code>exceptionBehavior</code> is <code>null</code>.
 	 */
 	public void setExceptionBehavior(final ExceptionBehavior exceptionBehavior)
 	{
+		if(exceptionBehavior == null)
+		{
+			throw new NullPointerException("exceptionBehavior");
+		}
+		
 		this.exceptionBehavior = exceptionBehavior;
 	}
 
+	/**
+	 * Get the pool lock fairness. 
+	 * 
+	 * @return The pool lock fairness.
+	 */
+	public LockFairness getPoolLockFairness()
+	{
+		return poolLockFairness;
+	}
+	
+	/**
+	 * Set the pool lock fairness.
+	 * 
+	 * @param poolLockFairness The value.
+	 */
+	public void setPoolLockFairness(final LockFairness poolLockFairness)
+	{
+		if(poolLockFairness == null) 
+		{
+			throw new NullPointerException("poolLockFairness");
+		}
+		
+		this.poolLockFairness = poolLockFairness;
+	}
+	
 }

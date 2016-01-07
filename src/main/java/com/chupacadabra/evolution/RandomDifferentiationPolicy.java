@@ -26,11 +26,21 @@ package com.chupacadabra.evolution;
 import com.chupacadabra.evolution.pool.CandidatePool;
 
 /**
- * The random differentiation policy.
+ * The random differentiation policy. 
  * <p>
- * This is the "classic" differentiation policy from Storn <i>et al.</i>
+ * This is one of the classic differentiation policies from Storn <i>et al</i>.
+ * Differentiated candidates of the i<sup>th</sup> parent vector are 
+ * constructed according to the formula:<br>
+ * $$\vec{u}_{i} = \vec{x}_{r_{1}} + F \cdot \sum_{j = 0}^{p}{(\vec{x}_{r^{j}_{2}} - \vec{x}_{r^{j}_{3}})}$$
+ * <br>
+ * Here, <code>p &gt; 0</code> is the vector count and <code>F</code> is the 
+ * weight. All of the vectors vectors are uniquely chosen from the pool, and 
+ * not equal to the parent vector.
+ * <p>
+ * By default, we choose <code>p = 1</code> and use a 
+ * {@linkplain DitheringWeightPolicy dithering weight policy}. 
  */
-public class RandomDifferentiationPolicy
+public final class RandomDifferentiationPolicy
 	implements DifferentiationPolicy
 {
 	
@@ -51,6 +61,12 @@ public class RandomDifferentiationPolicy
 
 	/**
 	 * Default constructor.
+	 * <p>
+	 * This constructor uses:
+	 * <ul>
+	 *  <li>{@linkplain #DEFAULT_COUNT The default count.}</li>
+	 *  <li>{@linkplain DitheringWeightPolicy The default dithering weight policy.}</li>
+	 * </ul>
 	 */
 	public RandomDifferentiationPolicy()
 	{
@@ -70,14 +86,13 @@ public class RandomDifferentiationPolicy
 	}
 
 	/**
-	 * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource, com.chupacadabra.evolution.Candidate, int, com.chupacadabra.evolution.pool.CandidatePool)
+	 * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource, int, com.chupacadabra.evolution.pool.CandidatePool)
 	 */
 	@Override
 	public double[] differentiate(
 			final DifferentialEvolutionState state,
 			final RandomSource randomSource, 
-			final Candidate parent, 
-			final int parentIndex,
+			final int parentIndex, 
 			final CandidatePool pool)
 	{
 		// we start from a randomly selected candidate that is not the parent.

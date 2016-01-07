@@ -24,7 +24,12 @@
 package com.chupacadabra.evolution;
 
 /**
- * The binomial recombination policy.
+ * The binomial recombination policy. 
+ * <p>
+ * This is the classic recombination policy of Storn and Price. 
+ * 
+ * <p>
+ * By default, we use a {@linkplain #DEFAULT_FIXED_CROSSOVER fixed crossover}.
  */
 public final class BinomialRecombinationPolicy 
 	implements RecombinationPolicy
@@ -33,7 +38,7 @@ public final class BinomialRecombinationPolicy
 	/**
 	 * Default fixed crossover: {@value}
 	 */
-	public static final double DEFAULT_CROSSOVER = 0.9d;
+	public static final double DEFAULT_FIXED_CROSSOVER = 0.9d;
 	
 	/**
 	 * The crossover policy.
@@ -47,7 +52,7 @@ public final class BinomialRecombinationPolicy
 	 */
 	public BinomialRecombinationPolicy()
 	{
-		this(new FixedCrossoverPolicy(DEFAULT_CROSSOVER));
+		this(new FixedCrossoverPolicy(DEFAULT_FIXED_CROSSOVER));
 	}
 	
 	/**

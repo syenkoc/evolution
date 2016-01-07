@@ -24,7 +24,7 @@
 package com.chupacadabra.evolution;
 
 /**
- * Feasibility function that classifies everything as feasible.
+ * A feasibility function that classifies all candidates as feasible.
  * <p>
  * This class uses the singleton design pattern.
  */

@@ -24,7 +24,11 @@
 package com.chupacadabra.evolution;
 
 /**
- * Crossover policy. 
+ * A crossover policy.
+ * <p>
+ * A crossover policy is a commonly used "sub-policy" by most recombination
+ * policies. Crossover determines the degree to which the recombination policy
+ * selects parent vs. child parameters.
  */
 @FunctionalInterface
 public interface CrossoverPolicy

@@ -51,7 +51,7 @@ public final class FitnessAchieved
 	@Override
 	public boolean isMet(final DifferentialEvolutionState state)
 	{
-		return fitness <= state.getBestCandidate().getFitness();
+		return state.getBestCandidate().getFitness() <= fitness;
 	}
 
 }

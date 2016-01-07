@@ -23,6 +23,7 @@
  */
 package com.chupacadabra.evolution.threadsafe;
 
+import com.chupacadabra.evolution.DifferentialEvolutionOptimizer;
 import com.chupacadabra.evolution.RandomSource;
 
 /**
@@ -57,6 +58,17 @@ final class Synchronization
 	}
 
 	/**
+	 * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.DifferentialEvolutionOptimizer)
+	 */
+	@Override
+	public DifferentialEvolutionOptimizer threadsafe(
+			DifferentialEvolutionOptimizer optimizer)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
 	 * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.RandomSource)
 	 */
 	@Override
@@ -64,5 +76,6 @@ final class Synchronization
 	{
 		return new SynchronizedRandomSource(randomSource);
 	}
+
 
 }

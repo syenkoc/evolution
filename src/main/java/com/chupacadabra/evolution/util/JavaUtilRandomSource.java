@@ -27,7 +27,6 @@ import java.util.Random;
 
 import com.chupacadabra.evolution.RandomSource;
 
-
 /**
  * A simple random source based on {@link java.util.Random}.
  * <p>

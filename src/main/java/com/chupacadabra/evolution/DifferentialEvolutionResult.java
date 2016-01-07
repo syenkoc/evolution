@@ -26,70 +26,30 @@ package com.chupacadabra.evolution;
 import com.chupacadabra.evolution.util.TimeLength;
 
 /**
- * Result of a differential evolution.
+ * The result of performing differential evolution.
  */
-public final class DifferentialEvolutionResult
+public interface DifferentialEvolutionResult
 {
 
-	/**
-	 * The best candidate.
-	 */
-	private final Candidate bestCandidate;
-
-	/**
-	 * Termination reason.
-	 */
-	private final TerminationReason terminationReason;
-
-	/**
-	 * Time taken.
-	 */
-	private final TimeLength timeTaken;
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param bestCandidate The best candidate.
-	 * @param terminationReason The reason for termination.
-	 * @param timeTaken The time taken.
-	 */
-	public DifferentialEvolutionResult(final Candidate bestCandidate,
-			final TerminationReason terminationReason,
-			final TimeLength timeTaken)
-	{
-		this.bestCandidate = bestCandidate;
-		this.terminationReason = terminationReason;
-		this.timeTaken = timeTaken;
-	}
-	
 	/**
 	 * Get the best candidate.
 	 * 
 	 * @return The best candidate.
 	 */
-	public Candidate getBestCandidate()
-	{
-		return bestCandidate;
-	}
-	
+	public Candidate getBestCandidate();
+
 	/**
 	 * Get the termination reason.
 	 * 
 	 * @return The termination reason.
 	 */
-	public TerminationReason getTerminationReason()
-	{
-		return terminationReason;
-	}
-	
+	public TerminationReason getTerminationReason();
+
 	/**
 	 * Get the time taken.
 	 * 
 	 * @return The time taken.
 	 */
-	public TimeLength getTimeTaken()
-	{
-		return timeTaken;
-	}
-	
+	public TimeLength getTimeTaken();
+
 }
