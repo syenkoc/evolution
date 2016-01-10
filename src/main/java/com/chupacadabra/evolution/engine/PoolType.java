@@ -21,34 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
  */ 
-package com.chupacadabra.evolution.pool;
+package com.chupacadabra.evolution.engine;
 
 /**
- * A lockable candidate pool.
+ * The pool.
  */
-public interface LockableCandidatePool
-	extends WritableCandidatePool
+public enum PoolType
 {
 	
 	/**
-	 * Acquire a read lock.
+	 * Current pool.
 	 */
-	public void readLock();
+	CURRENT,
 	
 	/**
-	 * Release a previously acquired read lock.
+	 * Next pool.
 	 */
-	public void readUnlock();
-	
-	/**
-	 * Acquire the write lock.
-	 */
-	public void writeLock();
-	
-	/**
-	 * Release the write lock.
-	 */
-	public void writeUnlock();
-	
+	NEXT;
 
 }

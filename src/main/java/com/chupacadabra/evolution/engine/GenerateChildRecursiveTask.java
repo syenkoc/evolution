@@ -48,18 +48,26 @@ public class GenerateChildRecursiveTask
 	 * The parent index.
 	 */
 	private final int index;
+	
+	/**
+	 * The parent.
+	 */
+	private final Candidate parent;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param optimizer The command receiver.
 	 * @param index The index.
+	 * @param parent The parent. 
 	 */
 	public GenerateChildRecursiveTask(final DifferentialEvolutionReceiver optimizer,
-			final int index)
+			final int index, 
+			final Candidate parent)
 	{
 		this.optimizer = optimizer;
 		this.index = index;
+		this.parent = parent;
 	}
 
 	/**
@@ -68,7 +76,7 @@ public class GenerateChildRecursiveTask
 	@Override
 	protected Candidate compute()
 	{
-		GenerateChildTask task = new GenerateChildTask(optimizer, index);
+		GenerateChildTask task = new GenerateChildTask(optimizer, index, parent);
 		Candidate child = task.call();
 		
 		return child;

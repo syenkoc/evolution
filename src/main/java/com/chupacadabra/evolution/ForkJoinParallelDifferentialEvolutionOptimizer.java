@@ -27,14 +27,13 @@ import java.util.concurrent.ForkJoinPool;
 
 import com.chupacadabra.evolution.engine.ChildGeneration;
 import com.chupacadabra.evolution.engine.DifferentialEvolutionEngine;
-import com.chupacadabra.evolution.engine.DirectChildGeneration;
 import com.chupacadabra.evolution.engine.ForkJoinChildGeneration;
 import com.chupacadabra.evolution.engine.ForkJoinInitialization;
 import com.chupacadabra.evolution.engine.ForkJoinIteration;
 import com.chupacadabra.evolution.engine.Initialization;
 import com.chupacadabra.evolution.engine.Iteration;
-import com.chupacadabra.evolution.engine.PoolCreation;
-import com.chupacadabra.evolution.engine.ReadWriteLockPoolCreation;
+import com.chupacadabra.evolution.engine.PoolLock;
+import com.chupacadabra.evolution.engine.PoolLockCreation;
 
 /**
  * A parallel differential evolution optimizer that uses a
@@ -84,13 +83,12 @@ public class ForkJoinParallelDifferentialEvolutionOptimizer
 			final DifferentialEvolutionSettings settings)
 	{
 		// assemble an engine.
-		PoolCreation creation = new ReadWriteLockPoolCreation();
+		PoolLockCreation lockCreation = PoolLock::reentrant;
 		Initialization initialization = new ForkJoinInitialization(forkJoinPool);
 		Iteration iteration = new ForkJoinIteration(forkJoinPool);
-		//ChildGeneration childGeneration = new ForkJoinChildGeneration(forkJoinPool);
-		ChildGeneration childGeneration = new DirectChildGeneration();
+		ChildGeneration childGeneration = new ForkJoinChildGeneration();
 		
-		DifferentialEvolutionEngine core = new DifferentialEvolutionEngine(creation, initialization, iteration, childGeneration);
+		DifferentialEvolutionEngine core = new DifferentialEvolutionEngine(lockCreation, initialization, iteration, childGeneration);
 
 		// and get results.
 		DifferentialEvolutionResult result = core.getResult(problem, settings);

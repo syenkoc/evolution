@@ -24,7 +24,6 @@
 package com.chupacadabra.evolution.engine;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import com.chupacadabra.evolution.Candidate;
 
@@ -39,12 +38,11 @@ public interface ChildGeneration
 	 * 
 	 * @param receiver The engine receiver.
 	 * @param index The parent index.
+	 * @param parent The parent candidate.
 	 * @return The list of children.
-	 * @throws InterruptedException If the calling thread is interrupted.
-	 * @throws ExecutionException If sub-task fails abnormally.
 	 */
 	public List<Candidate> generate(DifferentialEvolutionReceiver receiver,
-			int index)
-		throws InterruptedException, ExecutionException;
+			int index,
+			Candidate parent);
 
 }

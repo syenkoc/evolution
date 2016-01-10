@@ -25,7 +25,6 @@ package com.chupacadabra.evolution.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 
@@ -44,7 +43,7 @@ public final class ForkJoinInitialization
 	/**
 	 * @param forkJoinPool
 	 */
-	public ForkJoinInitialization(ForkJoinPool forkJoinPool)
+	public ForkJoinInitialization(final ForkJoinPool forkJoinPool)
 	{
 		this.forkJoinPool = forkJoinPool;
 	}
@@ -54,22 +53,21 @@ public final class ForkJoinInitialization
 	 */
 	@Override
 	public void initialize(final DifferentialEvolutionReceiver receiver)
-		throws InterruptedException, ExecutionException
 	{
 		int size = receiver.getSettings().getCandidatePoolSize();		
 		List<ForkJoinTask<?>> futures = new ArrayList<ForkJoinTask<?>>(size);
 		
 		for(int index = 0; index < size; index++)
 		{
-			InitializeIndexCommand initializeCommand = new InitializeIndexCommand(receiver, index);
-			ForkJoinTask<?> future = forkJoinPool.submit(initializeCommand);
-			futures.add(future);
+			// fork off a task for each index. 
+			InitializeIndexAction initializeAction = new InitializeIndexAction(receiver, index);
+			futures.add(forkJoinPool.submit(initializeAction));
 		}
 
 		for(ForkJoinTask<?> future : futures)
 		{
-			// and wait for each one to finish.
-			future.get();
+			// wait for them all to finish!
+			future.join();
 		}
 	}
 	

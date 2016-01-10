@@ -21,25 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
  */ 
-package com.chupacadabra.evolution.util;
-
-import java.util.concurrent.Executor;
+package com.chupacadabra.evolution.engine;
 
 /**
- * An executor that executes runnables directly and immediately in the invoking
- * thread.
+ * Lock type.
  */
-public final class DirectExecutor
-		implements Executor
+public enum LockType
 {
-
+	
 	/**
-	 * @see java.util.concurrent.Executor#execute(java.lang.Runnable)
+	 * Read lock.
 	 */
-	@Override
-	public void execute(final Runnable command)
-	{
-		command.run();
-	}
+	READ,
+	
+	/**
+	 * Write lock.
+	 */
+	WRITE;
 
 }

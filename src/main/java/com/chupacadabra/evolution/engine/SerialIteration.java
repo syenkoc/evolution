@@ -23,31 +23,14 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
+import com.chupacadabra.evolution.Candidate;
 
 /**
- * Executor-based iteration.
+ * Direct iteration.
  */
-public final class ExecutorIteration
+public final class SerialIteration
 	implements Iteration
 {
-	
-	/**
-	 * The executor.
-	 */
-	private final Executor executor;
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param executor The execuctor.
-	 */
-	public ExecutorIteration(final Executor executor)
-	{
-		this.executor = executor;
-	}
 
 	/**
 	 * @see com.chupacadabra.evolution.engine.Iteration#iterate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver, com.chupacadabra.evolution.engine.ChildGeneration)
@@ -55,24 +38,19 @@ public final class ExecutorIteration
 	@Override
 	public void iterate(final DifferentialEvolutionReceiver receiver,
 			final ChildGeneration childGeneration)
-		throws InterruptedException, ExecutionException
 	{
 		int size = receiver.getSettings().getCandidatePoolSize();
-		CountDownLatch latch = new CountDownLatch(size);
 		
 		for(int index = 0; index < size; index++)
 		{
-			// build up a command to perform iteration, report exception, and count down the latch.
-			IterateIndexCommand iterateCommand = new IterateIndexCommand(receiver, index, childGeneration);
-			ReportExceptionCommand exceptionCommand = new ReportExceptionCommand(receiver, iterateCommand);
-			CountDownCommand countDownCommand = new CountDownCommand(exceptionCommand, latch);
+			// we know it is OK not to look.
+			Candidate parent = receiver.getCurrentPool().getCandidate(index);
 			
-			// and enqueue the command!
-			executor.execute(countDownCommand);
-		}
-		
-		// wait for all commands to finish.
-		latch.await();		
+			// just execute the iterate command directly for each index.
+			IterateIndexAction iterateCommand = new IterateIndexAction(receiver, index, parent, childGeneration);
+			iterateCommand.run();
+		}				
 	}
+	
 
 }

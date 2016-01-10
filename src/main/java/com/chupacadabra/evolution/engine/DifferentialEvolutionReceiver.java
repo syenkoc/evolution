@@ -26,7 +26,7 @@ package com.chupacadabra.evolution.engine;
 import com.chupacadabra.evolution.DifferentialEvolutionProblem;
 import com.chupacadabra.evolution.DifferentialEvolutionSettings;
 import com.chupacadabra.evolution.DifferentialEvolutionState;
-import com.chupacadabra.evolution.pool.LockableCandidatePool;
+import com.chupacadabra.evolution.pool.WritableCandidatePool;
 
 /**
  * Receiver interface for engine commands.
@@ -34,20 +34,6 @@ import com.chupacadabra.evolution.pool.LockableCandidatePool;
 public interface DifferentialEvolutionReceiver
 	extends DifferentialEvolutionState
 {
-
-	/**
-	 * Get the current pool.
-	 * 
-	 * @return The current pool.
-	 */
-	public LockableCandidatePool getCurrentPool();
-
-	/**
-	 * Get the next pool.
-	 * 
-	 * @return The next pool.
-	 */
-	public LockableCandidatePool getNextPool();
 
 	/**
 	 * Get the problem.
@@ -62,5 +48,26 @@ public interface DifferentialEvolutionReceiver
 	 * @return The settings.
 	 */
 	public DifferentialEvolutionSettings getSettings();
+
+	/**
+	 * Get the current pool.
+	 * 
+	 * @return The current pool.
+	 */
+	public WritableCandidatePool getCurrentPool();
+
+	/**
+	 * Get the next pool.
+	 * 
+	 * @return The next pool.
+	 */
+	public WritableCandidatePool getNextPool();
+
+	/**
+	 * Get the pool locks.
+	 * 
+	 * @return The pool locks.
+	 */
+	public PoolLock getPoolLock();
 
 }

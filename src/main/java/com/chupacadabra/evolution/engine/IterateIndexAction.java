@@ -33,11 +33,21 @@ import com.chupacadabra.evolution.RandomSource;
 import com.chupacadabra.evolution.SelectionPolicy;
 
 /**
- * Iterate index command.
+ * Core iteration implementation.
  */
-public final class IterateIndexCommand
-	extends AbstractIndexCommand
+public final class IterateIndexAction
+	implements Runnable
 {
+	
+	/**
+	 * The receiver.
+	 */
+	private final DifferentialEvolutionReceiver optimizer;
+	
+	/**
+	 * The index to initialize.
+	 */
+	private final int index;
 	
 	/**
 	 * The parent.
@@ -53,27 +63,21 @@ public final class IterateIndexCommand
 	 * Constructor.
 	 * 
 	 * @param optimizer The optimizer.
-	 * @param index The index for which to iterate.
+	 * @param index The index of the parent.
+	 * @param parent The parent candidate.
 	 * @param childGeneration The child generation sub-strategy.
 	 */
-	public IterateIndexCommand(
+	public IterateIndexAction(
 			final DifferentialEvolutionReceiver optimizer, 
 			final int index,
+			final Candidate parent,
 			final ChildGeneration childGeneration)
 	{
-		super(optimizer, index);
-		
+		// store the magic.
+		this.optimizer = optimizer;
+		this.index = index;		
 		this.childGeneration = childGeneration;
-		
-		optimizer.getCurrentPool().readLock();
-		try
-		{
-			parent = optimizer.getCurrentPool().getCandidate(index);
-		}
-		finally 
-		{
-			optimizer.getCurrentPool().readUnlock();
-		}
+		this.parent = parent;		
 	}
 
 	/**
@@ -101,7 +105,7 @@ public final class IterateIndexCommand
 	private void runCore() 
 		throws InterruptedException, ExecutionException
 	{
-		List<Candidate> children = childGeneration.generate(optimizer, index);
+		List<Candidate> children = childGeneration.generate(optimizer, index, parent);
 		
 		if(children.isEmpty())
 		{
@@ -169,15 +173,14 @@ public final class IterateIndexCommand
 	 */
 	private boolean isParentBestCandidate()
 	{
-		optimizer.getCurrentPool().readLock();
-		
+		optimizer.getPoolLock().lock(PoolType.CURRENT, LockType.READ);
 		try
 		{
 			return (optimizer.getCurrentPool().getBestCandidateIndex() == index);
 		}
 		finally
 		{
-			optimizer.getCurrentPool().readUnlock();
+			optimizer.getPoolLock().unlock(PoolType.CURRENT, LockType.READ);
 		}
 	}
 
@@ -188,14 +191,14 @@ public final class IterateIndexCommand
 	 */
 	private void setNextCandidate(final Candidate nextCandidate)
 	{
-		optimizer.getNextPool().writeLock();
+		optimizer.getPoolLock().lock(PoolType.NEXT, LockType.WRITE);
 		try
 		{
 			optimizer.getNextPool().setCandidate(index, nextCandidate);
 		}
 		finally
 		{
-			optimizer.getNextPool().writeUnlock();	
+			optimizer.getPoolLock().unlock(PoolType.NEXT, LockType.WRITE);	
 		}		
 	}
 	

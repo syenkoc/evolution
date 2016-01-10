@@ -23,61 +23,20 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import java.util.List;
-
-import com.chupacadabra.evolution.Candidate;
+import com.chupacadabra.evolution.DifferentialEvolutionSettings;
 
 /**
- * Hacky runnable to store a child.
+ * Pool lock creation.
  */
-public final class GenerateChildCommand
-	implements Runnable
+public interface PoolLockCreation
 {
 	
 	/**
-	 * The optimizer.
-	 */
-	private final DifferentialEvolutionReceiver optimizer;
-	
-	/**
-	 * The index.
-	 */
-	private final int index;
-	
-	/**
-	 * The children.
-	 */
-	private final List<Candidate> children;
-	
-	/**
-	 * Constructor.
+	 * Create a pool lock. 
 	 * 
-	 * @param optimizer The receiver.
-	 * @param index The index.
-	 * @param children Result array.
+	 * @param settings The settings.
+	 * @return A pool lock.
 	 */
-	public GenerateChildCommand(
-			final DifferentialEvolutionReceiver optimizer,
-			final int index, 
-			final List<Candidate> children)
-	{
-		this.optimizer = optimizer;
-		this.index = index;
-		this.children = children;
-	}
-
-	/**
-	 * @see java.lang.Runnable#run()
-	 */
-	@Override
-	public void run()
-	{
-		GenerateChildTask task = new GenerateChildTask(optimizer, index);
-		Candidate child = task.call();
-		if(child != null)
-		{
-			children.add(child);
-		}
-	}
+	public PoolLock create(DifferentialEvolutionSettings settings);
 
 }

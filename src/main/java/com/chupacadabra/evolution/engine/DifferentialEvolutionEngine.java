@@ -23,7 +23,6 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import com.chupacadabra.evolution.Candidate;
@@ -36,7 +35,8 @@ import com.chupacadabra.evolution.SimpleDifferentialEvolutionResult;
 import com.chupacadabra.evolution.TerminationCriterion;
 import com.chupacadabra.evolution.TerminationCriterionMet;
 import com.chupacadabra.evolution.TerminationReason;
-import com.chupacadabra.evolution.pool.LockableCandidatePool;
+import com.chupacadabra.evolution.pool.ArrayCandidatePool;
+import com.chupacadabra.evolution.pool.WritableCandidatePool;
 import com.chupacadabra.evolution.util.TimeLength;
 
 /**
@@ -54,7 +54,7 @@ public final class DifferentialEvolutionEngine
 	/**
 	 * Pool creation strategy.
 	 */
-	private final PoolCreation poolCreation;
+	private final PoolLockCreation poolLockCreation;
 
 	/**
 	 * Initialization strategy.
@@ -96,31 +96,36 @@ public final class DifferentialEvolutionEngine
 	/**
 	 * The current pool of candidates.
 	 */
-	private volatile LockableCandidatePool currentPool;
+	private volatile WritableCandidatePool currentPool;
 	
 	/**
 	 * The next pool of candidates.
 	 * <p>
 	 * Could be the same as the current pool depending on the replacement policy.
 	 */
-	private volatile LockableCandidatePool nextPool;
+	private volatile WritableCandidatePool nextPool;
+	
+	/**
+	 * Pool lock.
+	 */
+	private volatile PoolLock poolLock;
 		
 	/**
 	 * Constructor.
 	 * 
-	 * @param poolCreation Pool creation strategy.
+	 * @param poolLockCreation Pool lock creation strategy.
 	 * @param initialization Initialization strategy.
 	 * @param iteration Iteration strategy.
 	 * @param childGeneration Child generation strategy.
 	 */
 	public DifferentialEvolutionEngine(
-			final PoolCreation poolCreation,
+			final PoolLockCreation poolLockCreation,
 			final Initialization initialization,
 			final Iteration iteration,
 			final ChildGeneration childGeneration)
 	{
 		// store the strategy magic.
-		this.poolCreation = poolCreation;
+		this.poolLockCreation = poolLockCreation;
 		this.initialization = initialization;
 		this.iteration = iteration;
 		this.childGeneration = childGeneration;
@@ -145,20 +150,15 @@ public final class DifferentialEvolutionEngine
 			
 			return result;
 		}
-		catch(final Exception re)
+		catch(final RuntimeException re)
 		{
-			// do dance based on user-specified exception policy.
+			// centralized exception handling.
 			switch(settings.getExceptionBehavior())
 			{
 				case TERMINATE:
 					return createResult(new ExceptionEncountered(re));
 				case PROPOGATE:
 				default:
-					if(re instanceof RuntimeException)
-					{
-						throw (RuntimeException)re;
-					}
-					
 					throw new RuntimeException(re);
 			}			
 		}	
@@ -168,18 +168,18 @@ public final class DifferentialEvolutionEngine
 	 * Core optimization method.
 	 * 
 	 * @return The result.
-	 * @throws InterruptedException If the invoking thread is interrupted.
-	 * @throws ExecutionException If a sub-task aborts.
 	 */
 	private DifferentialEvolutionResult optimizeCore()
-		throws InterruptedException, ExecutionException
 	{
 		// and... we're off!
 		startTimeInNanos = System.nanoTime();
 		currentGeneration = 0;
+		
+		// build suitable pool lock.
+		poolLock = poolLockCreation.create(settings);
 
 		// initialize the current pool.
-		currentPool = poolCreation.create(this);
+		currentPool = createPool();
 		initialization.initialize(this);
 		currentGeneration += 1;
 
@@ -197,8 +197,7 @@ public final class DifferentialEvolutionEngine
 
 			if(currentGeneration >= getMaximumGeneration())
 			{
-				return createResult(new MaximumGenerationReached(
-						getMaximumGeneration()));
+				return createResult(new MaximumGenerationReached(getMaximumGeneration()));
 			}
 
 			// perform one iteration.
@@ -209,6 +208,19 @@ public final class DifferentialEvolutionEngine
 		}
 	}
 	
+	/**
+	 * Create a virgin pool.
+	 * 
+	 * @return A new pool.
+	 */
+	private WritableCandidatePool createPool()
+	{
+		int size = settings.getCandidatePoolSize();
+		ArrayCandidatePool pool = new ArrayCandidatePool(size);
+		
+		return pool;
+	}
+
 	/**
 	 * Create a result with the specified termination reason and current best candidate.
 	 * 
@@ -233,12 +245,12 @@ public final class DifferentialEvolutionEngine
 	 * 
 	 * @return The next pool.
 	 */
-	private LockableCandidatePool createNextPool()
+	private WritableCandidatePool createNextPool()
 	{
 		switch(settings.getPoolReplacement())
 		{
 			case AFTER:
-				return poolCreation.create(this);
+				return createPool();
 			case IMMEDIATELY:
 				return currentPool;
 			default:
@@ -250,7 +262,7 @@ public final class DifferentialEvolutionEngine
 	 * @see com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver#getCurrentPool()
 	 */
 	@Override
-	public LockableCandidatePool getCurrentPool()
+	public WritableCandidatePool getCurrentPool()
 	{
 		return currentPool;
 	}
@@ -259,7 +271,7 @@ public final class DifferentialEvolutionEngine
 	 * @see com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver#getNextPool()
 	 */
 	@Override
-	public LockableCandidatePool getNextPool()
+	public WritableCandidatePool getNextPool()
 	{
 		return nextPool;
 	}
@@ -281,7 +293,16 @@ public final class DifferentialEvolutionEngine
 	{
 		return settings;
 	}
-				
+
+	/**
+	 * @see com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver#getPoolLock()
+	 */
+	@Override
+	public PoolLock getPoolLock()
+	{
+		return poolLock;
+	}
+
 	// implementation of the state interface.
 
 	/**
@@ -299,15 +320,8 @@ public final class DifferentialEvolutionEngine
 	@Override
 	public Candidate getBestCandidate()
 	{
-		currentPool.readLock();
-		try 
-		{
-			return currentPool.getBestCandidate();
-		}
-		finally 
-		{
-			currentPool.readUnlock();
-		}
+		// we actually don't need to lock here!
+		return currentPool.getBestCandidate();
 	}
 
 	/**

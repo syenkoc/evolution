@@ -23,52 +23,26 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-
 /**
- * Executor-based initialization strategy.
+ * Direct initialization.
  */
-public final class ExecutorInitialization
+public final class SerialInitialization
 	implements Initialization
 {
-	
-	/**
-	 * The executor.
-	 */
-	private final Executor executor;
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param executor The executor in which to enqueue the tasks.
-	 */
-	public ExecutorInitialization(final Executor executor)
-	{
-		this.executor = executor;
-	}
 
 	/**
 	 * @see com.chupacadabra.evolution.engine.Initialization#initialize(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver)
 	 */
 	@Override
 	public void initialize(final DifferentialEvolutionReceiver receiver)
-		throws InterruptedException
 	{
-		int size = receiver.getSettings().getCandidatePoolSize();
-		CountDownLatch latch = new CountDownLatch(size);
-		
+		int size = receiver.getSettings().getCandidatePoolSize();		
 		for(int index = 0; index < size; index++)
 		{
-			// enqueue a task for each index in the pool.
-			InitializeIndexCommand initializeCommand = new InitializeIndexCommand(receiver, index);
-			ReportExceptionCommand reportCommand = new ReportExceptionCommand(receiver, initializeCommand);
-			CountDownCommand countDownCommand = new CountDownCommand(reportCommand, latch);
-			executor.execute(countDownCommand);
-		}
-		
-		// wait for all initialization commands to finish.
-		latch.await();
+			// run the appropriate commands.
+			InitializeIndexAction initializeCommand = new InitializeIndexAction(receiver, index);
+			initializeCommand.run();
+		}		
 	}
 
 }

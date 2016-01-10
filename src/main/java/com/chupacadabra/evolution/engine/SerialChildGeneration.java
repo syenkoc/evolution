@@ -23,30 +23,40 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import com.chupacadabra.evolution.pool.ArrayCandidatePool;
-import com.chupacadabra.evolution.pool.LockableCandidatePool;
-import com.chupacadabra.evolution.pool.NoOpLockableCandidatePool;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.chupacadabra.evolution.Candidate;
 
 /**
- * Pool creator that returns a pool that does no actual locking.
+ * Direct child generation.
  */
-public final class NoOpLockingPoolCreation
-	implements PoolCreation
+public final class SerialChildGeneration
+	implements ChildGeneration
 {
 
 	/**
-	 * @see com.chupacadabra.evolution.engine.PoolCreation#create(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver)
+	 * @see com.chupacadabra.evolution.engine.ChildGeneration#generate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver, int, com.chupacadabra.evolution.Candidate)
 	 */
 	@Override
-	public LockableCandidatePool create(DifferentialEvolutionReceiver receiver)
-	{
-		int size = receiver.getSettings().getCandidatePoolSize();
-		ArrayCandidatePool arrayPool = new ArrayCandidatePool(size);
+	public List<Candidate> generate(final DifferentialEvolutionReceiver receiver,
+			final int index,
+			final Candidate parent)
+	{		
+		List<Candidate> children = new ArrayList<Candidate>();
+		int count = receiver.getSettings().getChildrenPerCandidate();
 		
-		// use the pool that doesn't do actual locking!
-		NoOpLockableCandidatePool nopPool = new NoOpLockableCandidatePool(arrayPool);
+		for(int jindex = 0; jindex < count; jindex++)
+		{
+			GenerateChildTask childTask = new GenerateChildTask(receiver, index, parent);
+			Candidate child = childTask.call();
+			if(child != null)
+			{
+				children.add(child);
+			}
+		}
 		
-		return nopPool;
+		return children;
 	}
 
 }

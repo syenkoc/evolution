@@ -21,28 +21,67 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
  */ 
-package com.chupacadabra.evolution.engine;
+package com.chupacadabra.evolution;
+
+import java.util.Random;
 
 /**
- * Direct initialization.
+ * A simple random source based on {@link java.util.Random}.
+ * <p>
+ * Instances of this class are safe for use by multiple threads.
  */
-public final class DirectInitialization
-	implements Initialization
+public final class JavaUtilRandomSource
+	implements RandomSource
 {
+	
+	/**
+	 * The underlying random.
+	 */
+	private final Random random;
+	
+	/**
+	 * Constructor.
+	 */
+	public JavaUtilRandomSource()
+	{
+		random = new Random();
+	}
 
 	/**
-	 * @see com.chupacadabra.evolution.engine.Initialization#initialize(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver)
+	 * Constructor.
+	 * 
+	 * @param seed The seed for the random.
+	 */
+	public JavaUtilRandomSource(final long seed)
+	{
+		random = new Random(seed);
+	}
+
+	/**
+	 * @see com.chupacadabra.evolution.RandomSource#nextInt(int)
 	 */
 	@Override
-	public void initialize(final DifferentialEvolutionReceiver receiver)
+	public int nextInt(final int n)
 	{
-		int size = receiver.getSettings().getCandidatePoolSize();		
-		for(int index = 0; index < size; index++)
-		{
-			// run the appropriate commands.
-			InitializeIndexCommand initializeCommand = new InitializeIndexCommand(receiver, index);
-			initializeCommand.run();
-		}		
+		return random.nextInt(n);
+	}
+
+	/**
+	 * @see com.chupacadabra.evolution.RandomSource#nextDouble()
+	 */
+	@Override
+	public double nextDouble()
+	{
+		return random.nextDouble();
+	}
+
+	/**
+	 * @see com.chupacadabra.evolution.RandomSource#nextGaussian()
+	 */
+	@Override
+	public double nextGaussian()
+	{
+		return random.nextGaussian();
 	}
 
 }

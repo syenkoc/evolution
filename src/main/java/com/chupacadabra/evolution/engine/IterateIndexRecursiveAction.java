@@ -25,6 +25,7 @@ package com.chupacadabra.evolution.engine;
 
 import java.util.concurrent.RecursiveAction;
 
+import com.chupacadabra.evolution.Candidate;
 
 /**
  * Index iteration as a recursive action.
@@ -77,8 +78,26 @@ public final class IterateIndexRecursiveAction
 	protected void compute()
 	{
 		// just run the standard iteration command.
-		IterateIndexCommand command = new IterateIndexCommand(optimizer, index, childGeneration);
+		Candidate parent = getParent();
+		IterateIndexAction command = new IterateIndexAction(optimizer, index, parent, childGeneration);
 		command.run();
+	}
+	
+	/**
+	 * Get the parent.
+	 * 
+	 * @return The parent.
+	 */
+	private Candidate getParent() {
+		optimizer.getPoolLock().lock(PoolType.CURRENT, LockType.READ);
+		try 
+		{
+			return optimizer.getCurrentPool().getCandidate(index);
+		} 
+		finally 
+		{
+			optimizer.getPoolLock().unlock(PoolType.CURRENT, LockType.READ);
+		}
 	}
 
 }

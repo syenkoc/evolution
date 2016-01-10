@@ -64,8 +64,8 @@ public class RosenbrockFunctionProblem
 	public RandomParametersFunction getRandomParametersFunction()
 	{
 		NOrthotopeRandomParametersFunction nOrthotope = new NOrthotopeRandomParametersFunction(2);
-		nOrthotope.setParameterRange(0, -100000, 100000);
-		nOrthotope.setParameterRange(1, -100000, 100000);
+		nOrthotope.setParameterRange(0, -1000000, 1000000);
+		nOrthotope.setParameterRange(1, -1000000, 1000000);
 		
 		return nOrthotope;
 	}

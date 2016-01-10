@@ -24,6 +24,7 @@
 package com.chupacadabra.evolution;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * A candidate parameter vector.
@@ -165,6 +166,24 @@ public final class Candidate
 	public double getViolation()
 	{
 		return violation;
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("Candidate [parameters=");
+		builder.append(Arrays.toString(parameters));
+		builder.append(", fitness=");
+		builder.append(fitness);
+		builder.append(", violation=");
+		builder.append(violation);
+		builder.append("]");
+		
+		return builder.toString();
 	}
 
 }

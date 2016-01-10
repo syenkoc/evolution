@@ -73,6 +73,11 @@ public final class ArrayCandidatePool
 	@Override
 	public Candidate getCandidate(final int index)
 	{
+		if(index == NO_BEST_CANDIDATE_INDEX) 
+		{
+			return null;
+		}
+		
 		return pool[index];
 	}
 

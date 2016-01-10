@@ -23,8 +23,6 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * Engine initialization strategy.
  */
@@ -35,10 +33,7 @@ public interface Initialization
 	 * Initialize the current pool.
 	 * 
 	 * @param receiver The receiver.
-	 * @throws ExecutionException If a sub-task fails.
-	 * @throws InterruptedException If the invoking thread is interrupted.
 	 */
-	public void initialize(DifferentialEvolutionReceiver receiver) 
-		throws InterruptedException, ExecutionException;
+	public void initialize(DifferentialEvolutionReceiver receiver);
 
 }

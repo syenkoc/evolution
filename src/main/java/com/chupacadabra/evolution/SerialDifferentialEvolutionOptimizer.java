@@ -25,13 +25,13 @@ package com.chupacadabra.evolution;
 
 import com.chupacadabra.evolution.engine.ChildGeneration;
 import com.chupacadabra.evolution.engine.DifferentialEvolutionEngine;
-import com.chupacadabra.evolution.engine.DirectChildGeneration;
-import com.chupacadabra.evolution.engine.DirectInitialization;
-import com.chupacadabra.evolution.engine.DirectIteration;
 import com.chupacadabra.evolution.engine.Initialization;
 import com.chupacadabra.evolution.engine.Iteration;
-import com.chupacadabra.evolution.engine.NoOpLockingPoolCreation;
-import com.chupacadabra.evolution.engine.PoolCreation;
+import com.chupacadabra.evolution.engine.PoolLock;
+import com.chupacadabra.evolution.engine.PoolLockCreation;
+import com.chupacadabra.evolution.engine.SerialChildGeneration;
+import com.chupacadabra.evolution.engine.SerialInitialization;
+import com.chupacadabra.evolution.engine.SerialIteration;
 
 /**
  * A serial differential optimizer.
@@ -52,11 +52,11 @@ public final class SerialDifferentialEvolutionOptimizer
 			final DifferentialEvolutionSettings settings)
 	{		
 		// build up an engine.
-		PoolCreation poolCreation = new NoOpLockingPoolCreation();
-		Initialization initialization = new DirectInitialization();
-		Iteration iteration = new DirectIteration();		
-		ChildGeneration childGeneration = new DirectChildGeneration();
-		DifferentialEvolutionEngine engine = new DifferentialEvolutionEngine(poolCreation, initialization, iteration, childGeneration);
+		PoolLockCreation lockCreation = PoolLock::noOp;
+		Initialization initialization = new SerialInitialization();
+		Iteration iteration = new SerialIteration();		
+		ChildGeneration childGeneration = new SerialChildGeneration();
+		DifferentialEvolutionEngine engine = new DifferentialEvolutionEngine(lockCreation, initialization, iteration, childGeneration);
 		
 		// get results.
 		DifferentialEvolutionResult result = engine.getResult(problem, settings);

@@ -25,8 +25,6 @@ package com.chupacadabra.evolution;
 
 import java.io.Serializable;
 
-import com.chupacadabra.evolution.util.JavaUtilRandomSource;
-
 /**
  * Settings and policies for the differential evolution optimizer.
  * <p>
@@ -44,17 +42,17 @@ public final class DifferentialEvolutionSettings
 	/**
 	 * Default maximum generation: {@value}
 	 */
-	public static final int DEFAULT_MAXIMUM_GENERATION = 333;
+	public static final int DEFAULT_MAXIMUM_GENERATION = 3333;
 
 	/**
 	 * Default candidate pool size: {@value}
 	 */
-	public static final int DEFAULT_CANDIDATE_POOL_SIZE = 71;
+	public static final int DEFAULT_CANDIDATE_POOL_SIZE = 128;
 
 	/**
 	 * Default children per candidate: {@value}
 	 */
-	public static final int DEFAULT_CHILDREN_PER_CANDIDATE = 1;
+	public static final int DEFAULT_CHILDREN_PER_CANDIDATE = 4;
 
 	/**
 	 * Serial ID. 

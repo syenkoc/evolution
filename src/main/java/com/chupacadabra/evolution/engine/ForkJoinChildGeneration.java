@@ -25,7 +25,6 @@ package com.chupacadabra.evolution.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinTask;
 
 import com.chupacadabra.evolution.Candidate;
@@ -38,13 +37,13 @@ public final class ForkJoinChildGeneration
 {
 	
 	/**
-	 * @see com.chupacadabra.evolution.engine.ChildGeneration#generate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver, int)
+	 * @see com.chupacadabra.evolution.engine.ChildGeneration#generate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver, int, com.chupacadabra.evolution.Candidate)
 	 */
 	@Override
 	public List<Candidate> generate(
 			final DifferentialEvolutionReceiver receiver,
-			final int index)
-		throws InterruptedException, ExecutionException 
+			final int index,
+			final Candidate parent) 
 	{
 		int count = receiver.getSettings().getChildrenPerCandidate();
 		List<ForkJoinTask<Candidate>> futures = new ArrayList<ForkJoinTask<Candidate>>(count);
@@ -52,7 +51,7 @@ public final class ForkJoinChildGeneration
 		for(int jindex = 0; jindex < count; jindex++)
 		{
 			// fork off tasks.
-			GenerateChildRecursiveTask recursiveTask = new GenerateChildRecursiveTask(receiver, index);
+			GenerateChildRecursiveTask recursiveTask = new GenerateChildRecursiveTask(receiver, index, parent);
 			futures.add(recursiveTask.fork());
 		}
 

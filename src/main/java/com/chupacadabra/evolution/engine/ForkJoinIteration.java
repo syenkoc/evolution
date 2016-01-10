@@ -23,8 +23,10 @@
  */
 package com.chupacadabra.evolution.engine;
 
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
 
 /**
  * Iteration strategy for the fork-join pool based optimizer.
@@ -54,14 +56,22 @@ public final class ForkJoinIteration
 	@Override
 	public void iterate(final DifferentialEvolutionReceiver receiver,
 			final ChildGeneration childGeneration)
-		throws InterruptedException, ExecutionException
-	{
-		// make wrapper to get us into the fork-join pool.
-		IterateRecursiveAction action = new IterateRecursiveAction(receiver, childGeneration);
-		forkJoinPool.submit(action);
+	{				
+		int size = receiver.getSettings().getCandidatePoolSize();
+		List<ForkJoinTask<Void>> futures = new ArrayList<ForkJoinTask<Void>>(size);
 		
-		// and wait for it to finish.
-		action.join();
+		for(int index = 0; index < size; index++)
+		{
+			// fork off a request for each index.
+			IterateIndexRecursiveAction iterateAction = new IterateIndexRecursiveAction(receiver, index, childGeneration);
+			futures.add(forkJoinPool.submit(iterateAction));		
+		}
+		
+		for(ForkJoinTask<Void> future : futures)
+		{
+			// and wait for them all to finish!
+			future.join();
+		}		
 	}
 
 }

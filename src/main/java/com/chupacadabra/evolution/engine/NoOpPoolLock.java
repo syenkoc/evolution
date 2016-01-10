@@ -23,66 +23,34 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ForkJoinTask;
-import java.util.concurrent.RecursiveAction;
-
 /**
- * Fork-join iteration in-pool action.
+ * No-op lock.
  */
-public final class IterateRecursiveAction
-	extends RecursiveAction
+final class NoOpPoolLock
+	implements PoolLock
 {
 
 	/**
-	 * Serial version. 
+	 * Constructor.
 	 */
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * The receiver.
-	 */
-	private final DifferentialEvolutionReceiver receiver;
-		
-	/**
-	 * Child generation strategy.
-	 */
-	private final ChildGeneration childGeneration;
-	
-	/**
-	 * @param receiver
-	 * @param childGeneration
-	 */
-	public IterateRecursiveAction(
-			final DifferentialEvolutionReceiver receiver,
-			final ChildGeneration childGeneration)
+	NoOpPoolLock() 
 	{
-		this.receiver = receiver;
-		this.childGeneration = childGeneration;
+	}
+	
+	/**
+	 * @see com.chupacadabra.evolution.engine.PoolLock#lock(com.chupacadabra.evolution.engine.PoolType, com.chupacadabra.evolution.engine.LockType)
+	 */
+	@Override
+	public void lock(final PoolType poolType, final LockType lockType)
+	{
 	}
 
 	/**
-	 * @see java.util.concurrent.RecursiveAction#compute()
+	 * @see com.chupacadabra.evolution.engine.PoolLock#unlock(com.chupacadabra.evolution.engine.PoolType, com.chupacadabra.evolution.engine.LockType)
 	 */
 	@Override
-	protected void compute()
+	public void unlock(final PoolType poolType, final LockType lockType)
 	{
-		int size = receiver.getSettings().getCandidatePoolSize();
-		List<ForkJoinTask<Void>> futures = new ArrayList<ForkJoinTask<Void>>(size);
-		
-		for(int index = 0; index < size; index++)
-		{
-			// fork off a request for each index.
-			IterateIndexRecursiveAction iterateAction = new IterateIndexRecursiveAction(receiver, index, childGeneration);
-			iterateAction.fork();			
-		}
-		
-		for(ForkJoinTask<Void> future : futures)
-		{
-			// and now join.
-			future.join();
-		}		
 	}
 
 }

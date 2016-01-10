@@ -32,12 +32,21 @@ import com.chupacadabra.evolution.RandomParametersFunction;
 import com.chupacadabra.evolution.RandomSource;
 
 /**
- * Command to initialize a particular index in the current pool with a random
- * feasible candidate.
+ * Core initialization action.
  */
-public final class InitializeIndexCommand
-	extends AbstractIndexCommand
+public final class InitializeIndexAction
+	implements Runnable
 {
+	
+	/**
+	 * The receiver.
+	 */
+	private final DifferentialEvolutionReceiver optimizer;
+	
+	/**
+	 * The index to initialize.
+	 */
+	private final int index;
 
 	/**
 	 * Constructor.
@@ -45,10 +54,11 @@ public final class InitializeIndexCommand
 	 * @param optimizer The optimizer.
 	 * @param index The index.
 	 */
-	public InitializeIndexCommand(final DifferentialEvolutionReceiver optimizer,
+	public InitializeIndexAction(final DifferentialEvolutionReceiver optimizer,
 			final int index)
 	{
-		super(optimizer, index);
+		this.optimizer = optimizer;
+		this.index = index;
 	}
 
 	/**
@@ -60,7 +70,7 @@ public final class InitializeIndexCommand
 		// generate a feasible candidate.
 		Candidate candidate = generateFeasibleCandidate();
 		
-		optimizer.getCurrentPool().writeLock();
+		optimizer.getPoolLock().lock(PoolType.CURRENT, LockType.WRITE);
 		try
 		{
 			// and store in the current pool at the desired index.
@@ -68,7 +78,7 @@ public final class InitializeIndexCommand
 		}
 		finally
 		{
-			optimizer.getCurrentPool().writeUnlock();
+			optimizer.getPoolLock().unlock(PoolType.CURRENT, LockType.WRITE);
 		}		
 	}
 	

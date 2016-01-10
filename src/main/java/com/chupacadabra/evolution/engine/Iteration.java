@@ -23,10 +23,8 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import java.util.concurrent.ExecutionException;
-
 /**
- * Iteration strategy for the engine.
+ * Iteration strategy.
  */
 public interface Iteration
 {
@@ -36,10 +34,7 @@ public interface Iteration
 	 * 
 	 * @param receiver The receiver.
 	 * @param childGeneration Child generator.
-	 * @throws InterruptedException If the invoking thread is interrupted.
-	 * @throws ExecutionException If a sub-task fails.
 	 */
-	public void iterate(DifferentialEvolutionReceiver receiver, ChildGeneration childGeneration)
-		throws InterruptedException, ExecutionException;
+	public void iterate(DifferentialEvolutionReceiver receiver, ChildGeneration childGeneration);
 
 }

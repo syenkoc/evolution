@@ -38,7 +38,7 @@ import com.chupacadabra.evolution.ViolationFunction;
 import com.chupacadabra.evolution.pool.CandidatePool;
 
 /**
- * A callable to create a child candidate.
+ * Core child generation algorithm.
  */
 public final class GenerateChildTask
 	implements Callable<Candidate>
@@ -64,22 +64,16 @@ public final class GenerateChildTask
 	 * 
 	 * @param optimizer The receiver.
 	 * @param index The parent index.
+	 * @param parent The parent candidate. 
 	 */
 	public GenerateChildTask(final DifferentialEvolutionReceiver optimizer,
-			final int index)
+			final int index, 
+			final Candidate parent)
 	{
 		this.optimizer = optimizer;
 		this.index = index;
+		this.parent = parent;
 				
-		optimizer.getCurrentPool().readLock();
-		try
-		{
-			parent = optimizer.getCurrentPool().getCandidate(index);
-		}
-		finally
-		{
-			optimizer.getCurrentPool().readUnlock();
-		}
 	}
 
 	/**
@@ -145,7 +139,7 @@ public final class GenerateChildTask
 		// read-lock the pool while we differentiate. This way, the
 		// differentiation policy can make several calls to the pool knowing
 		// that the state won't change.				
-		optimizer.getCurrentPool().readLock();
+		optimizer.getPoolLock().lock(PoolType.CURRENT, LockType.READ);
 		try 
 		{
 			double[] trialParameters = diffentiationPolicy.differentiate(optimizer, randomSource, index, currentPool);
@@ -154,7 +148,7 @@ public final class GenerateChildTask
 		}
 		finally 
 		{
-			optimizer.getCurrentPool().readUnlock();	
+			optimizer.getPoolLock().unlock(PoolType.CURRENT, LockType.READ);	
 		}				
 	}
 	
