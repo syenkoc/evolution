@@ -23,29 +23,30 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
+import com.chupacadabra.evolution.ForkJoinDifferentialEvolutionOptimizerConfiguration;
 
 /**
- * Fork-join based initializer.
+ * Fork-join initializer.
  */
 public final class ForkJoinInitialization
 	implements Initialization
 {
 	
 	/**
-	 * The fork-join pool to use.
+	 * The configuration.
 	 */
-	private final ForkJoinPool forkJoinPool;
-
+	private final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration;
+	
 	/**
-	 * @param forkJoinPool
+	 * Constructor.
+	 * 
+	 * @param configuration The configuration.
 	 */
-	public ForkJoinInitialization(final ForkJoinPool forkJoinPool)
+	public ForkJoinInitialization(
+			final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration)
 	{
-		this.forkJoinPool = forkJoinPool;
+		super();
+		this.configuration = configuration;
 	}
 
 	/**
@@ -54,21 +55,12 @@ public final class ForkJoinInitialization
 	@Override
 	public void initialize(final DifferentialEvolutionReceiver receiver)
 	{
-		int size = receiver.getSettings().getCandidatePoolSize();		
-		List<ForkJoinTask<?>> futures = new ArrayList<ForkJoinTask<?>>(size);
+		// create action to cover all pool indices.
+		int length = receiver.getSettings().getCandidatePoolSize();
+		ForkJoinInitializationRecursiveAction action = new ForkJoinInitializationRecursiveAction(configuration, receiver, 0, length);
 		
-		for(int index = 0; index < size; index++)
-		{
-			// fork off a task for each index. 
-			InitializeIndexAction initializeAction = new InitializeIndexAction(receiver, index);
-			futures.add(forkJoinPool.submit(initializeAction));
-		}
-
-		for(ForkJoinTask<?> future : futures)
-		{
-			// wait for them all to finish!
-			future.join();
-		}
+		// and run it!
+		action.invoke();
 	}
-	
+		
 }

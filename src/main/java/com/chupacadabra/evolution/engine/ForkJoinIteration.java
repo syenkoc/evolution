@@ -23,10 +23,7 @@
  */
 package com.chupacadabra.evolution.engine;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
+import com.chupacadabra.evolution.ForkJoinDifferentialEvolutionOptimizerConfiguration;
 
 /**
  * Iteration strategy for the fork-join pool based optimizer.
@@ -36,18 +33,19 @@ public final class ForkJoinIteration
 {
 
 	/**
-	 * The fork-join pool.
+	 * The configuration.
 	 */
-	private final ForkJoinPool forkJoinPool;
-
+	private ForkJoinDifferentialEvolutionOptimizerConfiguration configuration;
+	
 	/**
 	 * Constructor.
 	 * 
-	 * @param forkJoinPool The fork-join pool to use.
+	 * @param configuration The configuration.
 	 */
-	public ForkJoinIteration(final ForkJoinPool forkJoinPool)
+	public ForkJoinIteration(
+			final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration)
 	{
-		this.forkJoinPool = forkJoinPool;
+		this.configuration = configuration;
 	}
 
 	/**
@@ -57,21 +55,10 @@ public final class ForkJoinIteration
 	public void iterate(final DifferentialEvolutionReceiver receiver,
 			final ChildGeneration childGeneration)
 	{				
-		int size = receiver.getSettings().getCandidatePoolSize();
-		List<ForkJoinTask<Void>> futures = new ArrayList<ForkJoinTask<Void>>(size);
+		int length = receiver.getSettings().getCandidatePoolSize();
+		ForkJoinIterationRecursiveAction action = new ForkJoinIterationRecursiveAction(configuration, receiver, childGeneration, 0, length);
+		action.invoke();
 		
-		for(int index = 0; index < size; index++)
-		{
-			// fork off a request for each index.
-			IterateIndexRecursiveAction iterateAction = new IterateIndexRecursiveAction(receiver, index, childGeneration);
-			futures.add(forkJoinPool.submit(iterateAction));		
-		}
-		
-		for(ForkJoinTask<Void> future : futures)
-		{
-			// and wait for them all to finish!
-			future.join();
-		}		
 	}
-
+	
 }

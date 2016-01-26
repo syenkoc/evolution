@@ -36,8 +36,7 @@ import com.chupacadabra.evolution.engine.SerialIteration;
 /**
  * A serial differential optimizer.
  * <p>
- * Instances of this class are safe for use by multiple threads and are also
- * safe for recursive use.
+ * Instances of this class are safe for use by multiple threads.
  */
 public final class SerialDifferentialEvolutionOptimizer
 	implements DifferentialEvolutionOptimizer

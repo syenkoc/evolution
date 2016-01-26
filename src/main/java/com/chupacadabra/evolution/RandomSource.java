@@ -73,6 +73,20 @@ public interface RandomSource
 		
 		return r;
 	}
+	
+	/**
+	 * Get the next double in <code>(min, max)</code>.
+	 * 
+	 * @param min The min.
+	 * @param max The max.
+	 * @return A double of the specified nature.
+	 */
+	public default double nextDouble(final double min, final double max)
+	{
+		double randomValue = min + ((max - min) * nextDoubleOpen());
+		
+		return randomValue;
+	}
 
 	/**
 	 * Get the next pseudo-random Gaussian (standard normal, <i>i.e.</i> normal

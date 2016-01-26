@@ -24,6 +24,7 @@
 package com.chupacadabra.evolution;
 
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
 
 import com.chupacadabra.evolution.engine.ChildGeneration;
 import com.chupacadabra.evolution.engine.DifferentialEvolutionEngine;
@@ -36,13 +37,13 @@ import com.chupacadabra.evolution.engine.PoolLock;
 import com.chupacadabra.evolution.engine.PoolLockCreation;
 
 /**
- * A parallel differential evolution optimizer that uses a
- * {@linkplain ForkJoinPool fork-join pool} to distribute the work.
+ * A differential evolution optimizer that uses a {@linkplain ForkJoinPool
+ * fork-join pool} to distribute the work in parallel.
  * <p>
  * Instances of this class are safe for use by multiple threads and are also
- * safe for recursive use.
+ * safe for reentrant use.
  */
-public class ForkJoinParallelDifferentialEvolutionOptimizer
+public class ForkJoinDifferentialEvolutionOptimizer
 	implements DifferentialEvolutionOptimizer
 {
 
@@ -50,6 +51,11 @@ public class ForkJoinParallelDifferentialEvolutionOptimizer
 	 * The fork-join pool to use.
 	 */
 	private final ForkJoinPool forkJoinPool;
+	
+	/**
+	 * Fork-join specific configuration.
+	 */
+	private final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration;
 
 	/**
 	 * Constructor.
@@ -57,20 +63,23 @@ public class ForkJoinParallelDifferentialEvolutionOptimizer
 	 * This optimizer will use the {@linkplain ForkJoinPool#commonPool() common
 	 * pool}.
 	 */
-	public ForkJoinParallelDifferentialEvolutionOptimizer()
+	public ForkJoinDifferentialEvolutionOptimizer()
 	{
-		this(ForkJoinPool.commonPool());
+		this(ForkJoinPool.commonPool(), new ForkJoinDifferentialEvolutionOptimizerConfiguration());
 	}
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param forkJoinPool The fork-join pool.
+	 * @param configuration The configuration.
 	 */
-	public ForkJoinParallelDifferentialEvolutionOptimizer(
-			final ForkJoinPool forkJoinPool)
+	public ForkJoinDifferentialEvolutionOptimizer(
+			final ForkJoinPool forkJoinPool,
+			final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration)
 	{
 		this.forkJoinPool = forkJoinPool;
+		this.configuration = configuration;
 	}
 
 	/**
@@ -84,16 +93,75 @@ public class ForkJoinParallelDifferentialEvolutionOptimizer
 	{
 		// assemble an engine.
 		PoolLockCreation lockCreation = PoolLock::reentrant;
-		Initialization initialization = new ForkJoinInitialization(forkJoinPool);
-		Iteration iteration = new ForkJoinIteration(forkJoinPool);
-		ChildGeneration childGeneration = new ForkJoinChildGeneration();
+		Initialization initialization = new ForkJoinInitialization(configuration);
+		Iteration iteration = new ForkJoinIteration(configuration);
+		ChildGeneration childGeneration = new ForkJoinChildGeneration(configuration);
+				
+		// build a suitable engine.
+		DifferentialEvolutionEngine engine = new DifferentialEvolutionEngine(lockCreation, initialization, iteration, childGeneration);
 		
-		DifferentialEvolutionEngine core = new DifferentialEvolutionEngine(lockCreation, initialization, iteration, childGeneration);
-
-		// and get results.
-		DifferentialEvolutionResult result = core.getResult(problem, settings);
-
+		// and invoke core action to get us into the pool.
+		ForkJoinAction action = new ForkJoinAction(engine, problem, settings);
+		DifferentialEvolutionResult result = forkJoinPool.invoke(action);
+		
 		return result;
+	}
+	
+	/**
+	 * Core fork/join action.
+	 */
+	private static final class ForkJoinAction
+		extends RecursiveTask<DifferentialEvolutionResult> 
+	{
+
+		/**
+		 * Serial ID.
+		 */
+		private static final long serialVersionUID = 1L;
+		
+		/**
+		 * The engine to use.
+		 */
+		private final DifferentialEvolutionEngine engine;
+
+		/**
+		 * The problem.
+		 */
+		private final DifferentialEvolutionProblem problem;
+		
+		/**
+		 * The settings.
+		 */
+		private final DifferentialEvolutionSettings settings;
+		
+		/**
+		 * Constructor.
+		 * 
+		 * @param engine The engine.
+		 * @param problem The problem.
+		 * @param settings The settings.
+		 */
+		public ForkJoinAction(
+				final DifferentialEvolutionEngine engine,
+				final DifferentialEvolutionProblem problem,
+				final DifferentialEvolutionSettings settings)
+		{
+			this.engine = engine;
+			this.problem = problem;
+			this.settings = settings;
+		}
+
+		/**
+		 * @see java.util.concurrent.RecursiveTask#compute()
+		 */
+		@Override
+		protected DifferentialEvolutionResult compute()
+		{
+			DifferentialEvolutionResult result = engine.getResult(problem, settings);
+
+			return result;
+		}
+		
 	}
 
 }

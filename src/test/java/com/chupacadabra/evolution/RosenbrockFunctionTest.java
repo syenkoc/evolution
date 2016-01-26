@@ -36,14 +36,16 @@ public class RosenbrockFunctionTest
 	{
 		
 		ForkJoinPool pool = new ForkJoinPool(4);
-		DifferentialEvolutionOptimizer optimizer1 = new SerialDifferentialEvolutionOptimizer();
-		DifferentialEvolutionOptimizer optimizer2 = new ForkJoinParallelDifferentialEvolutionOptimizer(pool);
+		ForkJoinDifferentialEvolutionOptimizerConfiguration configuration = new ForkJoinDifferentialEvolutionOptimizerConfiguration();
+		configuration.setInitializationThreshold(32);
 		
+		DifferentialEvolutionOptimizer optimizer1 = new SerialDifferentialEvolutionOptimizer();
+		DifferentialEvolutionOptimizer optimizer2 = new ForkJoinDifferentialEvolutionOptimizer(pool, configuration);
 
 		solve(optimizer1, true);
 		solve(optimizer2, true);
 
-		//System.exit(0);
+		System.exit(0);
 
 		System.in.read();
 

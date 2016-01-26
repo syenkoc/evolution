@@ -23,11 +23,10 @@
  */ 
 package com.chupacadabra.evolution.engine;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ForkJoinTask;
 
 import com.chupacadabra.evolution.Candidate;
+import com.chupacadabra.evolution.ForkJoinDifferentialEvolutionOptimizerConfiguration;
 
 /**
  * Fork-join based child generation.
@@ -37,6 +36,22 @@ public final class ForkJoinChildGeneration
 {
 	
 	/**
+	 * The configuration.
+	 */
+	private final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration;
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param configuration The configuration.
+	 */
+	public ForkJoinChildGeneration(
+			ForkJoinDifferentialEvolutionOptimizerConfiguration configuration)
+	{
+		this.configuration = configuration;
+	}
+
+	/**
 	 * @see com.chupacadabra.evolution.engine.ChildGeneration#generate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver, int, com.chupacadabra.evolution.Candidate)
 	 */
 	@Override
@@ -45,28 +60,14 @@ public final class ForkJoinChildGeneration
 			final int index,
 			final Candidate parent) 
 	{
+		// construct a core fork-join task.
 		int count = receiver.getSettings().getChildrenPerCandidate();
-		List<ForkJoinTask<Candidate>> futures = new ArrayList<ForkJoinTask<Candidate>>(count);
-
-		for(int jindex = 0; jindex < count; jindex++)
-		{
-			// fork off tasks.
-			GenerateChildRecursiveTask recursiveTask = new GenerateChildRecursiveTask(receiver, index, parent);
-			futures.add(recursiveTask.fork());
-		}
-
-		List<Candidate> children = new ArrayList<Candidate>();
-		for(ForkJoinTask<Candidate> future : futures)
-		{
-			// and collect all non-null results.
-			Candidate candidate = future.join();
-			if(candidate != null)
-			{
-				children.add(candidate);
-			}
-		}
-
-		return children;
+		ForkJoinChildGenerationRecursiveTask task = new ForkJoinChildGenerationRecursiveTask(configuration, receiver, 0, count, index, parent);
+		
+		// and execute it, knowing that we're already inside a fork-join pool.
+		List<Candidate> candidates = task.invoke();
+		
+		return candidates;		
 	}
 
 }
