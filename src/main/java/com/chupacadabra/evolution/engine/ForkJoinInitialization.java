@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 import com.chupacadabra.evolution.ForkJoinDifferentialEvolutionOptimizerConfiguration;
@@ -28,39 +28,34 @@ import com.chupacadabra.evolution.ForkJoinDifferentialEvolutionOptimizerConfigur
 /**
  * Fork-join initializer.
  */
-public final class ForkJoinInitialization
-	implements Initialization
-{
-	
-	/**
-	 * The configuration.
-	 */
-	private final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration;
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param configuration The configuration.
-	 */
-	public ForkJoinInitialization(
-			final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration)
-	{
-		super();
-		this.configuration = configuration;
-	}
+public final class ForkJoinInitialization implements Initialization {
 
-	/**
-	 * @see com.chupacadabra.evolution.engine.Initialization#initialize(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver)
-	 */
-	@Override
-	public void initialize(final DifferentialEvolutionReceiver receiver)
-	{
-		// create action to cover all pool indices.
-		int length = receiver.getSettings().getCandidatePoolSize();
-		ForkJoinInitializationRecursiveAction action = new ForkJoinInitializationRecursiveAction(configuration, receiver, 0, length);
-		
-		// and run it!
-		action.invoke();
-	}
-		
+    /**
+     * The configuration.
+     */
+    private final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration;
+
+    /**
+     * Constructor.
+     * 
+     * @param configuration The configuration.
+     */
+    public ForkJoinInitialization(final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration) {
+        super();
+        this.configuration = configuration;
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.engine.Initialization#initialize(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver)
+     */
+    @Override
+    public void initialize(final DifferentialEvolutionReceiver receiver) {
+        // create action to cover all pool indices.
+        int length = receiver.getSettings().getCandidatePoolSize();
+        ForkJoinInitializationRecursiveAction action = new ForkJoinInitializationRecursiveAction(configuration, receiver, 0, length);
+
+        // and run it!
+        action.invoke();
+    }
+
 }

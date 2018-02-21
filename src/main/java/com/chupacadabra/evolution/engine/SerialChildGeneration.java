@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 import java.util.ArrayList;
@@ -31,32 +31,26 @@ import com.chupacadabra.evolution.Candidate;
 /**
  * Direct child generation.
  */
-public final class SerialChildGeneration
-	implements ChildGeneration
-{
+public final class SerialChildGeneration implements ChildGeneration {
 
-	/**
-	 * @see com.chupacadabra.evolution.engine.ChildGeneration#generate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver, int, com.chupacadabra.evolution.Candidate)
-	 */
-	@Override
-	public List<Candidate> generate(final DifferentialEvolutionReceiver receiver,
-			final int index,
-			final Candidate parent)
-	{		
-		List<Candidate> children = new ArrayList<Candidate>();
-		int count = receiver.getSettings().getChildrenPerCandidate();
-		
-		for(int jindex = 0; jindex < count; jindex++)
-		{
-			GenerateChildTask childTask = new GenerateChildTask(receiver, index, parent);
-			Candidate child = childTask.call();
-			if(child != null)
-			{
-				children.add(child);
-			}
-		}
-		
-		return children;
-	}
+    /**
+     * @see com.chupacadabra.evolution.engine.ChildGeneration#generate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver,
+     *      int, com.chupacadabra.evolution.Candidate)
+     */
+    @Override
+    public List<Candidate> generate(final DifferentialEvolutionReceiver receiver, final int index, final Candidate parent) {
+        List<Candidate> children = new ArrayList<Candidate>();
+        int count = receiver.getSettings().getChildrenPerCandidate();
+
+        for (int jindex = 0; jindex < count; jindex++) {
+            GenerateChildTask childTask = new GenerateChildTask(receiver, index, parent);
+            Candidate child = childTask.call();
+            if (child != null) {
+                children.add(child);
+            }
+        }
+
+        return children;
+    }
 
 }

@@ -20,56 +20,51 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
  * Dithering weight policy.
  */
-public final class DitheringWeightPolicy 
-	implements WeightPolicy
-{
-	
-	/**
-	 * Default minimum: {@value}
-	 */
-	public static final double DEFAULT_MINIMUM = 0.5d;
-	
-	/**
-	 * The minimum.
-	 */
-	private final double minimum;
-	
-	/**
-	 * Constructor.
-	 * <p>
-	 * Uses the {@linkplain #DEFAULT_MINIMUM default minimum weight}.
-	 */
-	public DitheringWeightPolicy() 
-	{
-		this(DEFAULT_MINIMUM);
-	}
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param minimum The minimum.
-	 */
-	public DitheringWeightPolicy(final double minimum)
-	{
-		this.minimum = minimum;
-	}
+public final class DitheringWeightPolicy implements WeightPolicy {
 
-	/**
-	 * @see com.chupacadabra.evolution.WeightPolicy#getWeight(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource)
-	 */
-	@Override
-	public double getWeight(final DifferentialEvolutionState state,
-			final RandomSource randomSource)
-	{
-		double weight = randomSource.nextDouble()*(1d - minimum) + minimum;
-		
-		return weight;
-	}
-	
+    /**
+     * Default minimum: {@value}
+     */
+    public static final double DEFAULT_MINIMUM = 0.5d;
+
+    /**
+     * The minimum.
+     */
+    private final double minimum;
+
+    /**
+     * Constructor.
+     * <p>
+     * Uses the {@linkplain #DEFAULT_MINIMUM default minimum weight}.
+     */
+    public DitheringWeightPolicy() {
+        this(DEFAULT_MINIMUM);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param minimum The minimum.
+     */
+    public DitheringWeightPolicy(final double minimum) {
+        this.minimum = minimum;
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.WeightPolicy#getWeight(com.chupacadabra.evolution.DifferentialEvolutionState,
+     *      com.chupacadabra.evolution.RandomSource)
+     */
+    @Override
+    public double getWeight(final DifferentialEvolutionState state, final RandomSource randomSource) {
+        double weight = randomSource.nextDouble() * (1d - minimum) + minimum;
+
+        return weight;
+    }
+
 }

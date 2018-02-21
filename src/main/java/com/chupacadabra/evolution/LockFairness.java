@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -28,35 +28,32 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Lock fairnes policy.
  */
-public enum LockFairness
-{
-	
-	/**
-	 * Fair locking - threads are serviced in the order in which they block.
-	 */
-	FAIR,
-	
-	/**
-	 * Unfair locking.
-	 */
-	UNFAIR;
-	
-	/**
-	 * Get the flag value to pass to {@link ReentrantLock}.
-	 * 
-	 * @return The flag of the aforementioned nature.
-	 */
-	public boolean getReentrantLockValue() 
-	{
-		switch(this) 
-		{
-			case FAIR:
-				return true;
-			case UNFAIR:
-				return false;
-			default:
-				throw new IllegalArgumentException("this");
-		}
-	}
+public enum LockFairness {
+
+    /**
+     * Fair locking - threads are serviced in the order in which they block.
+     */
+    FAIR,
+
+    /**
+     * Unfair locking.
+     */
+    UNFAIR;
+
+    /**
+     * Get the flag value to pass to {@link ReentrantLock}.
+     * 
+     * @return The flag of the aforementioned nature.
+     */
+    public boolean getReentrantLockValue() {
+        switch (this) {
+            case FAIR:
+                return true;
+            case UNFAIR:
+                return false;
+            default:
+                throw new IllegalArgumentException("this");
+        }
+    }
 
 }

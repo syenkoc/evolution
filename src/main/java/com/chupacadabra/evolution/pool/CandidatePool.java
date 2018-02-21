@@ -29,99 +29,88 @@ import com.chupacadabra.evolution.RandomSource;
 /**
  * A read-only pool of candidates.
  */
-public interface CandidatePool
-{
-	
-	/**
-	 * Get the size of this pool.
-	 * 
-	 * @return The pool size.
-	 */
-	public int getSize();
-	
-	/**
-	 * Get the index<sup>th</sup> candidate.
-	 * 
-	 * @param index The index.
-	 * @return The specified candidate.
-	 */
-	public Candidate getCandidate(int index);
-	
-	/**
-	 * Get the index of the best candidate.
-	 * 
-	 * @return The best candidate index.
-	 */
-	public int getBestCandidateIndex();
-	
-	/**
-	 * Get the best candidate.
-	 * 
-	 * @return The best candidate.
-	 */
-	public default Candidate getBestCandidate()
-	{
-		return getCandidate(getBestCandidateIndex());
-	}
-	
-	/**
-	 * Randomly select <code>count</code> unique candidates, making sure to
-	 * exclude the candidates of indices <code>exclude</code>.
-	 * 
-	 * @param randomSource The source of randomness to use.
-	 * @param count The count.
-	 * @param exclude The indices to exculde.
-	 * @return Randomly selected candidates.
-	 */
-	public default Candidate[] selectCandidates(final RandomSource randomSource, final int count, final int... exclude) 
-	{
-		int size = getSize();
-		if((count + exclude.length) > size)
-		{
-			String message = String.format("Cannot select more than %1$s candidates", size);
-			throw new IllegalArgumentException(message);
-		}
-		
-		Candidate[] candidates = new Candidate[count];
-		int[] selected = new int[count];		
-		int selecting = 0;
-		
-		selecting:
-		while(true)
-		{
-			if(selecting == count)
-			{
-				break;
-			}
-			
-			int randomIndex = randomSource.nextInt(size);
-			for(int index = 0; index < selecting; index++)
-			{
-				if(randomIndex == selected[index]) 
-				{
-					// already selected.
-					continue selecting;
-				}
-			}
-			
-			for(int index = 0; index < exclude.length; index++)
-			{
-				if(randomIndex == exclude[index]) 
-				{
-					// specifically excluded.
-					continue selecting;
-				}
-			}
-			
-			// we found a valid random next. Grab the candidate.
-			candidates[selecting] = getCandidate(randomIndex);
-			
-			// and mark that we selected him.
-			selected[selecting] = randomIndex;			
-			selecting += 1;
-		}
-		
-		return candidates;
-	}
-	
+public interface CandidatePool {
+
+    /**
+     * Get the size of this pool.
+     * 
+     * @return The pool size.
+     */
+    public int getSize();
+
+    /**
+     * Get the index<sup>th</sup> candidate.
+     * 
+     * @param index The index.
+     * @return The specified candidate.
+     */
+    public Candidate getCandidate(int index);
+
+    /**
+     * Get the index of the best candidate.
+     * 
+     * @return The best candidate index.
+     */
+    public int getBestCandidateIndex();
+
+    /**
+     * Get the best candidate.
+     * 
+     * @return The best candidate.
+     */
+    public default Candidate getBestCandidate() {
+        return getCandidate(getBestCandidateIndex());
+    }
+
+    /**
+     * Randomly select <code>count</code> unique candidates, making sure to
+     * exclude the candidates of indices <code>exclude</code>.
+     * 
+     * @param randomSource The source of randomness to use.
+     * @param count The count.
+     * @param exclude The indices to exculde.
+     * @return Randomly selected candidates.
+     */
+    public default Candidate[] selectCandidates(final RandomSource randomSource, final int count, final int... exclude) {
+        int size = getSize();
+        if ((count + exclude.length) > size) {
+            String message = String.format("Cannot select more than %1$s candidates", size);
+            throw new IllegalArgumentException(message);
+        }
+
+        Candidate[] candidates = new Candidate[count];
+        int[] selected = new int[count];
+        int selecting = 0;
+
+        selecting: while (true) {
+            if (selecting == count) {
+                break;
+            }
+
+            int randomIndex = randomSource.nextInt(size);
+            for (int index = 0; index < selecting; index++) {
+                if (randomIndex == selected[index]) {
+                    // already selected.
+                    continue selecting;
+                }
+            }
+
+            for (int index = 0; index < exclude.length; index++) {
+                if (randomIndex == exclude[index]) {
+                    // specifically excluded.
+                    continue selecting;
+                }
+            }
+
+            // we found a valid random next. Grab the candidate.
+            candidates[selecting] = getCandidate(randomIndex);
+
+            // and mark that we selected him.
+            selected[selecting] = randomIndex;
+            selecting += 1;
+        }
+
+        return candidates;
+    }
+
 }

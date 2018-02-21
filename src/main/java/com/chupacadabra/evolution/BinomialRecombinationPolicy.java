@@ -20,77 +20,68 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
- * The binomial recombination policy. 
+ * The binomial recombination policy.
  * <p>
- * This is the classic recombination policy of Storn and Price. 
+ * This is the classic recombination policy of Storn and Price.
  * 
  * <p>
  * By default, we use a {@linkplain #DEFAULT_FIXED_CROSSOVER fixed crossover}.
  */
-public final class BinomialRecombinationPolicy 
-	implements RecombinationPolicy
-{
+public final class BinomialRecombinationPolicy implements RecombinationPolicy {
 
-	/**
-	 * Default fixed crossover: {@value}
-	 */
-	public static final double DEFAULT_FIXED_CROSSOVER = 0.9d;
-	
-	/**
-	 * The crossover policy.
-	 */
-	private final CrossoverPolicy crossoverPolicy;
-	
-	/**
-	 * Default constructor.
-	 * <p>
-	 * Uses the default fixed crossover.
-	 */
-	public BinomialRecombinationPolicy()
-	{
-		this(new FixedCrossoverPolicy(DEFAULT_FIXED_CROSSOVER));
-	}
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param crossoverPolicy The crossover policy to use.
-	 */
-	public BinomialRecombinationPolicy(final CrossoverPolicy crossoverPolicy)
-	{
-		this.crossoverPolicy = crossoverPolicy;
-	}
-	
-	/**
-	 * @see com.chupacadabra.evolution.RecombinationPolicy#recombine(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource, double[], double[])
-	 */
-	@Override
-	public double[] recombine(
-			final DifferentialEvolutionState state,
-			final RandomSource randomSource, 
-			final double[] parent, 
-			final double[] trial)
-	{
-		// create an index that we'll always change.
-		int dimension = state.getDimension();
-		int j = randomSource.nextInt(dimension);
-		
-		// get the crossover weight.
-		double cr = crossoverPolicy.getCrossover(state, randomSource);
-		
-		// do the core binomial recombination algorithm!
-		double[] child = new double[dimension];
-		for(int index = 0; index < dimension; index++)
-		{
-			double r = randomSource.nextDouble();
-			child[index] = ((r < cr) || (index == j)) ? trial[index] : parent[index]; 			
-		}		
-		
-		return child;
-	}
+    /**
+     * Default fixed crossover: {@value}
+     */
+    public static final double DEFAULT_FIXED_CROSSOVER = 0.9d;
+
+    /**
+     * The crossover policy.
+     */
+    private final CrossoverPolicy crossoverPolicy;
+
+    /**
+     * Default constructor.
+     * <p>
+     * Uses the default fixed crossover.
+     */
+    public BinomialRecombinationPolicy() {
+        this(new FixedCrossoverPolicy(DEFAULT_FIXED_CROSSOVER));
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param crossoverPolicy The crossover policy to use.
+     */
+    public BinomialRecombinationPolicy(final CrossoverPolicy crossoverPolicy) {
+        this.crossoverPolicy = crossoverPolicy;
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.RecombinationPolicy#recombine(com.chupacadabra.evolution.DifferentialEvolutionState,
+     *      com.chupacadabra.evolution.RandomSource, double[], double[])
+     */
+    @Override
+    public double[] recombine(final DifferentialEvolutionState state, final RandomSource randomSource, final double[] parent, final double[] trial) {
+        // create an index that we'll always change.
+        int dimension = state.getDimension();
+        int j = randomSource.nextInt(dimension);
+
+        // get the crossover weight.
+        double cr = crossoverPolicy.getCrossover(state, randomSource);
+
+        // do the core binomial recombination algorithm!
+        double[] child = new double[dimension];
+        for (int index = 0; index < dimension; index++) {
+            double r = randomSource.nextDouble();
+            child[index] = ((r < cr) || (index == j)) ? trial[index] : parent[index];
+        }
+
+        return child;
+    }
 
 }

@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 import java.util.concurrent.locks.ReadWriteLock;
@@ -32,89 +32,81 @@ import com.chupacadabra.evolution.DifferentialEvolutionSettings;
 /**
  * Pool lock.
  */
-public interface PoolLock
-{
-	
-	/**
-	 * Create a no-op lock.
-	 * 
-	 * @param settings The settings.
-	 * @return A no-op pool lock.
-	 */
-	public static PoolLock noOp(final DifferentialEvolutionSettings settings)
-	{
-		return new NoOpPoolLock();
-	}
-	
-	/**
-	 * Create a reentrant pool lock.
-	 * 
-	 * @param settings The settings.
-	 * @return A suitable pool lock.
-	 */
-	public static PoolLock reentrant(final DifferentialEvolutionSettings settings)
-	{
-		boolean fairness = settings.getPoolLockFairness().getReentrantLockValue();
-		ReadWriteLock currentPoolLock = new ReentrantReadWriteLock(fairness);
-		ReadWriteLock nextPoolLock;
-		
-		switch(settings.getPoolReplacement())
-		{
-			case AFTER:
-				nextPoolLock = new ReentrantReadWriteLock(fairness);
-				break;
-			case IMMEDIATELY:
-				nextPoolLock = currentPoolLock;
-				break;
-			default:
-				throw new IllegalArgumentException("poolReplacement");
-		}			
-		
-		return new ReadWritePoolLock(currentPoolLock, nextPoolLock);
-	}
-	
-	/**
-	 * Create a stamped pool lock.
-	 * 
-	 * @param settings The settings.
-	 * @return A suitable pool lock.
-	 */
-	public static PoolLock stamped(final DifferentialEvolutionSettings settings)
-	{
-		ReadWriteLock currentPoolLock = new StampedLock().asReadWriteLock();
-		ReadWriteLock nextPoolLock;
-		
-		switch(settings.getPoolReplacement())
-		{
-			case AFTER:
-				nextPoolLock = new StampedLock().asReadWriteLock();
-				break;
-			case IMMEDIATELY:
-				nextPoolLock = currentPoolLock;
-				break;
-			default:
-				throw new IllegalArgumentException("poolReplacement");
-		}			
-		
-		return new ReadWritePoolLock(currentPoolLock, nextPoolLock);
-	}
-	
-	
-	
-	/**
-	 * Acquire the specified lock.
-	 * 
-	 * @param poolType The pool type.
-	 * @param lockType The lock type.
-	 */
-	public void lock(PoolType poolType, LockType lockType);
-	
-	/**
-	 * Release the specified lock.
-	 * 
-	 * @param poolType The pool type.
-	 * @param lockType The lock type.
-	 */
-	public void unlock(PoolType poolType, LockType lockType);
+public interface PoolLock {
+
+    /**
+     * Create a no-op lock.
+     * 
+     * @param settings The settings.
+     * @return A no-op pool lock.
+     */
+    public static PoolLock noOp(final DifferentialEvolutionSettings settings) {
+        return new NoOpPoolLock();
+    }
+
+    /**
+     * Create a reentrant pool lock.
+     * 
+     * @param settings The settings.
+     * @return A suitable pool lock.
+     */
+    public static PoolLock reentrant(final DifferentialEvolutionSettings settings) {
+        boolean fairness = settings.getPoolLockFairness().getReentrantLockValue();
+        ReadWriteLock currentPoolLock = new ReentrantReadWriteLock(fairness);
+        ReadWriteLock nextPoolLock;
+
+        switch (settings.getPoolReplacement()) {
+            case AFTER:
+                nextPoolLock = new ReentrantReadWriteLock(fairness);
+                break;
+            case IMMEDIATELY:
+                nextPoolLock = currentPoolLock;
+                break;
+            default:
+                throw new IllegalArgumentException("poolReplacement");
+        }
+
+        return new ReadWritePoolLock(currentPoolLock, nextPoolLock);
+    }
+
+    /**
+     * Create a stamped pool lock.
+     * 
+     * @param settings The settings.
+     * @return A suitable pool lock.
+     */
+    public static PoolLock stamped(final DifferentialEvolutionSettings settings) {
+        ReadWriteLock currentPoolLock = new StampedLock().asReadWriteLock();
+        ReadWriteLock nextPoolLock;
+
+        switch (settings.getPoolReplacement()) {
+            case AFTER:
+                nextPoolLock = new StampedLock().asReadWriteLock();
+                break;
+            case IMMEDIATELY:
+                nextPoolLock = currentPoolLock;
+                break;
+            default:
+                throw new IllegalArgumentException("poolReplacement");
+        }
+
+        return new ReadWritePoolLock(currentPoolLock, nextPoolLock);
+    }
+
+    /**
+     * Acquire the specified lock.
+     * 
+     * @param poolType The pool type.
+     * @param lockType The lock type.
+     */
+    public void lock(PoolType poolType, LockType lockType);
+
+    /**
+     * Release the specified lock.
+     * 
+     * @param poolType The pool type.
+     * @param lockType The lock type.
+     */
+    public void unlock(PoolType poolType, LockType lockType);
 
 }

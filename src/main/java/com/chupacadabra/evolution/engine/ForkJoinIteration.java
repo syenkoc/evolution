@@ -28,37 +28,32 @@ import com.chupacadabra.evolution.ForkJoinDifferentialEvolutionOptimizerConfigur
 /**
  * Iteration strategy for the fork-join pool based optimizer.
  */
-public final class ForkJoinIteration
-	implements Iteration
-{
+public final class ForkJoinIteration implements Iteration {
 
-	/**
-	 * The configuration.
-	 */
-	private ForkJoinDifferentialEvolutionOptimizerConfiguration configuration;
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param configuration The configuration.
-	 */
-	public ForkJoinIteration(
-			final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration)
-	{
-		this.configuration = configuration;
-	}
+    /**
+     * The configuration.
+     */
+    private ForkJoinDifferentialEvolutionOptimizerConfiguration configuration;
 
-	/**
-	 * @see com.chupacadabra.evolution.engine.Iteration#iterate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver, com.chupacadabra.evolution.engine.ChildGeneration)
-	 */
-	@Override
-	public void iterate(final DifferentialEvolutionReceiver receiver,
-			final ChildGeneration childGeneration)
-	{				
-		int length = receiver.getSettings().getCandidatePoolSize();
-		ForkJoinIterationRecursiveAction action = new ForkJoinIterationRecursiveAction(configuration, receiver, childGeneration, 0, length);
-		action.invoke();
-		
-	}
-	
+    /**
+     * Constructor.
+     * 
+     * @param configuration The configuration.
+     */
+    public ForkJoinIteration(final ForkJoinDifferentialEvolutionOptimizerConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.engine.Iteration#iterate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver,
+     *      com.chupacadabra.evolution.engine.ChildGeneration)
+     */
+    @Override
+    public void iterate(final DifferentialEvolutionReceiver receiver, final ChildGeneration childGeneration) {
+        int length = receiver.getSettings().getCandidatePoolSize();
+        ForkJoinIterationRecursiveAction action = new ForkJoinIterationRecursiveAction(configuration, receiver, childGeneration, 0, length);
+        action.invoke();
+
+    }
+
 }

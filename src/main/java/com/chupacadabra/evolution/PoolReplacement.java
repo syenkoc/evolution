@@ -26,20 +26,19 @@ package com.chupacadabra.evolution;
 /**
  * Pool replacement policy.
  */
-public enum PoolReplacement
-{
+public enum PoolReplacement {
 
-	/**
-	 * Replace candidates in the pool immediately.
-	 * <p>
-	 * This is the default policy.
-	 */
-	IMMEDIATELY,
+    /**
+     * Replace candidates in the pool immediately.
+     * <p>
+     * This is the default policy.
+     */
+    IMMEDIATELY,
 
-	/**
-	 * Replace candidates inter-generationally, <i>i.e.</i> after the current
-	 * generation completes.
-	 */
-	AFTER;
+    /**
+     * Replace candidates inter-generationally, <i>i.e.</i> after the current
+     * generation completes.
+     */
+    AFTER;
 
 }

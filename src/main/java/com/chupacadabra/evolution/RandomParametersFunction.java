@@ -27,15 +27,14 @@ package com.chupacadabra.evolution;
  * Random parameter vector creator.
  */
 @FunctionalInterface
-public interface RandomParametersFunction
-{
+public interface RandomParametersFunction {
 
-	/**
-	 * Create a new random parameter vector.
-	 * 
-	 * @param randomSource A source of randomness.
-	 * @return A new random parameter vector.
-	 */
-	public double[] createRandomParameters(RandomSource randomSource);
+    /**
+     * Create a new random parameter vector.
+     * 
+     * @param randomSource A source of randomness.
+     * @return A new random parameter vector.
+     */
+    public double[] createRandomParameters(RandomSource randomSource);
 
 }

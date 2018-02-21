@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
@@ -31,17 +31,15 @@ package com.chupacadabra.evolution;
  * selects parent vs. child parameters.
  */
 @FunctionalInterface
-public interface CrossoverPolicy
-{
-	
-	/**
-	 * Get the crossover.
-	 * 
-	 * @param state The state.
-	 * @param randomSource A source of randomness.
-	 * @return The crossover.
-	 */
-	public double getCrossover(DifferentialEvolutionState state,
-			RandomSource randomSource);
+public interface CrossoverPolicy {
+
+    /**
+     * Get the crossover.
+     * 
+     * @param state The state.
+     * @param randomSource A source of randomness.
+     * @return The crossover.
+     */
+    public double getCrossover(DifferentialEvolutionState state, RandomSource randomSource);
 
 }

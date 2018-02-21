@@ -27,15 +27,14 @@ package com.chupacadabra.evolution;
  * Violation measure function.
  */
 @FunctionalInterface
-public interface ViolationFunction
-{
+public interface ViolationFunction {
 
-	/**
-	 * Get the violation measure of the specified candidate.
-	 * 
-	 * @param candidate The candidate.
-	 * @return The violation.
-	 */
-	public double getViolation(double[] candidate);
+    /**
+     * Get the violation measure of the specified candidate.
+     * 
+     * @param candidate The candidate.
+     * @return The violation.
+     */
+    public double getViolation(double[] candidate);
 
 }

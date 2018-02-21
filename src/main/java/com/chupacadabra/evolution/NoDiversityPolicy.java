@@ -26,18 +26,15 @@ package com.chupacadabra.evolution;
 /**
  * The no diversity policy.
  */
-public final class NoDiversityPolicy
-	implements DiversityPolicy
-{
-	
-	/**
-	 * @see com.chupacadabra.evolution.DiversityPolicy#getDiversity(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource)
-	 */
-	@Override
-	public double getDiversity(final DifferentialEvolutionState state,
-			final RandomSource randomSource)
-	{
-		return 0;
-	}
+public final class NoDiversityPolicy implements DiversityPolicy {
+
+    /**
+     * @see com.chupacadabra.evolution.DiversityPolicy#getDiversity(com.chupacadabra.evolution.DifferentialEvolutionState,
+     *      com.chupacadabra.evolution.RandomSource)
+     */
+    @Override
+    public double getDiversity(final DifferentialEvolutionState state, final RandomSource randomSource) {
+        return 0;
+    }
 
 }

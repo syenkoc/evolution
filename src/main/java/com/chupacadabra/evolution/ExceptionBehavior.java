@@ -26,19 +26,18 @@ package com.chupacadabra.evolution;
 /**
  * Exception handling.
  */
-public enum ExceptionBehavior
-{
+public enum ExceptionBehavior {
 
-	/**
-	 * Allow the exception to propogate out.
-	 * <p>
-	 * This is the default behavior.
-	 */
-	PROPOGATE,
+    /**
+     * Allow the exception to propogate out.
+     * <p>
+     * This is the default behavior.
+     */
+    PROPOGATE,
 
-	/**
-	 * Terminate the optimization, returning the current result.
-	 */
-	TERMINATE;
+    /**
+     * Terminate the optimization, returning the current result.
+     */
+    TERMINATE;
 
 }

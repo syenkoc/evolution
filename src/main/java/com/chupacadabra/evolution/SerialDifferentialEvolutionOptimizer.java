@@ -38,29 +38,25 @@ import com.chupacadabra.evolution.engine.SerialIteration;
  * <p>
  * Instances of this class are safe for use by multiple threads.
  */
-public final class SerialDifferentialEvolutionOptimizer
-	implements DifferentialEvolutionOptimizer
-{
+public final class SerialDifferentialEvolutionOptimizer implements DifferentialEvolutionOptimizer {
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionOptimizer#optimize(com.chupacadabra.evolution.DifferentialEvolutionProblem, com.chupacadabra.evolution.DifferentialEvolutionSettings)
-	 */
-	@Override
-	public DifferentialEvolutionResult optimize(
-			final DifferentialEvolutionProblem problem,
-			final DifferentialEvolutionSettings settings)
-	{		
-		// build up an engine.
-		PoolLockCreation lockCreation = PoolLock::noOp;
-		Initialization initialization = new SerialInitialization();
-		Iteration iteration = new SerialIteration();		
-		ChildGeneration childGeneration = new SerialChildGeneration();
-		DifferentialEvolutionEngine engine = new DifferentialEvolutionEngine(lockCreation, initialization, iteration, childGeneration);
-		
-		// get results.
-		DifferentialEvolutionResult result = engine.getResult(problem, settings);
-		
-		return result;
-	}
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionOptimizer#optimize(com.chupacadabra.evolution.DifferentialEvolutionProblem,
+     *      com.chupacadabra.evolution.DifferentialEvolutionSettings)
+     */
+    @Override
+    public DifferentialEvolutionResult optimize(final DifferentialEvolutionProblem problem, final DifferentialEvolutionSettings settings) {
+        // build up an engine.
+        PoolLockCreation lockCreation = PoolLock::noOp;
+        Initialization initialization = new SerialInitialization();
+        Iteration iteration = new SerialIteration();
+        ChildGeneration childGeneration = new SerialChildGeneration();
+        DifferentialEvolutionEngine engine = new DifferentialEvolutionEngine(lockCreation, initialization, iteration, childGeneration);
+
+        // get results.
+        DifferentialEvolutionResult result = engine.getResult(problem, settings);
+
+        return result;
+    }
 
 }

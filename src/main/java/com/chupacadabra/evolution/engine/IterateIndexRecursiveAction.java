@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 import java.util.concurrent.RecursiveAction;
@@ -30,74 +30,64 @@ import com.chupacadabra.evolution.Candidate;
 /**
  * Index iteration as a recursive action.
  */
-public final class IterateIndexRecursiveAction
-	extends RecursiveAction
-{
+public final class IterateIndexRecursiveAction extends RecursiveAction {
 
-	/**
-	 * Serial version.
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * Serial version.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * The receiver.
-	 */
-	private final DifferentialEvolutionReceiver optimizer;
-	
-	/**
-	 * The index.
-	 */
-	private final int index;
-	
-	/**
-	 * Child generation strategy.
-	 */
-	private final ChildGeneration childGeneration;
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param optimizer The receiver.s
-	 * @param index The index.
-	 * @param childGeneration Child generation strategy.
-	 */
-	public IterateIndexRecursiveAction(
-			final DifferentialEvolutionReceiver optimizer,
-			final int index, 
-			final ChildGeneration childGeneration)
-	{
-		this.optimizer = optimizer;
-		this.index = index;
-		this.childGeneration = childGeneration;
-	}
-	
-	/**
-	 * @see java.util.concurrent.RecursiveAction#compute()
-	 */
-	@Override
-	protected void compute()
-	{
-		// just run the standard iteration command.
-		Candidate parent = getParent();
-		IterateIndexAction command = new IterateIndexAction(optimizer, index, parent, childGeneration);
-		command.run();
-	}
-	
-	/**
-	 * Get the parent.
-	 * 
-	 * @return The parent.
-	 */
-	private Candidate getParent() {
-		optimizer.getPoolLock().lock(PoolType.CURRENT, LockType.READ);
-		try 
-		{
-			return optimizer.getCurrentPool().getCandidate(index);
-		} 
-		finally 
-		{
-			optimizer.getPoolLock().unlock(PoolType.CURRENT, LockType.READ);
-		}
-	}
+    /**
+     * The receiver.
+     */
+    private final DifferentialEvolutionReceiver optimizer;
+
+    /**
+     * The index.
+     */
+    private final int index;
+
+    /**
+     * Child generation strategy.
+     */
+    private final ChildGeneration childGeneration;
+
+    /**
+     * Constructor.
+     * 
+     * @param optimizer The receiver.s
+     * @param index The index.
+     * @param childGeneration Child generation strategy.
+     */
+    public IterateIndexRecursiveAction(final DifferentialEvolutionReceiver optimizer, final int index, final ChildGeneration childGeneration) {
+        this.optimizer = optimizer;
+        this.index = index;
+        this.childGeneration = childGeneration;
+    }
+
+    /**
+     * @see java.util.concurrent.RecursiveAction#compute()
+     */
+    @Override
+    protected void compute() {
+        // just run the standard iteration command.
+        Candidate parent = getParent();
+        IterateIndexAction command = new IterateIndexAction(optimizer, index, parent, childGeneration);
+        command.run();
+    }
+
+    /**
+     * Get the parent.
+     * 
+     * @return The parent.
+     */
+    private Candidate getParent() {
+        optimizer.getPoolLock().lock(PoolType.CURRENT, LockType.READ);
+        try {
+            return optimizer.getCurrentPool().getCandidate(index);
+        } finally {
+            optimizer.getPoolLock().unlock(PoolType.CURRENT, LockType.READ);
+        }
+    }
 
 }

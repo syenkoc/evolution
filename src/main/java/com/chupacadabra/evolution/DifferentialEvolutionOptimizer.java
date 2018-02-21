@@ -20,34 +20,31 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
  * The main optimizer interface.
  */
-public interface DifferentialEvolutionOptimizer
-{
-		
-	/**
-	 * Optimize the specified problem.
-	 * 
-	 * @param problem The problem.
-	 * @param settings The settings.
-	 * @return The result.
-	 */
-	public DifferentialEvolutionResult optimize(DifferentialEvolutionProblem problem,
-			DifferentialEvolutionSettings settings);
+public interface DifferentialEvolutionOptimizer {
 
-	/**
-	 * Optimize the specified problem using default settings.
-	 * 
-	 * @param problem The problem.
-	 * @return The optimization result.
-	 */
-	public default DifferentialEvolutionResult optimize(final DifferentialEvolutionProblem problem) 
-	{
-		return optimize(problem, new DifferentialEvolutionSettings());
-	}
+    /**
+     * Optimize the specified problem.
+     * 
+     * @param problem The problem.
+     * @param settings The settings.
+     * @return The result.
+     */
+    public DifferentialEvolutionResult optimize(DifferentialEvolutionProblem problem, DifferentialEvolutionSettings settings);
+
+    /**
+     * Optimize the specified problem using default settings.
+     * 
+     * @param problem The problem.
+     * @return The optimization result.
+     */
+    public default DifferentialEvolutionResult optimize(final DifferentialEvolutionProblem problem) {
+        return optimize(problem, new DifferentialEvolutionSettings());
+    }
 
 }

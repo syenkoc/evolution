@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.util;
 
 /**
@@ -28,19 +28,17 @@ package com.chupacadabra.evolution.util;
  * <p>
  * This class is stateless and cannot be instantiated.
  */
-public final class MachineEpsilon
-{
-	
-	/**
-	 * Double machine epsilon.
-	 */
-	public static final double DOUBLE_VALUE = Double.longBitsToDouble(0x3cb0000000000000L);
-		
-	/**
-	 * Constructor.
-	 */
-	private MachineEpsilon()
-	{
-	}
+public final class MachineEpsilon {
+
+    /**
+     * Double machine epsilon.
+     */
+    public static final double DOUBLE_VALUE = Double.longBitsToDouble(0x3cb0000000000000L);
+
+    /**
+     * Constructor.
+     */
+    private MachineEpsilon() {
+    }
 
 }

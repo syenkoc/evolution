@@ -28,91 +28,81 @@ import com.chupacadabra.evolution.Candidate;
 /**
  * Array-based candidate pool.
  */
-public final class ArrayCandidatePool
-	implements WritableCandidatePool
-{
+public final class ArrayCandidatePool implements WritableCandidatePool {
 
-	/**
-	 * Sentinel value to indicate no best candidate index has been set.
-	 */
-	private static final int NO_BEST_CANDIDATE_INDEX = -1;
+    /**
+     * Sentinel value to indicate no best candidate index has been set.
+     */
+    private static final int NO_BEST_CANDIDATE_INDEX = -1;
 
-	/**
-	 * The pool.
-	 */
-	private final Candidate[] pool;
+    /**
+     * The pool.
+     */
+    private final Candidate[] pool;
 
-	/**
-	 * The best index.
-	 */
-	private int bestCandidateIndex;
+    /**
+     * The best index.
+     */
+    private int bestCandidateIndex;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param size The size.
-	 */
-	public ArrayCandidatePool(final int size)
-	{
-		pool = new Candidate[size];
-		bestCandidateIndex = NO_BEST_CANDIDATE_INDEX;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param size The size.
+     */
+    public ArrayCandidatePool(final int size) {
+        pool = new Candidate[size];
+        bestCandidateIndex = NO_BEST_CANDIDATE_INDEX;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.pool.CandidatePool#getSize()
-	 */
-	@Override
-	public int getSize()
-	{
-		return pool.length;
-	}
+    /**
+     * @see com.chupacadabra.evolution.pool.CandidatePool#getSize()
+     */
+    @Override
+    public int getSize() {
+        return pool.length;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.pool.CandidatePool#getCandidate(int)
-	 */
-	@Override
-	public Candidate getCandidate(final int index)
-	{
-		if(index == NO_BEST_CANDIDATE_INDEX) 
-		{
-			return null;
-		}
-		
-		return pool[index];
-	}
+    /**
+     * @see com.chupacadabra.evolution.pool.CandidatePool#getCandidate(int)
+     */
+    @Override
+    public Candidate getCandidate(final int index) {
+        if (index == NO_BEST_CANDIDATE_INDEX) {
+            return null;
+        }
 
-	/**
-	 * @see com.chupacadabra.evolution.pool.WritableCandidatePool#setCandidate(int, com.chupacadabra.evolution.Candidate)
-	 */
-	@Override
-	public void setCandidate(final int index, final Candidate candidate)
-	{
-		// store the candidate.
-		pool[index] = candidate;
+        return pool[index];
+    }
 
-		// see if this candidate is the best one yet.
+    /**
+     * @see com.chupacadabra.evolution.pool.WritableCandidatePool#setCandidate(int,
+     *      com.chupacadabra.evolution.Candidate)
+     */
+    @Override
+    public void setCandidate(final int index, final Candidate candidate) {
+        // store the candidate.
+        pool[index] = candidate;
 
-		if(candidate.isFeasible() == false)
-		{
-			// the best candidate must of course be feasible!
-			return;
-		}
+        // see if this candidate is the best one yet.
 
-		if((bestCandidateIndex == -1) || 
-				(candidate.getFitness() < pool[bestCandidateIndex].getFitness()))
-		{
-			// we found a new best candidate
-			bestCandidateIndex = index;
-		}
-	}
+        if (candidate.isFeasible() == false) {
+            // the best candidate must of course be feasible!
+            return;
+        }
 
-	/**
-	 * @see com.chupacadabra.evolution.pool.CandidatePool#getBestCandidateIndex()
-	 */
-	@Override
-	public int getBestCandidateIndex()
-	{
-		return bestCandidateIndex;
-	}
+        if ((bestCandidateIndex == -1) || (candidate.getFitness() < pool[bestCandidateIndex].getFitness())) {
+            // we found a new best candidate
+            bestCandidateIndex = index;
+        }
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.pool.CandidatePool#getBestCandidateIndex()
+     */
+    @Override
+    public int getBestCandidateIndex() {
+        return bestCandidateIndex;
+    }
 
 }

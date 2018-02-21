@@ -20,51 +20,45 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 import java.util.List;
-
 
 /**
  * Selection policy.
  */
 @FunctionalInterface
-public interface SelectionPolicy
-{
-	
-	/**
-	 * Select the better candidate.
-	 * 
-	 * @param state The current state.
-	 * @param randomSource A source of randomness.
-	 * @param a First candidate.
-	 * @param b Second candidate.
-	 * @return The better candidate.
-	 */
-	public Candidate select(DifferentialEvolutionState state, RandomSource randomSource, Candidate a, Candidate b);
-	
-	/**
-	 * Select the best candidate.
-	 * 
-	 * @param state The state.
-	 * @param randomSource Source of randomness.
-	 * @param candidates Candidate list.
-	 * @return The best candidate.
-	 */
-	public default Candidate select(final DifferentialEvolutionState state, 
-			final RandomSource randomSource, 
-			final List<Candidate> candidates) 
-	{
-		Candidate bestChild = candidates.get(0);
+public interface SelectionPolicy {
 
-		// repeatedly apply the selection policy.
-		for(int index = 1; index < candidates.size(); index++)
-		{
-			bestChild = select(state, randomSource, bestChild, candidates.get(index));
-		}
+    /**
+     * Select the better candidate.
+     * 
+     * @param state The current state.
+     * @param randomSource A source of randomness.
+     * @param a First candidate.
+     * @param b Second candidate.
+     * @return The better candidate.
+     */
+    public Candidate select(DifferentialEvolutionState state, RandomSource randomSource, Candidate a, Candidate b);
 
-		return bestChild;	
-	}
+    /**
+     * Select the best candidate.
+     * 
+     * @param state The state.
+     * @param randomSource Source of randomness.
+     * @param candidates Candidate list.
+     * @return The best candidate.
+     */
+    public default Candidate select(final DifferentialEvolutionState state, final RandomSource randomSource, final List<Candidate> candidates) {
+        Candidate bestChild = candidates.get(0);
+
+        // repeatedly apply the selection policy.
+        for (int index = 1; index < candidates.size(); index++) {
+            bestChild = select(state, randomSource, bestChild, candidates.get(index));
+        }
+
+        return bestChild;
+    }
 
 }

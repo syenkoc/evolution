@@ -28,77 +28,66 @@ import com.chupacadabra.evolution.RandomSource;
 /**
  * Synchronized random source.
  */
-final class SynchronizedRandomSource
-	implements RandomSource
-{
+final class SynchronizedRandomSource implements RandomSource {
 
-	/**
-	 * Underlying function.
-	 */
-	private final RandomSource randomSource;
+    /**
+     * Underlying function.
+     */
+    private final RandomSource randomSource;
 
-	/**
-	 * The synchronization point.
-	 */
-	private final Object lock;
+    /**
+     * The synchronization point.
+     */
+    private final Object lock;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param randomSource Underlying source.
-	 */
-	SynchronizedRandomSource(final RandomSource randomSource)
-	{
-		this.randomSource = randomSource;
-		this.lock = new Object();
-	}
+    /**
+     * Constructor.
+     * 
+     * @param randomSource Underlying source.
+     */
+    SynchronizedRandomSource(final RandomSource randomSource) {
+        this.randomSource = randomSource;
+        this.lock = new Object();
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.RandomSource#nextInt(int)
-	 */
-	@Override
-	public int nextInt(final int n)
-	{
-		synchronized(lock)
-		{
-			return randomSource.nextInt(n);
-		}
-	}
+    /**
+     * @see com.chupacadabra.evolution.RandomSource#nextInt(int)
+     */
+    @Override
+    public int nextInt(final int n) {
+        synchronized (lock) {
+            return randomSource.nextInt(n);
+        }
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.RandomSource#nextBoolean()
-	 */
-	@Override
-	public boolean nextBoolean()
-	{
-		synchronized(lock)
-		{
-			return randomSource.nextBoolean();
-		}
-	}
+    /**
+     * @see com.chupacadabra.evolution.RandomSource#nextBoolean()
+     */
+    @Override
+    public boolean nextBoolean() {
+        synchronized (lock) {
+            return randomSource.nextBoolean();
+        }
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.RandomSource#nextDouble()
-	 */
-	@Override
-	public double nextDouble()
-	{
-		synchronized(lock)
-		{
-			return randomSource.nextDouble();
-		}
-	}
+    /**
+     * @see com.chupacadabra.evolution.RandomSource#nextDouble()
+     */
+    @Override
+    public double nextDouble() {
+        synchronized (lock) {
+            return randomSource.nextDouble();
+        }
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.RandomSource#nextGaussian()
-	 */
-	@Override
-	public double nextGaussian()
-	{
-		synchronized(lock)
-		{
-			return randomSource.nextGaussian();
-		}
-	}
+    /**
+     * @see com.chupacadabra.evolution.RandomSource#nextGaussian()
+     */
+    @Override
+    public double nextGaussian() {
+        synchronized (lock) {
+            return randomSource.nextGaussian();
+        }
+    }
 
 }

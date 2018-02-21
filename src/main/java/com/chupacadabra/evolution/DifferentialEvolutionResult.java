@@ -28,28 +28,27 @@ import com.chupacadabra.evolution.util.TimeLength;
 /**
  * The result of performing differential evolution.
  */
-public interface DifferentialEvolutionResult
-{
+public interface DifferentialEvolutionResult {
 
-	/**
-	 * Get the best candidate.
-	 * 
-	 * @return The best candidate.
-	 */
-	public Candidate getBestCandidate();
+    /**
+     * Get the best candidate.
+     * 
+     * @return The best candidate.
+     */
+    public Candidate getBestCandidate();
 
-	/**
-	 * Get the termination reason.
-	 * 
-	 * @return The termination reason.
-	 */
-	public TerminationReason getTerminationReason();
+    /**
+     * Get the termination reason.
+     * 
+     * @return The termination reason.
+     */
+    public TerminationReason getTerminationReason();
 
-	/**
-	 * Get the time taken.
-	 * 
-	 * @return The time taken.
-	 */
-	public TimeLength getTimeTaken();
+    /**
+     * Get the time taken.
+     * 
+     * @return The time taken.
+     */
+    public TimeLength getTimeTaken();
 
 }

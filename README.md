@@ -12,8 +12,8 @@ guaranteed to find an optimal solution, either local or global.
 As mentioned, at a high-level, the DE algorithm consists of continually improving a pool 
 of candidate parameter vectors. The pool of candidates are first initialized
 by randomly generating candidates within the boundaries of the problem. At each
-step of the algorithm, each candidate builds a number of <i>child</i> vectors
-by means of two fundamental operations, <i>differentiation</i> and <i>recombination</i>.
+step of the algorithm, every candidate builds a number of <i>child</i> vectors
+by means of two fundamental operations: <i>differentiation</i> and <i>recombination</i>.
 Finally, <i>diversity</i> and <i>selection</i> are carried out first determine which 
 is the best child; and, second, if the said child should replace the parent 
 in the candidate pool.
@@ -48,9 +48,10 @@ For a candidate in violation, a
 (essentially a <i>second</i> cost function) measures the degree of violation. 
 This function is <b>not</b> the same as the fitness function, and, 
 in fact, the values from the two function are never directly compared. This 
-avoids the complex "tuning" often required with penalty and barrier methods.
+avoids the complex cost-function "tuning" (often) required with penalty and 
+barrier methods.
 
-By default, problems assumes that all parameter vectors are feasible; and the 
+By default, problems assume that all parameter vectors are feasible; and the 
 violation of all candidates is 0. 
    
 Finally, a problem can optionally supply 
@@ -128,12 +129,13 @@ settings also allow you to control several other optimizer properties:
 the optimizer will perform - assuming that no user-defined termination criterion (see 
 below) is met. Note that unlike (most) other optimization algorithms, it is 
 not considered an "error" to terminate due to reaching the maximum generation.
-This defaults to 333. 
-2. The <i>Pool Size</i> is the number of candidates in the pool. The default is 71. 
+This defaults to 1729 (chosen solely because it is a taxicab number <i>and</i> a 
+Carmichael number). 
+2. The <i>Pool Size</i> is the number of candidates in the pool. The default is 128. 
 A good rule-of-thumb is to set this to roughly 10x the dimension of the problem. 
 3. The <i>Number of Children</i> that each candidate will generate
 per generation. Thus, the total number of children per generation is the pool size
-times the number of children. The default is 1. 
+times the number of children. The default is 4. 
 4. The <i>Replacement Policy</i> determines when a more fit child candidate will 
 replace its parent. The two options are to replace immediately, <i>i.e.</i> it will 
 visible to the algorithm intra-generation; and afterwards. The default is
@@ -154,7 +156,7 @@ Recombination breeds the trial vectors with the parent to produce <i>child</i> v
 
 ### Selection
 Selection determines how the optimizer chooses between two candidates. The only provided, and thus default,
-implementation implements Deb's selection criteria. When comparing two candidates, these rules are:
+implementation uses Deb's selection criteria. When comparing two candidates, these rules are:
 * If both candidates are in violation, select the candidate with the lower
 violation value.
 * If one candidates is in violation but the other is not, select the
@@ -171,7 +173,7 @@ by default:
 <i><a href="http://syenkoc.github.io/evolution/javadocs/index.html?com/chupacadabra/evolution/NoDiversityPolicy.html">No diversity</a></i>
 policy does not allow any violating candidate into the pool.</li>
 <li>The 
-<i><a href="http://syenkoc.github.io/evolution/javadocs/index.html?com/chupacadabra/evolution/NoDiversityPolicy.html">fixed diversity</a></i> 
+<i><a href="http://syenkoc.github.io/evolution/javadocs/index.html?com/chupacadabra/evolution/FixedDiversityPolicy.html">fixed diversity</a></i> 
 policy considers candidates based only on fitness with a fixed probability. <code>.1</code> is a reasonable
 choice for the probability in many cases.</li>
 </ul>
@@ -181,33 +183,40 @@ choice for the probability in many cases.</li>
 Finally, the 
 <i><a href="http://syenkoc.github.io/evolution/javadocs/index.html?com/chupacadabra/evolution/DifferentialEvolutionOptimizer.html">optimizer interface</a></i>
 takes a problem (and, optionally, settings) and produces a result. The result contains the optimal candidate and
-the reason for termination (along with some timing data). There are currently three implementations:
-
-
-
-
-
-<a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html">fork-join model
+the reason for termination (along with some timing data). There are currently two implementations:
+<ul>
+ <li>The
+  <a href="http://syenkoc.github.io/evolution/javadocs/index.html?com/chupacadabra/evolution/SerialDifferentialEvolutionOptimizer">serial optimizer</a>.
+  This implementation performs optimization directly in the invoking thread.
+ </li>
+ <li>The
+  <a href="http://syenkoc.github.io/evolution/javadocs/index.html?com/chupacadabra/evolution/SerialDifferentialEvolutionOptimizer">serial optimizer</a>.
+  This implementation uses the 
+  <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html">fork-join model</a>
+  to potentially distribute the work across several threads. 
+ </li>
+</ul>
 
 
 ### Parallelism and Threadsafety
-Differential evolution is amenable to parallel evaluation. The aforementioned executor and fork-join pool based 
-implementations process each generation in parallel. (The serial optimizer obviously processes each
-generation serially.) The optimizers do not choose a level of parallelism (or other thread-related
-properties) directly; instead, that is done
-at the user-level by configuring a suitable executor or fork-join pool.
+Differential evolution is amenable to parallel evaluation. The aforementioned fork-join pool based 
+implementation process each generation in parallel. (The serial optimizer obviously processes each
+generation serially.) The fork-join optimizer has it's own
+<a href="http://syenkoc.github.io/evolution/javadocs/com/chupacadabra/evolution/ForkJoinDifferentialEvolutionOptimizerConfiguration">configuration</a>
+that determines the levels of parallelism (essentially controlling the size at which the optimizer
+decides to "execute directly" vs. forking-and-aggregating). 
 
-If you use a parallel optimizer, all of the problem and policy functions must be safe for use by multiple
+If you use the parallel optimizer, all of the problem and policy functions must be safe for use by multiple
 threads. All of the policy implementations provided with the framework are already threadsafe. You
 can obtain a threadsafe wrapper around any problem or policy function using the 
 <a href="http://syenkoc.github.io/evolution/javadocs/com/chupacadabra/evolution/threadsafe/Threadsafe.html">Threadsafe</a>
 provider. This provider allows you to create threadsafe decorators using synchronization 
 or 
-<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html">java locks</a>.  
+<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html">java locks</a>.
 
-
-
-
+Note that the parallel optimizer is <i>not</i> always faster! The parallel optimizer incurs some additional
+locking overhead, so depending on the cost of the fitness function, size of the pool, number of children, 
+<i>etc.</i> the serial optimizer may out perform it.
 
 
 ## Installation

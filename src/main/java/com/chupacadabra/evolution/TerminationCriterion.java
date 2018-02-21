@@ -27,15 +27,14 @@ package com.chupacadabra.evolution;
  * A termination criterion.
  */
 @FunctionalInterface
-public interface TerminationCriterion
-{
+public interface TerminationCriterion {
 
-	/**
-	 * Is this criterion met, <i>i.e.</i> should the optimization terminate?
-	 * 
-	 * @param state The state.
-	 * @return <code>true</code> to terminate; and <code>false</code> otherwise.
-	 */
-	public boolean isMet(DifferentialEvolutionState state);
+    /**
+     * Is this criterion met, <i>i.e.</i> should the optimization terminate?
+     * 
+     * @param state The state.
+     * @return <code>true</code> to terminate; and <code>false</code> otherwise.
+     */
+    public boolean isMet(DifferentialEvolutionState state);
 
 }

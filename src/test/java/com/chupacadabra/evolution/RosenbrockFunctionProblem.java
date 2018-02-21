@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 import java.util.Collections;
@@ -29,63 +29,56 @@ import java.util.List;
 /**
  * Rosenbrock function problem.
  */
-public class RosenbrockFunctionProblem
-	implements DifferentialEvolutionProblem
-{
-	
-	/**
-	 * The function.
-	 */
-	private final RosenbrockFunction rosenbrockFunction;
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param rosenbrockFunction The Rosenbrock function.
-	 */
-	public RosenbrockFunctionProblem(final RosenbrockFunction rosenbrockFunction)
-	{
-		this.rosenbrockFunction = rosenbrockFunction;
-	}
+public class RosenbrockFunctionProblem implements DifferentialEvolutionProblem {
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getDimension()
-	 */
-	@Override
-	public int getDimension()
-	{
-		return 2;
-	}
+    /**
+     * The function.
+     */
+    private final RosenbrockFunction rosenbrockFunction;
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getRandomParametersFunction()
-	 */
-	@Override
-	public RandomParametersFunction getRandomParametersFunction()
-	{
-		NOrthotopeRandomParametersFunction nOrthotope = new NOrthotopeRandomParametersFunction(2);
-		nOrthotope.setParameterRange(0, -1000000, 1000000);
-		nOrthotope.setParameterRange(1, -1000000, 1000000);
-		
-		return nOrthotope;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param rosenbrockFunction The Rosenbrock function.
+     */
+    public RosenbrockFunctionProblem(final RosenbrockFunction rosenbrockFunction) {
+        this.rosenbrockFunction = rosenbrockFunction;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getFitnessFunction()
-	 */
-	@Override
-	public FitnessFunction getFitnessFunction()
-	{
-		return rosenbrockFunction;
-	}
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getDimension()
+     */
+    @Override
+    public int getDimension() {
+        return 2;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getTerminationCriteria()
-	 */
-	@Override
-	public List<TerminationCriterion> getTerminationCriteria()
-	{
-		return Collections.singletonList(new FitnessAchieved(1e-16d));
-	}
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getRandomParametersFunction()
+     */
+    @Override
+    public RandomParametersFunction getRandomParametersFunction() {
+        NOrthotopeRandomParametersFunction nOrthotope = new NOrthotopeRandomParametersFunction(2);
+        nOrthotope.setParameterRange(0, -1000000, 1000000);
+        nOrthotope.setParameterRange(1, -1000000, 1000000);
+
+        return nOrthotope;
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getFitnessFunction()
+     */
+    @Override
+    public FitnessFunction getFitnessFunction() {
+        return rosenbrockFunction;
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getTerminationCriteria()
+     */
+    @Override
+    public List<TerminationCriterion> getTerminationCriteria() {
+        return Collections.singletonList(new FitnessAchieved(1e-16d));
+    }
 
 }

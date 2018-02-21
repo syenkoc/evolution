@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 import java.util.concurrent.RecursiveTask;
@@ -30,56 +30,50 @@ import com.chupacadabra.evolution.Candidate;
 /**
  * Child generation as a recursive task.
  */
-public class GenerateChildRecursiveTask
-	extends RecursiveTask<Candidate>
-{
+public class GenerateChildRecursiveTask extends RecursiveTask<Candidate> {
 
-	/**
-	 * Serial dumbness.
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * The receiver.
-	 */
-	private final DifferentialEvolutionReceiver optimizer;
-	
-	/**
-	 * The parent index.
-	 */
-	private final int index;
-	
-	/**
-	 * The parent.
-	 */
-	private final Candidate parent;
+    /**
+     * Serial dumbness.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param optimizer The command receiver.
-	 * @param index The index.
-	 * @param parent The parent. 
-	 */
-	public GenerateChildRecursiveTask(final DifferentialEvolutionReceiver optimizer,
-			final int index, 
-			final Candidate parent)
-	{
-		this.optimizer = optimizer;
-		this.index = index;
-		this.parent = parent;
-	}
+    /**
+     * The receiver.
+     */
+    private final DifferentialEvolutionReceiver optimizer;
 
-	/**
-	 * @see java.util.concurrent.RecursiveTask#compute()
-	 */
-	@Override
-	protected Candidate compute()
-	{
-		GenerateChildTask task = new GenerateChildTask(optimizer, index, parent);
-		Candidate child = task.call();
-		
-		return child;
-	}
+    /**
+     * The parent index.
+     */
+    private final int index;
+
+    /**
+     * The parent.
+     */
+    private final Candidate parent;
+
+    /**
+     * Constructor.
+     * 
+     * @param optimizer The command receiver.
+     * @param index The index.
+     * @param parent The parent.
+     */
+    public GenerateChildRecursiveTask(final DifferentialEvolutionReceiver optimizer, final int index, final Candidate parent) {
+        this.optimizer = optimizer;
+        this.index = index;
+        this.parent = parent;
+    }
+
+    /**
+     * @see java.util.concurrent.RecursiveTask#compute()
+     */
+    @Override
+    protected Candidate compute() {
+        GenerateChildTask task = new GenerateChildTask(optimizer, index, parent);
+        Candidate child = task.call();
+
+        return child;
+    }
 
 }

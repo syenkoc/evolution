@@ -23,6 +23,6 @@
  */
 
 /**
- * Utilities for threadsafe evolution functions and policies.
+ * Utilities for creating threadsafe evolution functions and policies.
  */
 package com.chupacadabra.evolution.threadsafe;

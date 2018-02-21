@@ -27,15 +27,14 @@ package com.chupacadabra.evolution;
  * Fitness measure function.
  */
 @FunctionalInterface
-public interface FitnessFunction
-{
+public interface FitnessFunction {
 
-	/**
-	 * Get the fitness of the specified candidate.
-	 * 
-	 * @param candidate The candidate.
-	 * @return The fitness.
-	 */
-	public double getFitness(double[] candidate);
+    /**
+     * Get the fitness of the specified parameters.
+     * 
+     * @param parameters The parameters.
+     * @return The fitness.
+     */
+    public double getFitness(double[] parameters);
 
 }

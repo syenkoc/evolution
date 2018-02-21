@@ -29,44 +29,36 @@ package com.chupacadabra.evolution;
  * This class is stateless - and hence safe for use by multiple threads - and
  * cannot be instantiated.
  */
-final class PairwiseWeightedParameterSum
-{
+final class PairwiseWeightedParameterSum {
 
-	/**
-	 * Perform weighted pair-wise sum of the specified candidates.
-	 * <p>
-	 * As the name suggests, the sum is computed in-place and stored in the
-	 * vector <code>trial</code>.
-	 * 
-	 * @param f The weight.
-	 * @param trial The vector in which to store the results.
-	 * @param offset Array offset.
-	 * @param candidates The candidates.
-	 */
-	static void computeInPlace(final double f, 
-			final double[] trial,
-			final int offset,
-			final Candidate... candidates)
-	{
-		int total = candidates.length;
-		int dimension = trial.length;
+    /**
+     * Perform weighted pair-wise sum of the specified candidates.
+     * <p>
+     * As the name suggests, the sum is computed in-place and stored in the
+     * vector <code>trial</code>.
+     * 
+     * @param f The weight.
+     * @param trial The vector in which to store the results.
+     * @param offset Array offset.
+     * @param candidates The candidates.
+     */
+    static void computeInPlace(final double f, final double[] trial, final int offset, final Candidate... candidates) {
+        int total = candidates.length;
+        int dimension = trial.length;
 
-		for(int index = offset; index < total; index += 2)
-		{
-			double[] x1 = candidates[index].getParametersReference();
-			double[] x2 = candidates[(index + 1)].getParametersReference();
+        for (int index = offset; index < total; index += 2) {
+            double[] x1 = candidates[index].getParametersReference();
+            double[] x2 = candidates[(index + 1)].getParametersReference();
 
-			for(int jindex = 0; jindex < dimension; jindex++)
-			{
-				trial[jindex] += f * (x1[jindex] - x2[jindex]);
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	private PairwiseWeightedParameterSum()
-	{
-	}
+            for (int jindex = 0; jindex < dimension; jindex++) {
+                trial[jindex] += f * (x1[jindex] - x2[jindex]);
+            }
+        }
+    }
+
+    /**
+     * 
+     */
+    private PairwiseWeightedParameterSum() {
+    }
 }

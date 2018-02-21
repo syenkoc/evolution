@@ -28,32 +28,28 @@ import com.chupacadabra.evolution.util.TimeLength;
 /**
  * Maximum time termination criterion.
  */
-public final class MaximumTime
-	implements TerminationCriterion
-{
+public final class MaximumTime implements TerminationCriterion {
 
-	/**
-	 * The maximum time.
-	 */
-	private final TimeLength maximumTime;
+    /**
+     * The maximum time.
+     */
+    private final TimeLength maximumTime;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param maximumTime The maximum time.
-	 */
-	public MaximumTime(final TimeLength maximumTime)
-	{
-		this.maximumTime = maximumTime;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param maximumTime The maximum time.
+     */
+    public MaximumTime(final TimeLength maximumTime) {
+        this.maximumTime = maximumTime;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.TerminationCriterion#isMet(com.chupacadabra.evolution.DifferentialEvolutionState)
-	 */
-	@Override
-	public boolean isMet(final DifferentialEvolutionState state)
-	{
-		return maximumTime.compareTo(state.getTimeTaken()) > 0;
-	}
+    /**
+     * @see com.chupacadabra.evolution.TerminationCriterion#isMet(com.chupacadabra.evolution.DifferentialEvolutionState)
+     */
+    @Override
+    public boolean isMet(final DifferentialEvolutionState state) {
+        return maximumTime.compareTo(state.getTimeTaken()) > 0;
+    }
 
 }

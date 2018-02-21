@@ -26,32 +26,28 @@ package com.chupacadabra.evolution;
 /**
  * Fitness level of best candidate achieved.
  */
-public final class FitnessAchieved
-	implements TerminationCriterion
-{
+public final class FitnessAchieved implements TerminationCriterion {
 
-	/**
-	 * The desired fitness level.
-	 */
-	private final double fitness;
+    /**
+     * The desired fitness level.
+     */
+    private final double fitness;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param fitness The fitness level.
-	 */
-	public FitnessAchieved(final double fitness)
-	{
-		this.fitness = fitness;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param fitness The fitness level.
+     */
+    public FitnessAchieved(final double fitness) {
+        this.fitness = fitness;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.TerminationCriterion#isMet(com.chupacadabra.evolution.DifferentialEvolutionState)
-	 */
-	@Override
-	public boolean isMet(final DifferentialEvolutionState state)
-	{
-		return state.getBestCandidate().getFitness() <= fitness;
-	}
+    /**
+     * @see com.chupacadabra.evolution.TerminationCriterion#isMet(com.chupacadabra.evolution.DifferentialEvolutionState)
+     */
+    @Override
+    public boolean isMet(final DifferentialEvolutionState state) {
+        return state.getBestCandidate().getFitness() <= fitness;
+    }
 
 }

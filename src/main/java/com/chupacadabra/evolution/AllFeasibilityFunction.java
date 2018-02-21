@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
@@ -28,39 +28,34 @@ package com.chupacadabra.evolution;
  * <p>
  * This class uses the singleton design pattern.
  */
-public final class AllFeasibilityFunction
-	implements FeasibilityFunction
-{
-	
-	/**
-	 * The lone instance of this class.
-	 */
-	private static final AllFeasibilityFunction instance = new AllFeasibilityFunction();
-	
-	/**
-	 * Get the instance of this class.
-	 * 
-	 * @return The instance.
-	 */
-	public static AllFeasibilityFunction getInstance() 
-	{
-		return instance;
-	}	
-	
-	/**
-	 * Constructor.
-	 */
-	private AllFeasibilityFunction()
-	{
-	}
+public final class AllFeasibilityFunction implements FeasibilityFunction {
 
-	/**
-	 * @see com.chupacadabra.evolution.FeasibilityFunction#getFeasibilityType(double[])
-	 */
-	@Override
-	public FeasibilityType getFeasibilityType(final double[] candidate)
-	{
-		return FeasibilityType.FEASIBLE;
-	}
+    /**
+     * The lone instance of this class.
+     */
+    private static final AllFeasibilityFunction instance = new AllFeasibilityFunction();
+
+    /**
+     * Get the instance of this class.
+     * 
+     * @return The instance.
+     */
+    public static AllFeasibilityFunction getInstance() {
+        return instance;
+    }
+
+    /**
+     * Constructor.
+     */
+    private AllFeasibilityFunction() {
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.FeasibilityFunction#getFeasibilityType(double[])
+     */
+    @Override
+    public FeasibilityType getFeasibilityType(final double[] candidate) {
+        return FeasibilityType.FEASIBLE;
+    }
 
 }

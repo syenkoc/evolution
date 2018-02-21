@@ -20,26 +20,21 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
  * A recombination policy that always picks the trial vector.
  */
-public final class TrialRecombinationPolicy 
-	implements RecombinationPolicy
-{
+public final class TrialRecombinationPolicy implements RecombinationPolicy {
 
-	/**
-	 * @see com.chupacadabra.evolution.RecombinationPolicy#recombine(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource, double[], double[])
-	 */
-	@Override
-	public double[] recombine(final DifferentialEvolutionState state,
-			final RandomSource randomSource, 
-			final double[] parent, 
-			final double[] trial)
-	{
-		return trial;
-	}
+    /**
+     * @see com.chupacadabra.evolution.RecombinationPolicy#recombine(com.chupacadabra.evolution.DifferentialEvolutionState,
+     *      com.chupacadabra.evolution.RandomSource, double[], double[])
+     */
+    @Override
+    public double[] recombine(final DifferentialEvolutionState state, final RandomSource randomSource, final double[] parent, final double[] trial) {
+        return trial;
+    }
 
 }

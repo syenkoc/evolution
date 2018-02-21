@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.simple;
 
 import com.chupacadabra.evolution.DifferentialEvolutionOptimizer;
@@ -33,38 +33,35 @@ import com.chupacadabra.evolution.SimpleDifferentialEvolutionProblem;
 /**
  * A simple example.
  */
-public final class SimpleExample
-{
-	
-	public static void main(String[] args)
-	{		
-		// construct our function.
-		FitnessFunction fitnessFunction = (double[] p) -> (p[0] * p[0] / 10) + (4 * Math.sin(p[0]));
-		
-		// this will create uniformly distributed candidates on (-10, 10)
-		NOrthotopeRandomParametersFunction parameterFunction = new NOrthotopeRandomParametersFunction(1);
-		parameterFunction.setParameterRange(0, -10, 10);
+public final class SimpleExample {
 
-		// now, set up a problem.
-		SimpleDifferentialEvolutionProblem problem = new SimpleDifferentialEvolutionProblem();
-		problem.setDimension(1);
-		problem.setRandomParametersFunction(parameterFunction);
-		problem.setFitnessFunction(fitnessFunction);
-		
-		// create a suitable optimizer.
-		DifferentialEvolutionOptimizer optimizer = new SerialDifferentialEvolutionOptimizer();		
-		
-		// now just get the result!
-		DifferentialEvolutionResult result = optimizer.optimize(problem);
-		
-		// extract x and f(x).
-		double x = result.getBestCandidate().getParameters()[0];
-		double fx = result.getBestCandidate().getFitness();
-		
-		System.out.println(x);
-		System.out.println(fx);
-		System.out.println(result.getTimeTaken());
-	}
+    public static void main(String[] args) {
+        // construct our function.
+        FitnessFunction fitnessFunction = (double[] p) -> (p[0] * p[0] / 10) + (4 * Math.sin(p[0]));
+
+        // this will create uniformly distributed candidates on (-10, 10)
+        NOrthotopeRandomParametersFunction parameterFunction = new NOrthotopeRandomParametersFunction(1);
+        parameterFunction.setParameterRange(0, -10, 10);
+
+        // now, set up a problem.
+        SimpleDifferentialEvolutionProblem problem = new SimpleDifferentialEvolutionProblem();
+        problem.setDimension(1);
+        problem.setRandomParametersFunction(parameterFunction);
+        problem.setFitnessFunction(fitnessFunction);
+
+        // create a suitable optimizer.
+        DifferentialEvolutionOptimizer optimizer = new SerialDifferentialEvolutionOptimizer();
+
+        // now just get the result!
+        DifferentialEvolutionResult result = optimizer.optimize(problem);
+
+        // extract x and f(x).
+        double x = result.getBestCandidate().getParameters()[0];
+        double fx = result.getBestCandidate().getFitness();
+
+        System.out.println(x);
+        System.out.println(fx);
+        System.out.println(result.getTimeTaken());
+    }
 
 }
-

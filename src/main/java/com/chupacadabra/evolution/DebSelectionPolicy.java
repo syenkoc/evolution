@@ -30,43 +30,40 @@ import java.io.Serializable;
  * <p>
  * These rules are:
  * <ol>
- *  <li>If both candidates are in violation, select the candidate with the lower
- *      violation value.</li>
- *  <li>If one candidates is in violation but the other is not, select the
- *      non-violating candidate.</li>
- *  <li>If neither candidate is in violation, select the candidate with the
- *      better (lower) fitness.</li>
+ * <li>If both candidates are in violation, select the candidate with the lower
+ * violation value.</li>
+ * <li>If one candidates is in violation but the other is not, select the
+ * non-violating candidate.</li>
+ * <li>If neither candidate is in violation, select the candidate with the
+ * better (lower) fitness.</li>
  * </ol>
  */
-public final class DebSelectionPolicy 
-	implements SelectionPolicy, Serializable
-{
-	
-	/**
-	 * Serial ID.
-	 */
-	private static final long serialVersionUID = -3165185355597729717L;
+public final class DebSelectionPolicy implements SelectionPolicy, Serializable {
 
-	/**
-	 * @see com.chupacadabra.evolution.SelectionPolicy#select(DifferentialEvolutionState, RandomSource, com.chupacadabra.evolution.Candidate, com.chupacadabra.evolution.Candidate)
-	 */
-	@Override
-	public Candidate select(DifferentialEvolutionState state, RandomSource randomSource, final Candidate a, final Candidate b)
-	{
-		if(a.isViolating() && b.isViolating())
-		{
-			// both are violating, choose candidate with lower violation.
-			return (a.getViolation() < b.getViolation()) ? a : b;
-		}
+    /**
+     * Serial ID.
+     */
+    private static final long serialVersionUID = -3165185355597729717L;
 
-		if(a.isFeasible() && b.isFeasible())
-		{
-			// both are non-violating, choose function with better fitness.
-			return (a.getFitness() < b.getFitness()) ? a : b;
-		}
+    /**
+     * @see com.chupacadabra.evolution.SelectionPolicy#select(DifferentialEvolutionState,
+     *      RandomSource, com.chupacadabra.evolution.Candidate,
+     *      com.chupacadabra.evolution.Candidate)
+     */
+    @Override
+    public Candidate select(DifferentialEvolutionState state, RandomSource randomSource, final Candidate a, final Candidate b) {
+        if (a.isViolating() && b.isViolating()) {
+            // both are violating, choose candidate with lower violation.
+            return (a.getViolation() < b.getViolation()) ? a : b;
+        }
 
-		// select non-violating if we have mixed violation parity.
-		return a.isFeasible() ? a : b;
-	}
+        if (a.isFeasible() && b.isFeasible()) {
+            // both are non-violating, choose function with better fitness.
+            return (a.getFitness() < b.getFitness()) ? a : b;
+        }
+
+        // select non-violating if we have mixed violation parity.
+        return a.isFeasible() ? a : b;
+    }
 
 }

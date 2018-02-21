@@ -28,74 +28,66 @@ import com.chupacadabra.evolution.util.TimeLength;
 /**
  * Simple mutable result implementation.
  */
-public final class SimpleDifferentialEvolutionResult
-	implements DifferentialEvolutionResult
-{
+public final class SimpleDifferentialEvolutionResult implements DifferentialEvolutionResult {
 
-	/**
-	 * The best candidate.
-	 */
-	private Candidate bestCandidate;
+    /**
+     * The best candidate.
+     */
+    private Candidate bestCandidate;
 
-	/**
-	 * Termination reason.
-	 */
-	private TerminationReason terminationReason;
+    /**
+     * Termination reason.
+     */
+    private TerminationReason terminationReason;
 
-	/**
-	 * Time taken.
-	 */
-	private TimeLength timeTaken;
-	
-	/**
-	 * @return The bestCandidate
-	 */
-	@Override
-	public Candidate getBestCandidate()
-	{
-		return bestCandidate;
-	}
+    /**
+     * Time taken.
+     */
+    private TimeLength timeTaken;
 
-	/**
-	 * @param bestCandidate The value.
-	 */
-	public void setBestCandidate(Candidate bestCandidate)
-	{
-		this.bestCandidate = bestCandidate;
-	}
+    /**
+     * @return The bestCandidate
+     */
+    @Override
+    public Candidate getBestCandidate() {
+        return bestCandidate;
+    }
 
-	/**
-	 * @return The terminationReason
-	 */
-	@Override
-	public TerminationReason getTerminationReason()
-	{
-		return terminationReason;
-	}
+    /**
+     * @param bestCandidate The value.
+     */
+    public void setBestCandidate(Candidate bestCandidate) {
+        this.bestCandidate = bestCandidate;
+    }
 
-	/**
-	 * @param terminationReason The value.
-	 */
-	public void setTerminationReason(TerminationReason terminationReason)
-	{
-		this.terminationReason = terminationReason;
-	}
+    /**
+     * @return The terminationReason
+     */
+    @Override
+    public TerminationReason getTerminationReason() {
+        return terminationReason;
+    }
 
-	/**
-	 * @return The timeTaken
-	 */
-	@Override
-	public TimeLength getTimeTaken()
-	{
-		return timeTaken;
-	}
+    /**
+     * @param terminationReason The value.
+     */
+    public void setTerminationReason(TerminationReason terminationReason) {
+        this.terminationReason = terminationReason;
+    }
 
-	/**
-	 * @param timeTaken The value.
-	 */
-	public void setTimeTaken(TimeLength timeTaken)
-	{
-		this.timeTaken = timeTaken;
-	}
+    /**
+     * @return The timeTaken
+     */
+    @Override
+    public TimeLength getTimeTaken() {
+        return timeTaken;
+    }
+
+    /**
+     * @param timeTaken The value.
+     */
+    public void setTimeTaken(TimeLength timeTaken) {
+        this.timeTaken = timeTaken;
+    }
 
 }

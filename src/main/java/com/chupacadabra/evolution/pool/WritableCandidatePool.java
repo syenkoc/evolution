@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.pool;
 
 import com.chupacadabra.evolution.Candidate;
@@ -28,16 +28,14 @@ import com.chupacadabra.evolution.Candidate;
 /**
  * A writable pool.
  */
-public interface WritableCandidatePool
-	extends CandidatePool
-{
+public interface WritableCandidatePool extends CandidatePool {
 
-	/**
-	 * Set the candidate at the specified index.
-	 * 
-	 * @param index The index.
-	 * @param candidate The candidate.
-	 */
-	public void setCandidate(int index, Candidate candidate);
+    /**
+     * Set the candidate at the specified index.
+     * 
+     * @param index The index.
+     * @param candidate The candidate.
+     */
+    public void setCandidate(int index, Candidate candidate);
 
 }

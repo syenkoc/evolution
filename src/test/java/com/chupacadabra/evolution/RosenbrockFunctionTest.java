@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 import java.util.concurrent.ForkJoinPool;
@@ -28,67 +28,60 @@ import java.util.concurrent.ForkJoinPool;
 /**
  * 
  */
-public class RosenbrockFunctionTest
-{
-	
-	public static void main(String[] args)
-	throws Exception
-	{
-		
-		ForkJoinPool pool = new ForkJoinPool(4);
-		ForkJoinDifferentialEvolutionOptimizerConfiguration configuration = new ForkJoinDifferentialEvolutionOptimizerConfiguration();
-		configuration.setInitializationThreshold(32);
-		
-		DifferentialEvolutionOptimizer optimizer1 = new SerialDifferentialEvolutionOptimizer();
-		DifferentialEvolutionOptimizer optimizer2 = new ForkJoinDifferentialEvolutionOptimizer(pool, configuration);
+public class RosenbrockFunctionTest {
 
-		solve(optimizer1, true);
-		solve(optimizer2, true);
+    public static void main(String[] args) throws Exception {
 
-		System.exit(0);
+        ForkJoinPool pool = new ForkJoinPool(4);
+        ForkJoinDifferentialEvolutionOptimizerConfiguration configuration = new ForkJoinDifferentialEvolutionOptimizerConfiguration();
+        configuration.setInitializationThreshold(32);
 
-		System.in.read();
+        DifferentialEvolutionOptimizer optimizer1 = new SerialDifferentialEvolutionOptimizer();
+        DifferentialEvolutionOptimizer optimizer2 = new ForkJoinDifferentialEvolutionOptimizer(pool, configuration);
 
-		for(int index = 0; index < 10; index++)
-		{
-			solve(optimizer1, false);
-		}
+        solve(optimizer1, true);
+        solve(optimizer2, true);
 
-		System.out.println("Done 1");
-		System.in.read();
-		
-		for(int index = 0; index < 10; index++)
-		{
-			solve(optimizer2, false);
-		}
-		
-		System.out.println("Done 2");
-	}
-	
-	static void solve(final DifferentialEvolutionOptimizer optimizer, boolean print)
-	{
-		RosenbrockFunctionProblem problem = new RosenbrockFunctionProblem(new RosenbrockFunction(1, 100));
-		DifferentialEvolutionSettings settings = new DifferentialEvolutionSettings();
-		settings.setMaximumGeneration(10000);
-		settings.setRandomSource(new JavaUtilRandomSource(1));
-		settings.setChildrenPerCandidate(7);
-		settings.setCandidatePoolSize(80);
-		settings.setPoolReplacement(PoolReplacement.IMMEDIATELY);
+        System.exit(0);
 
-		// now just get the result!
-		DifferentialEvolutionResult result = optimizer.optimize(problem, settings);
-		
-		// extract x and f(x).
-		double[] x = result.getBestCandidate().getParameters();
-		double fx = result.getBestCandidate().getFitness();
-		
-		if(print)
-		{
-		System.out.println(x[0] + " " + x[1]);
-		System.out.println(fx);
-		System.out.println(result.getTimeTaken());
-		}
+        System.in.read();
 
-	}
+        for (int index = 0; index < 10; index++) {
+            solve(optimizer1, false);
+        }
+
+        System.out.println("Done 1");
+        System.in.read();
+
+        for (int index = 0; index < 10; index++) {
+            solve(optimizer2, false);
+        }
+
+        System.out.println("Done 2");
+    }
+
+    static void solve(final DifferentialEvolutionOptimizer optimizer, boolean print) {
+        RosenbrockFunctionProblem problem = new RosenbrockFunctionProblem(new RosenbrockFunction(1, 100));
+        DifferentialEvolutionSettings settings = new DifferentialEvolutionSettings();
+        settings.setMaximumGeneration(10000);
+        settings.setRandomSource(new JavaUtilRandomSource(1));
+        settings.setChildrenPerCandidate(7);
+        settings.setCandidatePoolSize(80);
+        settings.setPoolReplacement(PoolReplacement.IMMEDIATELY);
+
+        // now just get the result!
+        DifferentialEvolutionResult result = optimizer.optimize(problem, settings);
+
+        // extract x and f(x).
+        double[] x = result.getBestCandidate().getParameters();
+        double fx = result.getBestCandidate().getFitness();
+
+        if (print) {
+            System.out.println(x[0] + " " + x[1]);
+            System.out.println(fx);
+            System.out.println(result.getTimeTaken());
+        }
+
+    }
 
 }

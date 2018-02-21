@@ -32,158 +32,142 @@ import java.util.Arrays;
  * This is really just a tuple of a parameter vector, fitness measure, and
  * violation measure (if the candidate is invalid).
  */
-public final class Candidate
-	implements Serializable
-{
+public final class Candidate implements Serializable {
 
-	/**
-	 * Create a feasible candidate.
-	 * 
-	 * @param parameters The parameters.
-	 * @param fitness The fitness.
-	 * @return A feasible candidate.
-	 */
-	public static Candidate feasible(final double[] parameters,
-			final double fitness)
-	{
-		return new Candidate(parameters, fitness,
-				null);
-	}
-	
-	/**
-	 * Create a violating candidate.
-	 * 
-	 * @param parameters The parameters.
-	 * @param fitness The fitness.
-	 * @param violation The violation.
-	 * @return A violating candidate.
-	 */
-	public static Candidate violating(final double[] parameters,
-			final double fitness, final double violation)
-	{
-		return new Candidate(parameters, fitness, violation);
-	}
+    /**
+     * Create a feasible candidate.
+     * 
+     * @param parameters The parameters.
+     * @param fitness The fitness.
+     * @return A feasible candidate.
+     */
+    public static Candidate feasible(final double[] parameters, final double fitness) {
+        return new Candidate(parameters, fitness, null);
+    }
 
-	/**
-	 * Serial version.
-	 */
-	private static final long serialVersionUID = 8831083522182647457L;
+    /**
+     * Create a violating candidate.
+     * 
+     * @param parameters The parameters.
+     * @param fitness The fitness.
+     * @param violation The violation.
+     * @return A violating candidate.
+     */
+    public static Candidate violating(final double[] parameters, final double fitness, final double violation) {
+        return new Candidate(parameters, fitness, violation);
+    }
 
-	/**
-	 * The parameter vector.
-	 */
-	private final double[] parameters;
+    /**
+     * Serial version.
+     */
+    private static final long serialVersionUID = 8831083522182647457L;
 
-	/**
-	 * The fitness measure.
-	 */
-	private final double fitness;
+    /**
+     * The parameter vector.
+     */
+    private final double[] parameters;
 
-	/**
-	 * The violation; or <code>null</code>.
-	 */
-	private final Double violation;
+    /**
+     * The fitness measure.
+     */
+    private final double fitness;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param parameters The parameters.
-	 * @param fitness The fitness.
-	 * @param violation The violation measure; or <code>null</code>
-	 */
-	private Candidate(final double[] parameters, final double fitness,
-			final Double violation)
-	{
-		this.parameters = parameters.clone();
-		this.fitness = fitness;
-		this.violation = violation;
-	}
+    /**
+     * The violation; or <code>null</code>.
+     */
+    private final Double violation;
 
-	/**
-	 * Is this candidate feasible?
-	 * 
-	 * @return <code>true</code> if feasible; and <code>false</code> otherwise.
-	 */
-	public boolean isFeasible()
-	{
-		return (violation == null);
-	}
+    /**
+     * Constructor.
+     * 
+     * @param parameters The parameters.
+     * @param fitness The fitness.
+     * @param violation The violation measure; or <code>null</code>
+     */
+    private Candidate(final double[] parameters, final double fitness, final Double violation) {
+        this.parameters = parameters.clone();
+        this.fitness = fitness;
+        this.violation = violation;
+    }
 
-	/**
-	 * Is this candidate is in violating?
-	 * 
-	 * @return <code>true</code> if this candidate is in violation; and
-	 *         <code>false</code> otherwise.
-	 */
-	public boolean isViolating()
-	{
-		return (isFeasible() == false);
-	}
+    /**
+     * Is this candidate feasible?
+     * 
+     * @return <code>true</code> if feasible; and <code>false</code> otherwise.
+     */
+    public boolean isFeasible() {
+        return (violation == null);
+    }
 
-	/**
-	 * Get the parameters.
-	 * <p>
-	 * The returned vector is a clone and so can be modified in place without
-	 * affecting <code>this</code>.
-	 * 
-	 * @return The parameters The parameters.
-	 */
-	public double[] getParameters()
-	{
-		return parameters.clone();
-	}
-	
-	/**
-	 * Get the parameters without making a clone.
-	 * <p>
-	 * This is package-protected for a reason.
-	 * 
-	 * @return The parameters.
-	 */
-	double[] getParametersReference() 
-	{
-		return parameters;
-	}
+    /**
+     * Is this candidate is in violating?
+     * 
+     * @return <code>true</code> if this candidate is in violation; and
+     *         <code>false</code> otherwise.
+     */
+    public boolean isViolating() {
+        return (isFeasible() == false);
+    }
 
-	/**
-	 * Get the fitness measure.
-	 * 
-	 * @return The fitness measure.
-	 */
-	public double getFitness()
-	{
-		return fitness;
-	}
+    /**
+     * Get the parameters.
+     * <p>
+     * The returned vector is a clone and so can be modified in place without
+     * affecting <code>this</code>.
+     * 
+     * @return The parameters The parameters.
+     */
+    public double[] getParameters() {
+        return parameters.clone();
+    }
 
-	/**
-	 * Get the violation measure.
-	 * <p>
-	 * This method can only be called if this candidate is
-	 * {@linkplain #isViolating() in violation}.
-	 * 
-	 * @return The violation
-	 */
-	public double getViolation()
-	{
-		return violation;
-	}
+    /**
+     * Get the parameters without making a clone.
+     * <p>
+     * This is package-protected for a reason.
+     * 
+     * @return The parameters.
+     */
+    double[] getParametersReference() {
+        return parameters;
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString()
-	{
-		StringBuilder builder = new StringBuilder();
-		builder.append("Candidate [parameters=");
-		builder.append(Arrays.toString(parameters));
-		builder.append(", fitness=");
-		builder.append(fitness);
-		builder.append(", violation=");
-		builder.append(violation);
-		builder.append("]");
-		
-		return builder.toString();
-	}
+    /**
+     * Get the fitness measure.
+     * 
+     * @return The fitness measure.
+     */
+    public double getFitness() {
+        return fitness;
+    }
+
+    /**
+     * Get the violation measure.
+     * <p>
+     * This method can only be called if this candidate is
+     * {@linkplain #isViolating() in violation}.
+     * 
+     * @return The violation
+     */
+    public double getViolation() {
+        return violation;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Candidate [parameters=");
+        builder.append(Arrays.toString(parameters));
+        builder.append(", fitness=");
+        builder.append(fitness);
+        builder.append(", violation=");
+        builder.append(violation);
+        builder.append("]");
+
+        return builder.toString();
+    }
 
 }

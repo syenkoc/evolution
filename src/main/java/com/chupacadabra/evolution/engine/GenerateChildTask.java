@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 import java.util.concurrent.Callable;
@@ -40,116 +40,103 @@ import com.chupacadabra.evolution.pool.CandidatePool;
 /**
  * Core child generation algorithm.
  */
-public final class GenerateChildTask
-	implements Callable<Candidate>
-{
+public final class GenerateChildTask implements Callable<Candidate> {
 
-	/**
-	 * The receiver.
-	 */
-	private final DifferentialEvolutionReceiver optimizer;
-	
-	/**
-	 * The parent index.
-	 */
-	private final int index;
+    /**
+     * The receiver.
+     */
+    private final DifferentialEvolutionReceiver optimizer;
 
-	/**
-	 * The parent.
-	 */
-	private final Candidate parent;
+    /**
+     * The parent index.
+     */
+    private final int index;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param optimizer The receiver.
-	 * @param index The parent index.
-	 * @param parent The parent candidate. 
-	 */
-	public GenerateChildTask(final DifferentialEvolutionReceiver optimizer,
-			final int index, 
-			final Candidate parent)
-	{
-		this.optimizer = optimizer;
-		this.index = index;
-		this.parent = parent;
-				
-	}
+    /**
+     * The parent.
+     */
+    private final Candidate parent;
 
-	/**
-	 * @see java.util.concurrent.Callable#call()
-	 */
-	@Override
-	public Candidate call()
-	{		
-		// grab parent and trial parameters.
-		double[] parentParameters = parent.getParameters();
-		double[] trialParameters = generateTrial();
-				
-		// perform recombination to get child parameters.
-		DifferentialEvolutionSettings settings = optimizer.getSettings();
-		RandomSource randomSource = settings.getRandomSource();
-		RecombinationPolicy recombinationPolicy = settings.getRecombinationPolicy();
-		double[] child = recombinationPolicy.recombine(optimizer, randomSource, parentParameters, trialParameters);
-		
-		// classify the child parameters.
-		DifferentialEvolutionProblem problem = optimizer.getProblem();
-		FeasibilityFunction feasibilityFunction = problem.getFeasibilityFunction();
-		FeasibilityType feasibility = feasibilityFunction.getFeasibilityType(child);
-		
-		if(feasibility == FeasibilityType.INFEASIBLE) 
-		{
-			// we can short-circuit fitness calculation.
-			return null;
-		}
-		
-		// measure fitness of child parameters.
-		FitnessFunction fitnessFunction = problem.getFitnessFunction();
-		double childFitness = fitnessFunction.getFitness(child);
-		
-		switch(feasibility) 
-		{
-			case FEASIBLE:
-				return Candidate.feasible(child, childFitness);
-			case VIOLATING:
-				// in this case we also have to measure the violation.
-				ViolationFunction violationFunction = problem.getViolationFunction();
-				double violation = violationFunction.getViolation(child);
-				
-				return Candidate.violating(child, childFitness, violation);
-			case INFEASIBLE:
-			default:
-				// impossible.
-				throw new InternalError();
-		}	
-	}
-	
-	/**
-	 * Generate trial parameters using differentiation.
-	 * 
-	 * @return Trial parameters.
-	 */
-	private double[] generateTrial()
-	{
-		DifferentialEvolutionSettings settings = optimizer.getSettings();
-		RandomSource randomSource = settings.getRandomSource();
-		DifferentiationPolicy diffentiationPolicy = settings.getDifferentiationPolicy();				
-		CandidatePool currentPool = optimizer.getCurrentPool();
+    /**
+     * Constructor.
+     * 
+     * @param optimizer The receiver.
+     * @param index The parent index.
+     * @param parent The parent candidate.
+     */
+    public GenerateChildTask(final DifferentialEvolutionReceiver optimizer, final int index, final Candidate parent) {
+        this.optimizer = optimizer;
+        this.index = index;
+        this.parent = parent;
+    }
 
-		// read-lock the pool while we differentiate. This way, the
-		// differentiation policy can make several calls to the pool knowing
-		// that the state won't change.				
-		optimizer.getPoolLock().lock(PoolType.CURRENT, LockType.READ);
-		try 
-		{
-			double[] trialParameters = diffentiationPolicy.differentiate(optimizer, randomSource, index, currentPool);
-			
-			return trialParameters;
-		}
-		finally 
-		{
-			optimizer.getPoolLock().unlock(PoolType.CURRENT, LockType.READ);	
-		}				
-	}
-	
+    /**
+     * @see java.util.concurrent.Callable#call()
+     */
+    @Override
+    public Candidate call() {
+        // grab parent and trial parameters.
+        double[] parentParameters = parent.getParameters();
+        double[] trialParameters = generateTrial();
+
+        // perform recombination to get child parameters.
+        DifferentialEvolutionSettings settings = optimizer.getSettings();
+        RandomSource randomSource = settings.getRandomSource();
+        RecombinationPolicy recombinationPolicy = settings.getRecombinationPolicy();
+        double[] child = recombinationPolicy.recombine(optimizer, randomSource, parentParameters, trialParameters);
+
+        // classify the child parameters.
+        DifferentialEvolutionProblem problem = optimizer.getProblem();
+        FeasibilityFunction feasibilityFunction = problem.getFeasibilityFunction();
+        FeasibilityType feasibility = feasibilityFunction.getFeasibilityType(child);
+
+        if (feasibility == FeasibilityType.INFEASIBLE) {
+            // we can short-circuit fitness calculation.
+            return null;
+        }
+
+        // measure fitness of child parameters.
+        FitnessFunction fitnessFunction = problem.getFitnessFunction();
+        double childFitness = fitnessFunction.getFitness(child);
+
+        switch (feasibility) {
+            case FEASIBLE:
+                return Candidate.feasible(child, childFitness);
+            case VIOLATING:
+                // in this case we also have to measure the violation.
+                ViolationFunction violationFunction = problem.getViolationFunction();
+                double violation = violationFunction.getViolation(child);
+
+                return Candidate.violating(child, childFitness, violation);
+            case INFEASIBLE:
+            default:
+                // impossible.
+                throw new InternalError();
+        }
+    }
+
+    /**
+     * Generate trial parameters using differentiation.
+     * 
+     * @return Trial parameters.
+     */
+    private double[] generateTrial() {
+        DifferentialEvolutionSettings settings = optimizer.getSettings();
+        RandomSource randomSource = settings.getRandomSource();
+        DifferentiationPolicy diffentiationPolicy = settings.getDifferentiationPolicy();
+        CandidatePool currentPool = optimizer.getCurrentPool();
+
+        // read-lock the pool while we differentiate. This way, the
+        // differentiation policy can make several calls to the pool knowing
+        // that the state won't change.
+        optimizer.getPoolLock().lock(PoolType.CURRENT, LockType.READ);
+        try {
+            double[] trialParameters = diffentiationPolicy.differentiate(optimizer, randomSource, index, currentPool);
+
+            return trialParameters;
+        } finally {
+            optimizer.getPoolLock().unlock(PoolType.CURRENT, LockType.READ);
+        }
+    }
+
 }

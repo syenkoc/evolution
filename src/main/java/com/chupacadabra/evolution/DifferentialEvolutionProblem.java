@@ -29,66 +29,62 @@ import java.util.List;
 /**
  * A differential evolution problem.
  */
-public interface DifferentialEvolutionProblem
-{
+public interface DifferentialEvolutionProblem {
 
-	/**
-	 * Get the dimension of the problem.
-	 * 
-	 * @return The dimension.
-	 */
-	public int getDimension();
-	
-	/**
-	 * Get the function that creates random parameter vectors.
-	 * 
-	 * @return The random parameter vector function.
-	 */
-	public RandomParametersFunction getRandomParametersFunction();
+    /**
+     * Get the dimension of the problem.
+     * 
+     * @return The dimension.
+     */
+    public int getDimension();
 
-	/**
-	 * Get the fitness function.
-	 * 
-	 * @return The fitness function.
-	 */
-	public FitnessFunction getFitnessFunction();
+    /**
+     * Get the function that creates random parameter vectors.
+     * 
+     * @return The random parameter vector function.
+     */
+    public RandomParametersFunction getRandomParametersFunction();
 
-	/**
-	 * Get the feasibility function.
-	 * <p>
-	 * This default implementation returns a function that classifies all
-	 * candidates as feasible.
-	 * 
-	 * @return The feasibility function.
-	 */
-	public default FeasibilityFunction getFeasibilityFunction()
-	{
-		return AllFeasibilityFunction.getInstance();
-	}
+    /**
+     * Get the fitness function.
+     * 
+     * @return The fitness function.
+     */
+    public FitnessFunction getFitnessFunction();
 
-	/**
-	 * Get the violation function.
-	 * <p>
-	 * The default implementation returns a function that assigns <code>0</code>
-	 * to all candidates.
-	 * 
-	 * @return The violation function.
-	 */
-	public default ViolationFunction getViolationFunction()
-	{
-		return ZeroViolationFunction.getInstance();
-	}
-	
-	/**
-	 * Get the termination criteria.
-	 * <p>
-	 * The default implementation returns an empty list.
-	 * 
-	 * @return The termination criteria.
-	 */
-	public default List<TerminationCriterion> getTerminationCriteria() 
-	{
-		return Collections.emptyList();
-	}
-	
+    /**
+     * Get the feasibility function.
+     * <p>
+     * This default implementation returns a function that classifies all
+     * candidates as feasible.
+     * 
+     * @return The feasibility function.
+     */
+    public default FeasibilityFunction getFeasibilityFunction() {
+        return AllFeasibilityFunction.getInstance();
+    }
+
+    /**
+     * Get the violation function.
+     * <p>
+     * The default implementation returns a function that assigns <code>0</code>
+     * to all candidates.
+     * 
+     * @return The violation function.
+     */
+    public default ViolationFunction getViolationFunction() {
+        return ZeroViolationFunction.getInstance();
+    }
+
+    /**
+     * Get the termination criteria.
+     * <p>
+     * The default implementation returns an empty list.
+     * 
+     * @return The termination criteria.
+     */
+    public default List<TerminationCriterion> getTerminationCriteria() {
+        return Collections.emptyList();
+    }
+
 }

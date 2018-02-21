@@ -20,21 +20,20 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 /**
  * Iteration strategy.
  */
-public interface Iteration
-{
-	
-	/**
-	 * Perform one iteration.
-	 * 
-	 * @param receiver The receiver.
-	 * @param childGeneration Child generator.
-	 */
-	public void iterate(DifferentialEvolutionReceiver receiver, ChildGeneration childGeneration);
+public interface Iteration {
+
+    /**
+     * Perform one iteration.
+     * 
+     * @param receiver The receiver.
+     * @param childGeneration Child generator.
+     */
+    public void iterate(DifferentialEvolutionReceiver receiver, ChildGeneration childGeneration);
 
 }

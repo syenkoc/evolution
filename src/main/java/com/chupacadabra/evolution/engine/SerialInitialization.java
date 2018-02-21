@@ -20,29 +20,25 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 /**
  * Direct initialization.
  */
-public final class SerialInitialization
-	implements Initialization
-{
+public final class SerialInitialization implements Initialization {
 
-	/**
-	 * @see com.chupacadabra.evolution.engine.Initialization#initialize(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver)
-	 */
-	@Override
-	public void initialize(final DifferentialEvolutionReceiver receiver)
-	{
-		int size = receiver.getSettings().getCandidatePoolSize();		
-		for(int index = 0; index < size; index++)
-		{
-			// run the appropriate commands.
-			InitializeIndexAction initializeCommand = new InitializeIndexAction(receiver, index);
-			initializeCommand.run();
-		}		
-	}
+    /**
+     * @see com.chupacadabra.evolution.engine.Initialization#initialize(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver)
+     */
+    @Override
+    public void initialize(final DifferentialEvolutionReceiver receiver) {
+        int size = receiver.getSettings().getCandidatePoolSize();
+        for (int index = 0; index < size; index++) {
+            // run the appropriate commands.
+            InitializeIndexAction initializeCommand = new InitializeIndexAction(receiver, index);
+            initializeCommand.run();
+        }
+    }
 
 }

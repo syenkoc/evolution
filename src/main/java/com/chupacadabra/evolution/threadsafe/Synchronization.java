@@ -23,59 +23,104 @@
  */
 package com.chupacadabra.evolution.threadsafe;
 
-import com.chupacadabra.evolution.DifferentialEvolutionOptimizer;
+import com.chupacadabra.evolution.DiversityPolicy;
+import com.chupacadabra.evolution.FeasibilityFunction;
+import com.chupacadabra.evolution.FitnessFunction;
+import com.chupacadabra.evolution.RandomParametersFunction;
 import com.chupacadabra.evolution.RandomSource;
+import com.chupacadabra.evolution.RecombinationPolicy;
+import com.chupacadabra.evolution.ViolationFunction;
+import com.chupacadabra.evolution.WeightPolicy;
 
 /**
  * Provides threadsafe wrappers using sychronization.
  * <p>
  * This class uses the singleton design pattern.
  */
-final class Synchronization
-	implements Threadsafe
-{
-	
-	/**
-	 * The lone instance of this class.
-	 */
-	private static final Synchronization instance = new Synchronization();
-	
-	/**
-	 * Get the instance of this class.
-	 * 
-	 * @return The instance.
-	 */
-	static Synchronization getInstance()
-	{
-		return instance;
-	}
-	
-	/**
-	 * Constructor.
-	 */
-	private Synchronization()
-	{
-	}
+final class Synchronization implements Threadsafe {
 
-	/**
-	 * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.DifferentialEvolutionOptimizer)
-	 */
-	@Override
-	public DifferentialEvolutionOptimizer threadsafe(
-			DifferentialEvolutionOptimizer optimizer)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /**
+     * The lone instance of this class.
+     */
+    private static final Synchronization instance = new Synchronization();
 
-	/**
-	 * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.RandomSource)
-	 */
-	@Override
-	public RandomSource threadsafe(final RandomSource randomSource)
-	{
-		return new SynchronizedRandomSource(randomSource);
-	}
+    /**
+     * Get the instance of this class.
+     * 
+     * @return The instance.
+     */
+    static Synchronization getInstance() {
+        return instance;
+    }
 
+    /**
+     * Constructor.
+     */
+    private Synchronization() {
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.RandomParametersFunction)
+     */
+    @Override
+    public RandomParametersFunction threadsafe(final RandomParametersFunction randomParametersFunction) {
+        return new SynchronizedRandomParametersFunction(randomParametersFunction);
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.FitnessFunction)
+     */
+    @Override
+    public FitnessFunction threadsafe(final FitnessFunction fitnessFunction) {
+        return new SynchronizedFitnessFunction(fitnessFunction);
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.FeasibilityFunction)
+     */
+    @Override
+    public FeasibilityFunction threadsafe(final FeasibilityFunction feasibilityFunction) {
+        return new SynchronizedFeasibilityFunction(feasibilityFunction);
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.ViolationFunction)
+     */
+    @Override
+    public ViolationFunction threadsafe(final ViolationFunction violationFunction) {
+        return new SynchronizedViolationFunction(violationFunction);
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.RandomSource)
+     */
+    @Override
+    public RandomSource threadsafe(final RandomSource randomSource) {
+        return new SynchronizedRandomSource(randomSource);
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.DiversityPolicy)
+     */
+    @Override
+    public DiversityPolicy threadsafe(final DiversityPolicy diversityPolicy) {
+        return new SynchronizedDiversityPolicy(diversityPolicy);
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.RecombinationPolicy)
+     */
+    @Override
+    public RecombinationPolicy threadsafe(final RecombinationPolicy recombinationPolicy) {
+        return new SynchronizedRecombinationPolicy(recombinationPolicy);
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.threadsafe.Threadsafe#threadsafe(com.chupacadabra.evolution.WeightPolicy)
+     */
+    @Override
+    public WeightPolicy threadsafe(final WeightPolicy weightPolicy) {
+        return new SynchronizedWeightPolicy(weightPolicy);
+    }
 
 }

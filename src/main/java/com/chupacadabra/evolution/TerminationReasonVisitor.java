@@ -20,9 +20,8 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
-
 
 /**
  * Visitor of termination reasons.
@@ -30,34 +29,33 @@ package com.chupacadabra.evolution;
  * @param <TPayload> The payload type.
  * @param <TReturn> The return type.
  */
-public interface TerminationReasonVisitor<TPayload, TReturn>
-{
+public interface TerminationReasonVisitor<TPayload, TReturn> {
 
-	/**
-	 * Visit the specified termination reason.
-	 * 
-	 * @param reason The reason.
-	 * @param payload The payload.
-	 * @return The return value.
-	 */
-	public TReturn visit(ExceptionEncountered reason, TPayload payload);
-	
-	/**
-	 * Visit the specified termination reason.
-	 * 
-	 * @param reason The reason.
-	 * @param payload The payload.
-	 * @return The return value.
-	 */
-	public TReturn visit(MaximumGenerationReached reason, TPayload payload);
+    /**
+     * Visit the specified termination reason.
+     * 
+     * @param reason The reason.
+     * @param payload The payload.
+     * @return The return value.
+     */
+    public TReturn visit(ExceptionEncountered reason, TPayload payload);
 
-	/**
-	 * Visit the specified termination reason.
-	 * 
-	 * @param reason The reason.
-	 * @param payload The payload.
-	 * @return The return value.
-	 */
-	public TReturn visit(TerminationCriterionMet reason, TPayload payload);
+    /**
+     * Visit the specified termination reason.
+     * 
+     * @param reason The reason.
+     * @param payload The payload.
+     * @return The return value.
+     */
+    public TReturn visit(MaximumGenerationReached reason, TPayload payload);
+
+    /**
+     * Visit the specified termination reason.
+     * 
+     * @param reason The reason.
+     * @param payload The payload.
+     * @return The return value.
+     */
+    public TReturn visit(TerminationCriterionMet reason, TPayload payload);
 
 }

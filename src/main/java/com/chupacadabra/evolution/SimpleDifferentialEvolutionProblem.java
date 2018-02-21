@@ -26,138 +26,125 @@ package com.chupacadabra.evolution;
 /**
  * A super-simple implementation of the problem interface.
  */
-public class SimpleDifferentialEvolutionProblem implements DifferentialEvolutionProblem 
-{
+public class SimpleDifferentialEvolutionProblem implements DifferentialEvolutionProblem {
 
-	/**
-	 * The dimension.
-	 */
-	private int dimension;
+    /**
+     * The dimension.
+     */
+    private int dimension;
 
-	/**
-	 * Random parameter vector function.
-	 */
-	private RandomParametersFunction randomParametersFunction;
+    /**
+     * Random parameter vector function.
+     */
+    private RandomParametersFunction randomParametersFunction;
 
-	/**
-	 * Fitness function.
-	 */
-	private FitnessFunction fitnessFunction;
+    /**
+     * Fitness function.
+     */
+    private FitnessFunction fitnessFunction;
 
-	/**
-	 * Feasibility function.
-	 */
-	private FeasibilityFunction feasibilityFunction;
+    /**
+     * Feasibility function.
+     */
+    private FeasibilityFunction feasibilityFunction;
 
-	/**
-	 * The violation function.
-	 */
-	private ViolationFunction violationFunction;
-	
-	/**
-	 * Constructor.
-	 */
-	public SimpleDifferentialEvolutionProblem()
-	{
-		// use defaults.
-		feasibilityFunction = AllFeasibilityFunction.getInstance();
-		violationFunction = ZeroViolationFunction.getInstance();
-	}
+    /**
+     * The violation function.
+     */
+    private ViolationFunction violationFunction;
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getDimension()
-	 */
-	@Override
-	public int getDimension()
-	{
-		return dimension;
-	}
+    /**
+     * Constructor.
+     */
+    public SimpleDifferentialEvolutionProblem() {
+        // use defaults.
+        feasibilityFunction = AllFeasibilityFunction.getInstance();
+        violationFunction = ZeroViolationFunction.getInstance();
+    }
 
-	/**
-	 * Set the dimension.
-	 * 
-	 * @param dimension The dimension.
-	 */
-	public void setDimension(final int dimension)
-	{
-		this.dimension = dimension;
-	}
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getDimension()
+     */
+    @Override
+    public int getDimension() {
+        return dimension;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getRandomParametersFunction()
-	 */
-	@Override
-	public RandomParametersFunction getRandomParametersFunction()
-	{
-		return randomParametersFunction;
-	}
+    /**
+     * Set the dimension.
+     * 
+     * @param dimension The dimension.
+     */
+    public void setDimension(final int dimension) {
+        this.dimension = dimension;
+    }
 
-	/**
-	 * Set the random parameter function.
-	 * 
-	 * @param randomParametersFunction The function.
-	 */
-	public void setRandomParametersFunction(
-			final RandomParametersFunction randomParametersFunction)
-	{
-		this.randomParametersFunction = randomParametersFunction;
-	}
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getRandomParametersFunction()
+     */
+    @Override
+    public RandomParametersFunction getRandomParametersFunction() {
+        return randomParametersFunction;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getFitnessFunction()
-	 */
-	@Override
-	public FitnessFunction getFitnessFunction()
-	{
-		return fitnessFunction;
-	}
+    /**
+     * Set the random parameter function.
+     * 
+     * @param randomParametersFunction The function.
+     */
+    public void setRandomParametersFunction(final RandomParametersFunction randomParametersFunction) {
+        this.randomParametersFunction = randomParametersFunction;
+    }
 
-	/**
-	 * Set the fitness function.
-	 * 
-	 * @param fitnessFunction The fitness function.
-	 */
-	public void setFitnessFunction(final FitnessFunction fitnessFunction)
-	{
-		this.fitnessFunction = fitnessFunction;
-	}
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getFitnessFunction()
+     */
+    @Override
+    public FitnessFunction getFitnessFunction() {
+        return fitnessFunction;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getFeasibilityFunction()
-	 */
-	@Override
-	public FeasibilityFunction getFeasibilityFunction()
-	{
-		return feasibilityFunction;
-	}
+    /**
+     * Set the fitness function.
+     * 
+     * @param fitnessFunction The fitness function.
+     */
+    public void setFitnessFunction(final FitnessFunction fitnessFunction) {
+        this.fitnessFunction = fitnessFunction;
+    }
 
-	/**
-	 * Set the feasibility function.
-	 * 
-	 * @param feasibilityFunction The feasbility function.
-	 */
-	public void setFeasibilityFunction(final FeasibilityFunction feasibilityFunction)
-	{
-		this.feasibilityFunction = feasibilityFunction;
-	}
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getFeasibilityFunction()
+     */
+    @Override
+    public FeasibilityFunction getFeasibilityFunction() {
+        return feasibilityFunction;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getViolationFunction()
-	 */
-	@Override
-	public ViolationFunction getViolationFunction()
-	{
-		return violationFunction;
-	}
+    /**
+     * Set the feasibility function.
+     * 
+     * @param feasibilityFunction The feasbility function.
+     */
+    public void setFeasibilityFunction(final FeasibilityFunction feasibilityFunction) {
+        this.feasibilityFunction = feasibilityFunction;
+    }
 
-	/**
-	 * Set the violation function.
-	 * 
-	 * @param violationFunction The violation function.
-	 */
-	public void setViolationFunction(final ViolationFunction violationFunction)
-	{
-		this.violationFunction = violationFunction;
-	}
+    /**
+     * @see com.chupacadabra.evolution.DifferentialEvolutionProblem#getViolationFunction()
+     */
+    @Override
+    public ViolationFunction getViolationFunction() {
+        return violationFunction;
+    }
+
+    /**
+     * Set the violation function.
+     * 
+     * @param violationFunction The violation function.
+     */
+    public void setViolationFunction(final ViolationFunction violationFunction) {
+        this.violationFunction = violationFunction;
+    }
 
 }

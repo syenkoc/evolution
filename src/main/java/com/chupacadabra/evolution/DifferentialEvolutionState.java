@@ -28,42 +28,41 @@ import com.chupacadabra.evolution.util.TimeLength;
 /**
  * Generation state.
  */
-public interface DifferentialEvolutionState
-{
+public interface DifferentialEvolutionState {
 
-	/**
-	 * Get the dimension of the problem.
-	 * 
-	 * @return The dimension.
-	 */
-	public int getDimension();
+    /**
+     * Get the dimension of the problem.
+     * 
+     * @return The dimension.
+     */
+    public int getDimension();
 
-	/**
-	 * Get the current best candidate.
-	 * 
-	 * @return The current best candidate.
-	 */
-	public Candidate getBestCandidate();
+    /**
+     * Get the current best candidate.
+     * 
+     * @return The current best candidate.
+     */
+    public Candidate getBestCandidate();
 
-	/**
-	 * Get the current generation.
-	 * 
-	 * @return The current generation.
-	 */
-	public int getGeneration();
+    /**
+     * Get the current generation.
+     * 
+     * @return The current generation.
+     */
+    public int getGeneration();
 
-	/**
-	 * Ge the maximum generation.
-	 * 
-	 * @return The maximum generation.
-	 */
-	public int getMaximumGeneration();
+    /**
+     * Ge the maximum generation.
+     * 
+     * @return The maximum generation.
+     */
+    public int getMaximumGeneration();
 
-	/**
-	 * Get the time taken.
-	 * 
-	 * @return The time taken.
-	 */
-	public TimeLength getTimeTaken();
+    /**
+     * Get the time taken.
+     * 
+     * @return The time taken.
+     */
+    public TimeLength getTimeTaken();
 
 }

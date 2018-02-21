@@ -26,45 +26,38 @@ package com.chupacadabra.evolution;
 /**
  * Maximum generation reached termination criterion.
  */
-public final class MaximumGenerationReached
-	implements TerminationReason
-{
+public final class MaximumGenerationReached implements TerminationReason {
 
-	/**
-	 * The generation.
-	 */
-	private final int maximumGeneration;
+    /**
+     * The generation.
+     */
+    private final int maximumGeneration;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param maximumGeneration The maximum generation.
-	 */
-	public MaximumGenerationReached(final int maximumGeneration)
-	{
-		this.maximumGeneration = maximumGeneration;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param maximumGeneration The maximum generation.
+     */
+    public MaximumGenerationReached(final int maximumGeneration) {
+        this.maximumGeneration = maximumGeneration;
+    }
 
-	/**
-	 * Get the maximum generation.
-	 * 
-	 * @return The maximum generation.
-	 */
-	public int getMaximumGeneration()
-	{
-		return maximumGeneration;
-	}
+    /**
+     * Get the maximum generation.
+     * 
+     * @return The maximum generation.
+     */
+    public int getMaximumGeneration() {
+        return maximumGeneration;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.TerminationReason#accept(com.chupacadabra.evolution.TerminationReasonVisitor,
-	 *      java.lang.Object)
-	 */
-	@Override
-	public <TPayload, TReturn> TReturn accept(
-			final TerminationReasonVisitor<TPayload, TReturn> visitor,
-			final TPayload payload)
-	{
-		return visitor.visit(this, payload);
-	}
+    /**
+     * @see com.chupacadabra.evolution.TerminationReason#accept(com.chupacadabra.evolution.TerminationReasonVisitor,
+     *      java.lang.Object)
+     */
+    @Override
+    public <TPayload, TReturn> TReturn accept(final TerminationReasonVisitor<TPayload, TReturn> visitor, final TPayload payload) {
+        return visitor.visit(this, payload);
+    }
 
 }

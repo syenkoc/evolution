@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.util;
 
 import java.util.Comparator;
@@ -30,17 +30,14 @@ import com.chupacadabra.evolution.Candidate;
 /**
  * Comparator of candidates based on fitness.
  */
-public final class CandidateFitnessComparator
-	implements Comparator<Candidate>
-{
+public final class CandidateFitnessComparator implements Comparator<Candidate> {
 
-	/**
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public int compare(final Candidate o1, final Candidate o2)
-	{
-		return Double.compare(o1.getFitness(), o2.getFitness());
-	}
+    /**
+     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    public int compare(final Candidate o1, final Candidate o2) {
+        return Double.compare(o1.getFitness(), o2.getFitness());
+    }
 
 }

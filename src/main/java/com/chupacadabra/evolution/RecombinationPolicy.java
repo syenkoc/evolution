@@ -38,19 +38,17 @@ import com.chupacadabra.evolution.threadsafe.Threadsafe;
  * {@link Threadsafe} framework.
  */
 @FunctionalInterface
-public interface RecombinationPolicy
-{
+public interface RecombinationPolicy {
 
-	/**
-	 * Recombine the specified trials vectors.
-	 * 
-	 * @param parent Parent vector.
-	 * @param trial The trial vector differentiated from the parent.
-	 * @param state Current state.
-	 * @param randomSource A source of randomness.
-	 * @return Recombined vector.
-	 */
-	public double[] recombine(DifferentialEvolutionState state,
-			RandomSource randomSource, double[] parent, double[] trial);
+    /**
+     * Recombine the specified trials vectors.
+     * 
+     * @param parent Parent vector.
+     * @param trial The trial vector differentiated from the parent.
+     * @param state Current state.
+     * @param randomSource A source of randomness.
+     * @return Recombined vector.
+     */
+    public double[] recombine(DifferentialEvolutionState state, RandomSource randomSource, double[] parent, double[] trial);
 
 }

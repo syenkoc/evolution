@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
@@ -28,60 +28,54 @@ package com.chupacadabra.evolution;
  * <p>
  * 
  */
-public final class NOrthotopeRandomParametersFunction 
-	implements RandomParametersFunction
-{
+public final class NOrthotopeRandomParametersFunction implements RandomParametersFunction {
 
-	/**
-	 * The problem dimension.
-	 */
-	private final int dimension;
-	
-	/**
-	 * The boxes.
-	 */
-	private final double[][] boxes;
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param dimension The problem dimension.
-	 */
-	public NOrthotopeRandomParametersFunction(final int dimension)
-	{
-		this.dimension = dimension;
-		this.boxes = new double[dimension][];
-	}
-	
-	/**
-	 * Set the parameter range for the specified variable.
-	 * 
-	 * @param index The variable index.
-	 * @param lowerBound The open lower bound.
-	 * @param upperBound The open upper bound.
-	 */
-	public void setParameterRange(final int index, final double lowerBound, final double upperBound)
-	{
-		boxes[index] = new double[]{lowerBound, upperBound};
-	}
+    /**
+     * The problem dimension.
+     */
+    private final int dimension;
 
-	/**
-	 * @see com.chupacadabra.evolution.RandomParametersFunction#createRandomParameters(com.chupacadabra.evolution.RandomSource)
-	 */
-	@Override
-	public double[] createRandomParameters(final RandomSource randomSource)
-	{
-		double[] parameters = new double[dimension];
-		for(int index = 0; index < dimension; index++)
-		{
-			double[] box = boxes[index];
-			double min = box[0];
-			double max = box[1];
-			double randomValue = min + ((max - min) * randomSource.nextDoubleOpen());
-			parameters[index] = randomValue;
-		}
-		
-		return parameters;
-	}
+    /**
+     * The boxes.
+     */
+    private final double[][] boxes;
+
+    /**
+     * Constructor.
+     * 
+     * @param dimension The problem dimension.
+     */
+    public NOrthotopeRandomParametersFunction(final int dimension) {
+        this.dimension = dimension;
+        this.boxes = new double[dimension][];
+    }
+
+    /**
+     * Set the parameter range for the specified variable.
+     * 
+     * @param index The variable index.
+     * @param lowerBound The open lower bound.
+     * @param upperBound The open upper bound.
+     */
+    public void setParameterRange(final int index, final double lowerBound, final double upperBound) {
+        boxes[index] = new double[] { lowerBound, upperBound };
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.RandomParametersFunction#createRandomParameters(com.chupacadabra.evolution.RandomSource)
+     */
+    @Override
+    public double[] createRandomParameters(final RandomSource randomSource) {
+        double[] parameters = new double[dimension];
+        for (int index = 0; index < dimension; index++) {
+            double[] box = boxes[index];
+            double min = box[0];
+            double max = box[1];
+            double randomValue = min + ((max - min) * randomSource.nextDoubleOpen());
+            parameters[index] = randomValue;
+        }
+
+        return parameters;
+    }
 
 }

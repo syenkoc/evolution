@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 import com.chupacadabra.evolution.Candidate;
@@ -28,29 +28,24 @@ import com.chupacadabra.evolution.Candidate;
 /**
  * Direct iteration.
  */
-public final class SerialIteration
-	implements Iteration
-{
+public final class SerialIteration implements Iteration {
 
-	/**
-	 * @see com.chupacadabra.evolution.engine.Iteration#iterate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver, com.chupacadabra.evolution.engine.ChildGeneration)
-	 */
-	@Override
-	public void iterate(final DifferentialEvolutionReceiver receiver,
-			final ChildGeneration childGeneration)
-	{
-		int size = receiver.getSettings().getCandidatePoolSize();
-		
-		for(int index = 0; index < size; index++)
-		{
-			// we know it is OK not to look.
-			Candidate parent = receiver.getCurrentPool().getCandidate(index);
-			
-			// just execute the iterate command directly for each index.
-			IterateIndexAction iterateCommand = new IterateIndexAction(receiver, index, parent, childGeneration);
-			iterateCommand.run();
-		}				
-	}
-	
+    /**
+     * @see com.chupacadabra.evolution.engine.Iteration#iterate(com.chupacadabra.evolution.engine.DifferentialEvolutionReceiver,
+     *      com.chupacadabra.evolution.engine.ChildGeneration)
+     */
+    @Override
+    public void iterate(final DifferentialEvolutionReceiver receiver, final ChildGeneration childGeneration) {
+        int size = receiver.getSettings().getCandidatePoolSize();
+
+        for (int index = 0; index < size; index++) {
+            // we know it is OK not to look.
+            Candidate parent = receiver.getCurrentPool().getCandidate(index);
+
+            // just execute the iterate command directly for each index.
+            IterateIndexAction iterateCommand = new IterateIndexAction(receiver, index, parent, childGeneration);
+            iterateCommand.run();
+        }
+    }
 
 }

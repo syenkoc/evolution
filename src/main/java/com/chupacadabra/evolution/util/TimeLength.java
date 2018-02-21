@@ -28,68 +28,67 @@ import java.util.concurrent.TimeUnit;
 /**
  * A length of time.
  */
-public final class TimeLength 
-	implements Comparable<TimeLength>
-{
+public final class TimeLength implements Comparable<TimeLength> {
 
-	/**
-	 * Value.
-	 */
-	private final long value;
+    /**
+     * Value.
+     */
+    private final long value;
 
-	/**
-	 * Unit.
-	 */
-	private final TimeUnit timeUnit;
+    /**
+     * Unit.
+     */
+    private final TimeUnit timeUnit;
+    
+    /**
+     * The type.
+     */
+    private TimeType timeType;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param value The value.
-	 * @param timeUnit The unit.
-	 */
-	public TimeLength(final long value, final TimeUnit timeUnit)
-	{
-		this.value = value;
-		this.timeUnit = timeUnit;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param value The value.
+     * @param timeUnit The unit.
+     */
+    public TimeLength(final long value, final TimeUnit timeUnit) {
+        this.value = value;
+        this.timeUnit = timeUnit;
+    }
 
-	/**
-	 * Get the value in the specified unit.
-	 * 
-	 * @param unit The desired time unit
-	 * @return The value
-	 */
-	public long getValue(final TimeUnit unit)
-	{
-		return unit.convert(value, timeUnit);
-	}
+    /**
+     * Get the value in the specified unit.
+     * 
+     * @param unit The desired time unit
+     * @return The value
+     */
+    public long getValue(final TimeUnit unit) {
+        return unit.convert(value, timeUnit);
+    }
 
-	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	@Override
-	public int compareTo(final TimeLength that)
-	{
-		return Long.compare(getValue(TimeUnit.NANOSECONDS), that.getValue(TimeUnit.NANOSECONDS)); 
-	}
+    /**
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    @Override
+    public int compareTo(final TimeLength that) {
+        return Long.compare(getValue(TimeUnit.NANOSECONDS), that.getValue(TimeUnit.NANOSECONDS));
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString()
-	{
-		StringBuilder builder = new StringBuilder();
-		builder.append("TimeLength [value=");
-		builder.append(value);
-		builder.append(", timeUnit=");
-		builder.append(timeUnit);
-		builder.append(" (");
-		builder.append(getValue(TimeUnit.MILLISECONDS));
-		builder.append(" millis)");
-		builder.append("]");
-		return builder.toString();
-	}
-	
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("TimeLength [value=");
+        builder.append(value);
+        builder.append(", timeUnit=");
+        builder.append(timeUnit);
+        builder.append(" (");
+        builder.append(getValue(TimeUnit.MILLISECONDS));
+        builder.append(" millis)");
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

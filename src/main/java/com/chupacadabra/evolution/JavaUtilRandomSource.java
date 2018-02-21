@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 import java.util.Random;
@@ -30,58 +30,51 @@ import java.util.Random;
  * <p>
  * Instances of this class are safe for use by multiple threads.
  */
-public final class JavaUtilRandomSource
-	implements RandomSource
-{
-	
-	/**
-	 * The underlying random.
-	 */
-	private final Random random;
-	
-	/**
-	 * Constructor.
-	 */
-	public JavaUtilRandomSource()
-	{
-		random = new Random();
-	}
+public final class JavaUtilRandomSource implements RandomSource {
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param seed The seed for the random.
-	 */
-	public JavaUtilRandomSource(final long seed)
-	{
-		random = new Random(seed);
-	}
+    /**
+     * The underlying random.
+     */
+    private final Random random;
 
-	/**
-	 * @see com.chupacadabra.evolution.RandomSource#nextInt(int)
-	 */
-	@Override
-	public int nextInt(final int n)
-	{
-		return random.nextInt(n);
-	}
+    /**
+     * Constructor.
+     */
+    public JavaUtilRandomSource() {
+        random = new Random();
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.RandomSource#nextDouble()
-	 */
-	@Override
-	public double nextDouble()
-	{
-		return random.nextDouble();
-	}
+    /**
+     * Constructor.
+     * 
+     * @param seed The seed for the random.
+     */
+    public JavaUtilRandomSource(final long seed) {
+        random = new Random(seed);
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.RandomSource#nextGaussian()
-	 */
-	@Override
-	public double nextGaussian()
-	{
-		return random.nextGaussian();
-	}
+    /**
+     * @see com.chupacadabra.evolution.RandomSource#nextInt(int)
+     */
+    @Override
+    public int nextInt(final int n) {
+        return random.nextInt(n);
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.RandomSource#nextDouble()
+     */
+    @Override
+    public double nextDouble() {
+        return random.nextDouble();
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.RandomSource#nextGaussian()
+     */
+    @Override
+    public double nextGaussian() {
+        return random.nextGaussian();
+    }
 
 }

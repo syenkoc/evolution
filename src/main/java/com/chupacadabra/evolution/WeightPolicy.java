@@ -27,17 +27,15 @@ package com.chupacadabra.evolution;
  * Weight policy.
  */
 @FunctionalInterface
-public interface WeightPolicy
-{
+public interface WeightPolicy {
 
-	/**
-	 * Get the weight.
-	 * 
-	 * @param state The state.
-	 * @param randomSource A source of randomness.
-	 * @return The weight.
-	 */
-	public double getWeight(DifferentialEvolutionState state,
-			RandomSource randomSource);
+    /**
+     * Get the weight.
+     * 
+     * @param state The state.
+     * @param randomSource A source of randomness.
+     * @return The weight.
+     */
+    public double getWeight(DifferentialEvolutionState state, RandomSource randomSource);
 
 }

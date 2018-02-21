@@ -26,34 +26,29 @@ package com.chupacadabra.evolution;
 /**
  * Fixed weight policy.
  */
-public final class FixedWeightPolicy
-	implements WeightPolicy
-{
+public final class FixedWeightPolicy implements WeightPolicy {
 
-	/**
-	 * The fixed weight.
-	 */
-	private final double weight;
+    /**
+     * The fixed weight.
+     */
+    private final double weight;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param weight The weight.
-	 */
-	public FixedWeightPolicy(final double weight)
-	{
-		this.weight = weight;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param weight The weight.
+     */
+    public FixedWeightPolicy(final double weight) {
+        this.weight = weight;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.WeightPolicy#getWeight(com.chupacadabra.evolution.DifferentialEvolutionState,
-	 *      com.chupacadabra.evolution.RandomSource)
-	 */
-	@Override
-	public double getWeight(final DifferentialEvolutionState state,
-			final RandomSource randomSource)
-	{
-		return weight;
-	}
+    /**
+     * @see com.chupacadabra.evolution.WeightPolicy#getWeight(com.chupacadabra.evolution.DifferentialEvolutionState,
+     *      com.chupacadabra.evolution.RandomSource)
+     */
+    @Override
+    public double getWeight(final DifferentialEvolutionState state, final RandomSource randomSource) {
+        return weight;
+    }
 
 }

@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 import com.chupacadabra.evolution.DifferentialEvolutionSettings;
@@ -28,15 +28,14 @@ import com.chupacadabra.evolution.DifferentialEvolutionSettings;
 /**
  * Pool lock creation.
  */
-public interface PoolLockCreation
-{
-	
-	/**
-	 * Create a pool lock. 
-	 * 
-	 * @param settings The settings.
-	 * @return A pool lock.
-	 */
-	public PoolLock create(DifferentialEvolutionSettings settings);
+public interface PoolLockCreation {
+
+    /**
+     * Create a pool lock.
+     * 
+     * @param settings The settings.
+     * @return A pool lock.
+     */
+    public PoolLock create(DifferentialEvolutionSettings settings);
 
 }

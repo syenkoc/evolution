@@ -20,52 +20,48 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
  * The bivariate Rosenbrock optimization test function.
  */
-public class RosenbrockFunction 
-	implements FitnessFunction
-{
-	
-	/**
-	 * <code>a</code>
-	 */
-	private final double a;
-	
-	/**
-	 * <code>b</code>
-	 */
-	private final double b;
+public class RosenbrockFunction implements FitnessFunction {
 
-	/**
-	 * C
-	 * 
-	 * @param a
-	 * @param b
-	 */
-	public RosenbrockFunction(double a, double b)
-	{
-		this.a = a;
-		this.b = b;
-	}
-	
-	/**
-	 * @see com.chupacadabra.evolution.FitnessFunction#getFitness(double[])
-	 */
-	@Override
-	public double getFitness(double[] p)
-	{
-		double x = p[0];
-		double y = p[1];
-		
-		double amx = a - x;
-		double ymx2 = y - (x * x);		
-		double value = (amx * amx) + (b * ymx2 * ymx2);
-		
-		return value;
-	}
+    /**
+     * <code>a</code>
+     */
+    private final double a;
+
+    /**
+     * <code>b</code>
+     */
+    private final double b;
+
+    /**
+     * C
+     * 
+     * @param a
+     * @param b
+     */
+    public RosenbrockFunction(double a, double b) {
+        this.a = a;
+        this.b = b;
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.FitnessFunction#getFitness(double[])
+     */
+    @Override
+    public double getFitness(double[] p) {
+        double x = p[0];
+        double y = p[1];
+
+        double amx = a - x;
+        double ymx2 = y - (x * x);
+        double value = (amx * amx) + (b * ymx2 * ymx2);
+
+        return value;
+    }
 
 }

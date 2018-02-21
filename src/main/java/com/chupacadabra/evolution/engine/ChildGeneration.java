@@ -30,19 +30,16 @@ import com.chupacadabra.evolution.Candidate;
 /**
  * Child generation strategy.
  */
-public interface ChildGeneration
-{
+public interface ChildGeneration {
 
-	/**
-	 * Generate a list of children for the specified index.
-	 * 
-	 * @param receiver The engine receiver.
-	 * @param index The parent index.
-	 * @param parent The parent candidate.
-	 * @return The list of children.
-	 */
-	public List<Candidate> generate(DifferentialEvolutionReceiver receiver,
-			int index,
-			Candidate parent);
+    /**
+     * Generate a list of children for the specified index.
+     * 
+     * @param receiver The engine receiver.
+     * @param index The parent index.
+     * @param parent The parent candidate.
+     * @return The list of children.
+     */
+    public List<Candidate> generate(DifferentialEvolutionReceiver receiver, int index, Candidate parent);
 
 }

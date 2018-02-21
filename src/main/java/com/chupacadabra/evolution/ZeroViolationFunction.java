@@ -20,7 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
@@ -28,39 +28,34 @@ package com.chupacadabra.evolution;
  * <p>
  * This class uses the singleton design pattern.
  */
-public final class ZeroViolationFunction 
-	implements ViolationFunction
-{
-	
-	/**
-	 * The lone instance.
-	 */
-	private static final ZeroViolationFunction instance = new ZeroViolationFunction();
-	
-	/**
-	 * Get the instance of this class.
-	 * 
-	 * @return The instance.
-	 */
-	public static ZeroViolationFunction getInstance()
-	{
-		return instance;
-	}
-	
-	/**
-	 * Constructor. 
-	 */
-	private ZeroViolationFunction()
-	{
-	} 
+public final class ZeroViolationFunction implements ViolationFunction {
 
-	/**
-	 * @see com.chupacadabra.evolution.ViolationFunction#getViolation(double[])
-	 */
-	@Override
-	public double getViolation(final double[] candidate)
-	{
-		return 0;
-	}
+    /**
+     * The lone instance.
+     */
+    private static final ZeroViolationFunction instance = new ZeroViolationFunction();
+
+    /**
+     * Get the instance of this class.
+     * 
+     * @return The instance.
+     */
+    public static ZeroViolationFunction getInstance() {
+        return instance;
+    }
+
+    /**
+     * Constructor.
+     */
+    private ZeroViolationFunction() {
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.ViolationFunction#getViolation(double[])
+     */
+    @Override
+    public double getViolation(final double[] candidate) {
+        return 0;
+    }
 
 }

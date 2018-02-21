@@ -27,15 +27,14 @@ package com.chupacadabra.evolution;
  * Feasibility classification function.
  */
 @FunctionalInterface
-public interface FeasibilityFunction
-{
+public interface FeasibilityFunction {
 
-	/**
-	 * Get the feasibility of the specified candidate.
-	 * 
-	 * @param candidate The candidate.
-	 * @return The feasibility type.
-	 */
-	public FeasibilityType getFeasibilityType(double[] candidate);
+    /**
+     * Get the feasibility of the specified parameters.
+     * 
+     * @param parameters The parameters.
+     * @return The feasibility type.
+     */
+    public FeasibilityType getFeasibilityType(double[] parameters);
 
 }

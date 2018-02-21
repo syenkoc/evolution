@@ -26,34 +26,29 @@ package com.chupacadabra.evolution;
 /**
  * Fixed diversity policy.
  */
-public final class FixedDiversityPolicy
-	implements DiversityPolicy
-{
+public final class FixedDiversityPolicy implements DiversityPolicy {
 
-	/**
-	 * The value.
-	 */
-	private final double value;
+    /**
+     * The value.
+     */
+    private final double value;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param value The value.
-	 */
-	public FixedDiversityPolicy(final double value)
-	{
-		this.value = value;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param value The value.
+     */
+    public FixedDiversityPolicy(final double value) {
+        this.value = value;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.DiversityPolicy#getDiversity(com.chupacadabra.evolution.DifferentialEvolutionState,
-	 *      com.chupacadabra.evolution.RandomSource)
-	 */
-	@Override
-	public double getDiversity(final DifferentialEvolutionState state,
-			final RandomSource randomSource)
-	{
-		return value;
-	}
+    /**
+     * @see com.chupacadabra.evolution.DiversityPolicy#getDiversity(com.chupacadabra.evolution.DifferentialEvolutionState,
+     *      com.chupacadabra.evolution.RandomSource)
+     */
+    @Override
+    public double getDiversity(final DifferentialEvolutionState state, final RandomSource randomSource) {
+        return value;
+    }
 
 }

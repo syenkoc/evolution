@@ -20,173 +20,179 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 import com.chupacadabra.evolution.pool.CandidatePool;
 
 /**
  * The multinomial differentiation policy due to Buhry <i>et al</i>.
+ * <p>
+ * The fitness measure function must return strictly positive values if this
+ * policy is used.
  */
-public final class MultinomialDifferentiationPolicy
-	implements DifferentiationPolicy
-{
-	
-	/**
-	 * Default &alpha; value: {@value}
-	 */
-	public static final double DEFAULT_ALPHA = 0.5d;
-	
-	/**
-	 * Default vector pair count: {@value}
-	 */
-	public static final int DEFAULT_COUNT = 1;
-	
-	/**
-	 * Default multinomial weight: {@value}
-	 */
-	public static final double DEFAULT_MULTINOMIAL_WEIGHT = .8d;
-	
-	/**
-	 * Default random weight: {@value}
-	 */
-	public static final double DEFAULT_RANDOM_WEIGHT = .5d;
-	
-	/**
-	 * &alpha;, the distribution width parameter.
-	 */
-	private final double alpha;
-	
-	/**
-	 * Vector count.
-	 */
-	private final int count;
-	
-	/**
-	 * Weight for the best candidate.
-	 */
-	private WeightPolicy multinomialWeightPolicy;
-	
-	/**
-	 * Weight policy for the random candidates.
-	 */
-	private WeightPolicy randomWeightPolicy;
-	
-	/**
-	 * Constructor.
-	 * <p>
-	 * Uses the default &alpha;, count, and fixed weights.
-	 */
-	public MultinomialDifferentiationPolicy() 
-	{
-		this(DEFAULT_ALPHA, DEFAULT_COUNT, new FixedWeightPolicy(DEFAULT_MULTINOMIAL_WEIGHT), new FixedWeightPolicy(DEFAULT_RANDOM_WEIGHT));
-	}
+public final class MultinomialDifferentiationPolicy implements DifferentiationPolicy {
 
-	/**
-	 * @param alpha
-	 * @param count
-	 * @param multinomialWeightPolicy
-	 * @param randomWeightPolicy
-	 */
-	public MultinomialDifferentiationPolicy(double alpha, int count,
-			WeightPolicy multinomialWeightPolicy,
-			WeightPolicy randomWeightPolicy)
-	{
-		this.alpha = alpha;
-		this.count = count;
-		this.multinomialWeightPolicy = multinomialWeightPolicy;
-		this.randomWeightPolicy = randomWeightPolicy;
-	}
+    /**
+     * Default &alpha; value: {@value}
+     */
+    public static final double DEFAULT_ALPHA = 0.5d;
 
-	/**
-	 * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState, com.chupacadabra.evolution.RandomSource, int, com.chupacadabra.evolution.pool.CandidatePool)
-	 */
-	@Override
-	public double[] differentiate(final DifferentialEvolutionState state,
-			final RandomSource randomSource, 
-			final int parentIndex, 
-			final CandidatePool pool)
-	{
-		// grab our probabilities.
-		double[] probabilities = getProbabilities(pool);
-		
-		// and determine random index.
-		int randomIndex = getRandomIndexFromDistribution(probabilities, randomSource);
-		Candidate multinomialCandidate = pool.getCandidate(randomIndex);
-		
-		// select random candidates.
-		int total = (count * 2) + 1;
-		Candidate[] random = pool.selectCandidates(randomSource, total, parentIndex, randomIndex);
-		
-		// grab weights.
-		double f = multinomialWeightPolicy.getWeight(state, randomSource);
-		double k = randomWeightPolicy.getWeight(state, randomSource);
-		
-		// assemble trial vector.
-		double[] trial = new double[state.getDimension()];
-		
-		PairwiseWeightedParameterSum.computeInPlace(f, trial, 0, random[0], multinomialCandidate);
-		PairwiseWeightedParameterSum.computeInPlace(k, trial, 1, random);
-		
-		return trial;
-	}
-	
-	private double[] getProbabilities(final CandidatePool pool) 
-	{
-		int size = pool.getSize();
-		
-		// find highest and lowest fitness values.
-		double lowest = pool.getCandidate(0).getFitness();
-		double highest = lowest;
-		
-		for(int index = 1; index < size; index++) 
-		{
-			double fitness = pool.getCandidate(index).getFitness();
-			lowest = Math.min(lowest, fitness);
-			highest = Math.max(highest, fitness);			
-		}
+    /**
+     * Default vector pair count: {@value}
+     */
+    public static final int DEFAULT_COUNT = 1;
 
-		// assemble the probabilities.
-		double[] probabilities = new double[size];
-		double sum = 0;
-		for(int index = 0; index < size; index++)
-		{
-			double fitness = pool.getCandidate(index).getFitness();
-			double value = Math.exp((-alpha * (fitness - lowest)) / (highest - lowest));
-			probabilities[index] = value;
-			sum += value;
-		}
-		
-		// determine scaling coefficient.
-		double k = 1d / sum;
-		for(int index = 0; index < size; index++) 
-		{
-			probabilities[index] *= k;
-		}
-		
-		return probabilities;
-	}
-	
-	private int getRandomIndexFromDistribution(final double[] probabilities,
-			final RandomSource randomSource)
-	{
-		// pick a uniform value.
-		double uniform = randomSource.nextDouble();
-		
-		// and find lowest index with cumulative probability exceeding said value.
-		int size = probabilities.length;
-		double sum = 0;		
-		for(int randomIndex = 0; randomIndex < size; randomIndex++)
-		{
-			sum += probabilities[randomIndex];
-			if(sum >= uniform) 
-			{
-				return randomIndex;
-			}
-		}
+    /**
+     * Default multinomial weight: {@value}
+     */
+    public static final double DEFAULT_MULTINOMIAL_WEIGHT = .8d;
 
-		// very unlikely... but possible!
-		return size;
-	}
+    /**
+     * Default random weight: {@value}
+     */
+    public static final double DEFAULT_RANDOM_WEIGHT = .5d;
+
+    /**
+     * &alpha;, the distribution width parameter.
+     */
+    private final double alpha;
+
+    /**
+     * Vector count.
+     */
+    private final int count;
+
+    /**
+     * Weight for the best candidate.
+     */
+    private WeightPolicy multinomialWeightPolicy;
+
+    /**
+     * Weight policy for the random candidates.
+     */
+    private WeightPolicy randomWeightPolicy;
+
+    /**
+     * Constructor.
+     * <p>
+     * Uses the default &alpha;, count, and fixed weights.
+     */
+    public MultinomialDifferentiationPolicy() {
+        this(DEFAULT_ALPHA, DEFAULT_COUNT, new FixedWeightPolicy(DEFAULT_MULTINOMIAL_WEIGHT), new FixedWeightPolicy(DEFAULT_RANDOM_WEIGHT));
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param alpha The weighting factor.
+     * @param count The vector count.
+     * @param multinomialWeightPolicy The weight policy for the multinomially
+     *        drawn candidates.
+     * @param randomWeightPolicy The weight policy for the random candidate.
+     */
+    public MultinomialDifferentiationPolicy(final double alpha, final int count, final WeightPolicy multinomialWeightPolicy,
+            final WeightPolicy randomWeightPolicy) {
+        this.alpha = alpha;
+        this.count = count;
+        this.multinomialWeightPolicy = multinomialWeightPolicy;
+        this.randomWeightPolicy = randomWeightPolicy;
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.DifferentiationPolicy#differentiate(com.chupacadabra.evolution.DifferentialEvolutionState,
+     *      com.chupacadabra.evolution.RandomSource, int,
+     *      com.chupacadabra.evolution.pool.CandidatePool)
+     */
+    @Override
+    public double[] differentiate(final DifferentialEvolutionState state, final RandomSource randomSource, final int parentIndex, final CandidatePool pool) {
+        // grab our probabilities.
+        double[] probabilities = getProbabilities(pool);
+
+        // and determine random index.
+        int randomIndex = getRandomIndexFromDistribution(probabilities, randomSource);
+        Candidate multinomialCandidate = pool.getCandidate(randomIndex);
+
+        // select random candidates.
+        int total = (count * 2) + 1;
+        Candidate[] random = pool.selectCandidates(randomSource, total, parentIndex, randomIndex);
+        Candidate parent = pool.getCandidate(parentIndex);
+
+        // grab weights.
+        double f = multinomialWeightPolicy.getWeight(state, randomSource);
+        double k = randomWeightPolicy.getWeight(state, randomSource);
+
+        // assemble trial vector.
+        double[] trial = random[0].getParameters();
+
+        PairwiseWeightedParameterSum.computeInPlace(f, trial, 0, parent, multinomialCandidate);
+        PairwiseWeightedParameterSum.computeInPlace(k, trial, 1, random);
+
+        return trial;
+    }
+
+    /**
+     * Create the probabilities from the specified pool.
+     * 
+     * @param pool The pool.
+     * @return The multinomial probabilities for each candidate.
+     */
+    private double[] getProbabilities(final CandidatePool pool) {
+        int size = pool.getSize();
+
+        // find highest and lowest fitness values.
+        double lowest = pool.getCandidate(0).getFitness();
+        double highest = lowest;
+
+        for (int index = 1; index < size; index++) {
+            double fitness = pool.getCandidate(index).getFitness();
+            lowest = Math.min(lowest, fitness);
+            highest = Math.max(highest, fitness);
+        }
+
+        // assemble the probabilities.
+        double[] probabilities = new double[size];
+        double sum = 0;
+        for (int index = 0; index < size; index++) {
+            double fitness = pool.getCandidate(index).getFitness();
+            double value = Math.exp((-alpha * (fitness - lowest)) / (highest - lowest));
+            probabilities[index] = value;
+            sum += value;
+        }
+
+        // determine scaling coefficient.
+        double k = 1d / sum;
+        for (int index = 0; index < size; index++) {
+            probabilities[index] *= k;
+        }
+
+        return probabilities;
+    }
+
+    /**
+     * Get a random index from the specified "distribution".
+     * 
+     * @param probabilities The probabilities.
+     * @param randomSource A source of randomness.
+     * @return A random index.
+     */
+    private int getRandomIndexFromDistribution(final double[] probabilities, final RandomSource randomSource) {
+        // pick a uniform value.
+        double uniform = randomSource.nextDouble();
+
+        // and find lowest index with cumulative probability exceeding said
+        // value.
+        int size = probabilities.length;
+        double sum = 0;
+        for (int randomIndex = 0; randomIndex < size; randomIndex++) {
+            sum += probabilities[randomIndex];
+            if (sum >= uniform) {
+                return randomIndex;
+            }
+        }
+
+        // very unlikely... but possible!
+        return size;
+    }
 
 }

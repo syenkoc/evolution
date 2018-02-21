@@ -32,391 +32,359 @@ import java.io.Serializable;
  * default policies suitable for a wide variety of problems. In addition, all of
  * the default policies are safe for use by multiple threads.
  * <p>
- * The setter methods throws {@link NullPointerException NullPointerExceptions} 
+ * The setter methods throws {@link NullPointerException NullPointerExceptions}
  * if the the value is <code>null</code>.
  */
-public final class DifferentialEvolutionSettings
-	implements Serializable
-{
+public final class DifferentialEvolutionSettings implements Serializable {
 
-	/**
-	 * Default maximum generation: {@value}
-	 */
-	public static final int DEFAULT_MAXIMUM_GENERATION = 3333;
+    /**
+     * Default maximum generation: {@value}
+     */
+    public static final int DEFAULT_MAXIMUM_GENERATION = 201;
 
-	/**
-	 * Default candidate pool size: {@value}
-	 */
-	public static final int DEFAULT_CANDIDATE_POOL_SIZE = 128;
+    /**
+     * Default candidate pool size: {@value}
+     */
+    public static final int DEFAULT_CANDIDATE_POOL_SIZE = 128;
 
-	/**
-	 * Default children per candidate: {@value}
-	 */
-	public static final int DEFAULT_CHILDREN_PER_CANDIDATE = 4;
+    /**
+     * Default children per candidate: {@value}
+     */
+    public static final int DEFAULT_CHILDREN_PER_CANDIDATE = 4;
 
-	/**
-	 * Serial ID. 
-	 */
-	private static final long serialVersionUID = 4738577104948484276L;
-	
-	/**
-	 * Maximum generation.
-	 */
-	private int maximumGeneration;
+    /**
+     * Serial ID.
+     */
+    private static final long serialVersionUID = 4738577104948484276L;
 
-	/**
-	 * The pool size.
-	 */
-	private int candidatePoolSize;
+    /**
+     * Maximum generation.
+     */
+    private int maximumGeneration;
 
-	/**
-	 * Children to generate per candidate.
-	 */
-	private int childrenPerCandidate;
+    /**
+     * The pool size.
+     */
+    private int candidatePoolSize;
 
-	/**
-	 * Source of randomness.
-	 */
-	private RandomSource randomSource;
+    /**
+     * Children to generate per candidate.
+     */
+    private int childrenPerCandidate;
 
-	/**
-	 * Differentiation policy.
-	 */
-	private DifferentiationPolicy differentiationPolicy;
+    /**
+     * Source of randomness.
+     */
+    private RandomSource randomSource;
 
-	/**
-	 * Recombination policy.
-	 */
-	private RecombinationPolicy recombinationPolicy;
+    /**
+     * Differentiation policy.
+     */
+    private DifferentiationPolicy differentiationPolicy;
 
-	/**
-	 * Candidate selection policy.
-	 */
-	private SelectionPolicy selectionPolicy;
-	
-	/**
-	 * Diversity policy.
-	 */
-	private DiversityPolicy diversityPolicy;
+    /**
+     * Recombination policy.
+     */
+    private RecombinationPolicy recombinationPolicy;
 
-	/**
-	 * Pool replacement.
-	 */
-	private PoolReplacement poolReplacement;
-	
-	/**
-	 * Fairness policy when locking the candidate pools.
-	 */
-	private LockFairness poolLockFairness;
+    /**
+     * Candidate selection policy.
+     */
+    private SelectionPolicy selectionPolicy;
 
-	/**
-	 * Exception behavior.
-	 */
-	private ExceptionBehavior exceptionBehavior;
+    /**
+     * Diversity policy.
+     */
+    private DiversityPolicy diversityPolicy;
 
-	/**
-	 * Constructor.
-	 */
-	public DifferentialEvolutionSettings()
-	{
-		maximumGeneration = DEFAULT_MAXIMUM_GENERATION;
-		candidatePoolSize = DEFAULT_CANDIDATE_POOL_SIZE;
-		childrenPerCandidate = DEFAULT_CHILDREN_PER_CANDIDATE;
+    /**
+     * Pool replacement.
+     */
+    private PoolReplacement poolReplacement;
 
-		// these policies basically given the "classic" differential evolution
-		// algorithm of Storn et al.
-		differentiationPolicy = new BestDifferentiationPolicy();
-		recombinationPolicy = new BinomialRecombinationPolicy();
-		diversityPolicy = new NoDiversityPolicy();
-		
-		// the only selection policy we know about!
-		selectionPolicy = new DebSelectionPolicy();
+    /**
+     * Fairness policy when locking the candidate pools.
+     */
+    private LockFairness poolLockFairness;
 
-		// this generally results in faster convergence.
-		poolReplacement = PoolReplacement.IMMEDIATELY;
+    /**
+     * Exception behavior.
+     */
+    private ExceptionBehavior exceptionBehavior;
 
-		// any exceptions will terminate the optimization and be throw to the
-		// invoker.
-		exceptionBehavior = ExceptionBehavior.PROPOGATE;
-		
-		// use unfair locking because it should be faster.
-		poolLockFairness = LockFairness.UNFAIR;
+    /**
+     * Constructor.
+     */
+    public DifferentialEvolutionSettings() {
+        maximumGeneration = DEFAULT_MAXIMUM_GENERATION;
+        candidatePoolSize = DEFAULT_CANDIDATE_POOL_SIZE;
+        childrenPerCandidate = DEFAULT_CHILDREN_PER_CANDIDATE;
 
-		// use the only implementation we know of.
-		randomSource = new JavaUtilRandomSource();
-	}
+        // these policies basically given the "classic" differential evolution
+        // algorithm of Storn et al.
+        differentiationPolicy = new BestDifferentiationPolicy();
+        recombinationPolicy = new BinomialRecombinationPolicy();
+        diversityPolicy = new NoDiversityPolicy();
 
-	/**
-	 * Get the maximum generation.
-	 * 
-	 * @return The maximum generation.
-	 */
-	public int getMaximumGeneration()
-	{
-		return maximumGeneration;
-	}
+        // the only selection policy we know about!
+        selectionPolicy = new DebSelectionPolicy();
 
-	/**
-	 * Set the maximum generation.
-	 * 
-	 * @param maximumGeneration The value.
-	 * @throws IllegalArgumentException If <code>maximumGeneration</code> is no
-	 *             strictly positive.
-	 */
-	public void setMaximumGeneration(final int maximumGeneration)
-	{
-		if(maximumGeneration <= 0) 
-		{
-			throw new IllegalArgumentException("maximumGeneration must be positive");
-		}
-		
-		this.maximumGeneration = maximumGeneration;
-	}
+        // this generally results in faster convergence.
+        poolReplacement = PoolReplacement.IMMEDIATELY;
 
-	/**
-	 * Get the candidate pool size.
-	 * 
-	 * @return The pool size.
-	 */
-	public int getCandidatePoolSize()
-	{
-		return candidatePoolSize;
-	}
+        // any exceptions will terminate the optimization and be throw to the
+        // invoker.
+        exceptionBehavior = ExceptionBehavior.PROPOGATE;
 
-	/**
-	 * Set the candidate pool size.
-	 * 
-	 * @param candidatePoolSize The new pool size.
-	 * @throws IllegalArgumentException If <code>candidatePoolSize</code> is less than 4.
-	 */
-	public void setCandidatePoolSize(final int candidatePoolSize)
-	{
-		if(candidatePoolSize < 4) 
-		{
-			throw new IllegalArgumentException("candidatePoolSize must be greater than 4");
-		}
-		
-		this.candidatePoolSize = candidatePoolSize;
-	}
+        // use unfair locking because it should be faster.
+        poolLockFairness = LockFairness.UNFAIR;
 
-	/**
-	 * Get the number of child to generate per candidate during each generation.
-	 * 
-	 * @return The number of children.
-	 */
-	public int getChildrenPerCandidate()
-	{
-		return childrenPerCandidate;
-	}
+        // use the only implementation we know of.
+        randomSource = new JavaUtilRandomSource();
+    }
 
-	/**
-	 * Set the number of children to generate per candidate.
-	 * 
-	 * @param childrenPerCandidate The new number of children.
-	 * @throws IllegalArgumentException If <code>childrenPerCandidate</code> is
-	 *             less than 1
-	 */
-	public void setChildrenPerCandidate(final int childrenPerCandidate)
-	{
-		if(childrenPerCandidate < 1)
-		{
-			throw new IllegalArgumentException("childrenPerCandidate must be greater than 0");
-		}
-		
-		this.childrenPerCandidate = childrenPerCandidate;
-	}
+    /**
+     * Get the maximum generation.
+     * 
+     * @return The maximum generation.
+     */
+    public int getMaximumGeneration() {
+        return maximumGeneration;
+    }
 
-	/**
-	 * Get the source of randomness to use.
-	 * 
-	 * @return The source of randomness.
-	 */
-	public RandomSource getRandomSource()
-	{
-		return randomSource;
-	}
+    /**
+     * Set the maximum generation.
+     * 
+     * @param maximumGeneration The value.
+     * @throws IllegalArgumentException If <code>maximumGeneration</code> is no
+     *         strictly positive.
+     */
+    public void setMaximumGeneration(final int maximumGeneration) {
+        if (maximumGeneration <= 0) {
+            throw new IllegalArgumentException("maximumGeneration must be positive");
+        }
 
-	/**
-	 * Set the source of randomness.
-	 * 
-	 * @param randomSource The new source.
-	 * @throws NullPointerException If <code>randomSource</code> is <code>null</code>.
-	 */
-	public void setRandomSource(final RandomSource randomSource)
-	{
-		if(randomSource == null)
-		{
-			throw new NullPointerException("randomSource");
-		}
-		
-		this.randomSource = randomSource;
-	}
+        this.maximumGeneration = maximumGeneration;
+    }
 
-	/**
-	 * Get the differentiation policy.
-	 * 
-	 * @return The differentiation policy.
-	 */
-	public DifferentiationPolicy getDifferentiationPolicy()
-	{
-		return differentiationPolicy;
-	}
+    /**
+     * Get the candidate pool size.
+     * 
+     * @return The pool size.
+     */
+    public int getCandidatePoolSize() {
+        return candidatePoolSize;
+    }
 
-	/**
-	 * Set the differentiation policy.
-	 * 
-	 * @param differentiationPolicy The new differentiation policy.
-	 */
-	public void setDifferentiationPolicy(
-			final DifferentiationPolicy differentiationPolicy)
-	{
-		if(differentiationPolicy == null)
-		{
-			throw new NullPointerException("differentiationPolicy");
-		}
-		
-		this.differentiationPolicy = differentiationPolicy;
-	}
+    /**
+     * Set the candidate pool size.
+     * 
+     * @param candidatePoolSize The new pool size.
+     * @throws IllegalArgumentException If <code>candidatePoolSize</code> is
+     *         less than 4.
+     */
+    public void setCandidatePoolSize(final int candidatePoolSize) {
+        if (candidatePoolSize < 4) {
+            throw new IllegalArgumentException("candidatePoolSize must be greater than 4");
+        }
 
-	/**
-	 * Get the recombination policy.
-	 * 
-	 * @return The recombinationPolicy The recombination policy.
-	 */
-	public RecombinationPolicy getRecombinationPolicy()
-	{
-		return recombinationPolicy;
-	}
-	
-	/**
-	 * Set the recombination policy.
-	 * 
-	 * @param recombinationPolicy The new recombination policy.
-	 */
-	public void setRecombinationPolicy(final RecombinationPolicy recombinationPolicy)
-	{
-		if(recombinationPolicy == null)
-		{
-			throw new NullPointerException("recombinatonPolicy");
-		}
-		
-		this.recombinationPolicy = recombinationPolicy;
-	}
+        this.candidatePoolSize = candidatePoolSize;
+    }
 
-	/**
-	 * Get the diversity policy.
-	 * 
-	 * @return The diversity policy.
-	 */
-	public DiversityPolicy getDiversityPolicy()
-	{
-		return diversityPolicy;
-	}
+    /**
+     * Get the number of child to generate per candidate during each generation.
+     * 
+     * @return The number of children.
+     */
+    public int getChildrenPerCandidate() {
+        return childrenPerCandidate;
+    }
 
-	/**
-	 * Set the diversity policy.
-	 * 
-	 * @param diversityPolicy The new diversity policy.
-	 */
-	public void setDiversityPolicy(final DiversityPolicy diversityPolicy)
-	{
-		if(diversityPolicy == null)
-		{
-			throw new NullPointerException("diversityPolicy");
-		}
-		
-		this.diversityPolicy = diversityPolicy;
-	}
+    /**
+     * Set the number of children to generate per candidate.
+     * 
+     * @param childrenPerCandidate The new number of children.
+     * @throws IllegalArgumentException If <code>childrenPerCandidate</code> is
+     *         less than 1
+     */
+    public void setChildrenPerCandidate(final int childrenPerCandidate) {
+        if (childrenPerCandidate < 1) {
+            throw new IllegalArgumentException("childrenPerCandidate must be greater than 0");
+        }
 
-	/**
-	 * Set the selection policy.
-	 * 
-	 * @return The selection policy.
-	 */
-	public SelectionPolicy getSelectionPolicy()
-	{
-		return selectionPolicy;
-	}
+        this.childrenPerCandidate = childrenPerCandidate;
+    }
 
-	/**
-	 * Set the selection policy.
-	 * 
-	 * @param selectionPolicy The new selection policy.
-	 */
-	public void setSelectionPolicy(final SelectionPolicy selectionPolicy)
-	{
-		this.selectionPolicy = selectionPolicy;
-	}
-	
-	/**
-	 * Get the pool replacement type.
-	 * 
-	 * @return The pool replacement. 
-	 */
-	public PoolReplacement getPoolReplacement()
-	{
-		return poolReplacement;
-	}
-	
-	/**
-	 * Set the pool replacement type.
-	 * 
-	 * @param poolReplacement The value.
-	 */
-	public void setPoolReplacement(final PoolReplacement poolReplacement)
-	{
-		this.poolReplacement = poolReplacement;
-	}
-	
-	/**
-	 * Get the exception behavior.
-	 * 
-	 * @return The exception behavior.
-	 */
-	public ExceptionBehavior getExceptionBehavior()
-	{
-		return exceptionBehavior;
-	}
-	
-	/**
-	 * Set the exception behavior.
-	 * 
-	 * @param exceptionBehavior The value.
-	 * @throws NullPointerException If <code>exceptionBehavior</code> is <code>null</code>.
-	 */
-	public void setExceptionBehavior(final ExceptionBehavior exceptionBehavior)
-	{
-		if(exceptionBehavior == null)
-		{
-			throw new NullPointerException("exceptionBehavior");
-		}
-		
-		this.exceptionBehavior = exceptionBehavior;
-	}
+    /**
+     * Get the source of randomness to use.
+     * 
+     * @return The source of randomness.
+     */
+    public RandomSource getRandomSource() {
+        return randomSource;
+    }
 
-	/**
-	 * Get the pool lock fairness. 
-	 * 
-	 * @return The pool lock fairness.
-	 */
-	public LockFairness getPoolLockFairness()
-	{
-		return poolLockFairness;
-	}
-	
-	/**
-	 * Set the pool lock fairness.
-	 * 
-	 * @param poolLockFairness The value.
-	 */
-	public void setPoolLockFairness(final LockFairness poolLockFairness)
-	{
-		if(poolLockFairness == null) 
-		{
-			throw new NullPointerException("poolLockFairness");
-		}
-		
-		this.poolLockFairness = poolLockFairness;
-	}
-	
+    /**
+     * Set the source of randomness.
+     * 
+     * @param randomSource The new source.
+     * @throws NullPointerException If <code>randomSource</code> is
+     *         <code>null</code>.
+     */
+    public void setRandomSource(final RandomSource randomSource) {
+        if (randomSource == null) {
+            throw new NullPointerException("randomSource");
+        }
+
+        this.randomSource = randomSource;
+    }
+
+    /**
+     * Get the differentiation policy.
+     * 
+     * @return The differentiation policy.
+     */
+    public DifferentiationPolicy getDifferentiationPolicy() {
+        return differentiationPolicy;
+    }
+
+    /**
+     * Set the differentiation policy.
+     * 
+     * @param differentiationPolicy The new differentiation policy.
+     */
+    public void setDifferentiationPolicy(final DifferentiationPolicy differentiationPolicy) {
+        if (differentiationPolicy == null) {
+            throw new NullPointerException("differentiationPolicy");
+        }
+
+        this.differentiationPolicy = differentiationPolicy;
+    }
+
+    /**
+     * Get the recombination policy.
+     * 
+     * @return The recombinationPolicy The recombination policy.
+     */
+    public RecombinationPolicy getRecombinationPolicy() {
+        return recombinationPolicy;
+    }
+
+    /**
+     * Set the recombination policy.
+     * 
+     * @param recombinationPolicy The new recombination policy.
+     */
+    public void setRecombinationPolicy(final RecombinationPolicy recombinationPolicy) {
+        if (recombinationPolicy == null) {
+            throw new NullPointerException("recombinatonPolicy");
+        }
+
+        this.recombinationPolicy = recombinationPolicy;
+    }
+
+    /**
+     * Get the diversity policy.
+     * 
+     * @return The diversity policy.
+     */
+    public DiversityPolicy getDiversityPolicy() {
+        return diversityPolicy;
+    }
+
+    /**
+     * Set the diversity policy.
+     * 
+     * @param diversityPolicy The new diversity policy.
+     */
+    public void setDiversityPolicy(final DiversityPolicy diversityPolicy) {
+        if (diversityPolicy == null) {
+            throw new NullPointerException("diversityPolicy");
+        }
+
+        this.diversityPolicy = diversityPolicy;
+    }
+
+    /**
+     * Set the selection policy.
+     * 
+     * @return The selection policy.
+     */
+    public SelectionPolicy getSelectionPolicy() {
+        return selectionPolicy;
+    }
+
+    /**
+     * Set the selection policy.
+     * 
+     * @param selectionPolicy The new selection policy.
+     */
+    public void setSelectionPolicy(final SelectionPolicy selectionPolicy) {
+        this.selectionPolicy = selectionPolicy;
+    }
+
+    /**
+     * Get the pool replacement type.
+     * 
+     * @return The pool replacement.
+     */
+    public PoolReplacement getPoolReplacement() {
+        return poolReplacement;
+    }
+
+    /**
+     * Set the pool replacement type.
+     * 
+     * @param poolReplacement The value.
+     */
+    public void setPoolReplacement(final PoolReplacement poolReplacement) {
+        this.poolReplacement = poolReplacement;
+    }
+
+    /**
+     * Get the exception behavior.
+     * 
+     * @return The exception behavior.
+     */
+    public ExceptionBehavior getExceptionBehavior() {
+        return exceptionBehavior;
+    }
+
+    /**
+     * Set the exception behavior.
+     * 
+     * @param exceptionBehavior The value.
+     * @throws NullPointerException If <code>exceptionBehavior</code> is
+     *         <code>null</code>.
+     */
+    public void setExceptionBehavior(final ExceptionBehavior exceptionBehavior) {
+        if (exceptionBehavior == null) {
+            throw new NullPointerException("exceptionBehavior");
+        }
+
+        this.exceptionBehavior = exceptionBehavior;
+    }
+
+    /**
+     * Get the pool lock fairness.
+     * 
+     * @return The pool lock fairness.
+     */
+    public LockFairness getPoolLockFairness() {
+        return poolLockFairness;
+    }
+
+    /**
+     * Set the pool lock fairness.
+     * 
+     * @param poolLockFairness The value.
+     */
+    public void setPoolLockFairness(final LockFairness poolLockFairness) {
+        if (poolLockFairness == null) {
+            throw new NullPointerException("poolLockFairness");
+        }
+
+        this.poolLockFairness = poolLockFairness;
+    }
+
 }

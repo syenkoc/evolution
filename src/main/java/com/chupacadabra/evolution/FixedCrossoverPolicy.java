@@ -26,34 +26,29 @@ package com.chupacadabra.evolution;
 /**
  * Fixed crossover policy.
  */
-public final class FixedCrossoverPolicy
-	implements CrossoverPolicy
-{
+public final class FixedCrossoverPolicy implements CrossoverPolicy {
 
-	/**
-	 * Crossover value.
-	 */
-	private final double crossover;
+    /**
+     * Crossover value.
+     */
+    private final double crossover;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param crossover The crossover value.
-	 */
-	public FixedCrossoverPolicy(final double crossover)
-	{
-		this.crossover = crossover;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param crossover The crossover value.
+     */
+    public FixedCrossoverPolicy(final double crossover) {
+        this.crossover = crossover;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.CrossoverPolicy#getCrossover(com.chupacadabra.evolution.DifferentialEvolutionState,
-	 *      com.chupacadabra.evolution.RandomSource)
-	 */
-	@Override
-	public double getCrossover(final DifferentialEvolutionState state,
-			final RandomSource randomSource)
-	{
-		return crossover;
-	}
+    /**
+     * @see com.chupacadabra.evolution.CrossoverPolicy#getCrossover(com.chupacadabra.evolution.DifferentialEvolutionState,
+     *      com.chupacadabra.evolution.RandomSource)
+     */
+    @Override
+    public double getCrossover(final DifferentialEvolutionState state, final RandomSource randomSource) {
+        return crossover;
+    }
 
 }

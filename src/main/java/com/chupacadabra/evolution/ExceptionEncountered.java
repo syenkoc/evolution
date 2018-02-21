@@ -26,45 +26,38 @@ package com.chupacadabra.evolution;
 /**
  * Exception encountered termination reason.
  */
-public final class ExceptionEncountered
-	implements TerminationReason
-{
+public final class ExceptionEncountered implements TerminationReason {
 
-	/**
-	 * The exception.
-	 */
-	private final Exception exception;
+    /**
+     * The exception.
+     */
+    private final Exception exception;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param exception The exception.
-	 */
-	public ExceptionEncountered(final Exception exception)
-	{
-		this.exception = exception;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param exception The exception.
+     */
+    public ExceptionEncountered(final Exception exception) {
+        this.exception = exception;
+    }
 
-	/**
-	 * Get the Exception.
-	 * 
-	 * @return The Exception.
-	 */
-	public Exception getException()
-	{
-		return exception;
-	}
+    /**
+     * Get the Exception.
+     * 
+     * @return The Exception.
+     */
+    public Exception getException() {
+        return exception;
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.TerminationReason#accept(com.chupacadabra.evolution.TerminationReasonVisitor,
-	 *      java.lang.Object)
-	 */
-	@Override
-	public <TPayload, TReturn> TReturn accept(
-			final TerminationReasonVisitor<TPayload, TReturn> visitor,
-			final TPayload payload)
-	{
-		return visitor.visit(this, payload);
-	}
+    /**
+     * @see com.chupacadabra.evolution.TerminationReason#accept(com.chupacadabra.evolution.TerminationReasonVisitor,
+     *      java.lang.Object)
+     */
+    @Override
+    public <TPayload, TReturn> TReturn accept(final TerminationReasonVisitor<TPayload, TReturn> visitor, final TPayload payload) {
+        return visitor.visit(this, payload);
+    }
 
 }

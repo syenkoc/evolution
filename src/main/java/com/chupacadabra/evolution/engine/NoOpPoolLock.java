@@ -20,37 +20,34 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution.engine;
 
 /**
  * No-op lock.
  */
-final class NoOpPoolLock
-	implements PoolLock
-{
+final class NoOpPoolLock implements PoolLock {
 
-	/**
-	 * Constructor.
-	 */
-	NoOpPoolLock() 
-	{
-	}
-	
-	/**
-	 * @see com.chupacadabra.evolution.engine.PoolLock#lock(com.chupacadabra.evolution.engine.PoolType, com.chupacadabra.evolution.engine.LockType)
-	 */
-	@Override
-	public void lock(final PoolType poolType, final LockType lockType)
-	{
-	}
+    /**
+     * Constructor.
+     */
+    NoOpPoolLock() {
+    }
 
-	/**
-	 * @see com.chupacadabra.evolution.engine.PoolLock#unlock(com.chupacadabra.evolution.engine.PoolType, com.chupacadabra.evolution.engine.LockType)
-	 */
-	@Override
-	public void unlock(final PoolType poolType, final LockType lockType)
-	{
-	}
+    /**
+     * @see com.chupacadabra.evolution.engine.PoolLock#lock(com.chupacadabra.evolution.engine.PoolType,
+     *      com.chupacadabra.evolution.engine.LockType)
+     */
+    @Override
+    public void lock(final PoolType poolType, final LockType lockType) {
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.engine.PoolLock#unlock(com.chupacadabra.evolution.engine.PoolType,
+     *      com.chupacadabra.evolution.engine.LockType)
+     */
+    @Override
+    public void unlock(final PoolType poolType, final LockType lockType) {
+    }
 
 }

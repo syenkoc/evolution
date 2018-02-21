@@ -27,17 +27,15 @@ package com.chupacadabra.evolution;
  * Diversity policy.
  */
 @FunctionalInterface
-public interface DiversityPolicy
-{
+public interface DiversityPolicy {
 
-	/**
-	 * Get the diversity.
-	 * 
-	 * @param state The state.
-	 * @param randomSource Random source.
-	 * @return The diversity.
-	 */
-	public double getDiversity(DifferentialEvolutionState state,
-			RandomSource randomSource);
+    /**
+     * Get the diversity.
+     * 
+     * @param state The state.
+     * @param randomSource Random source.
+     * @return The diversity.
+     */
+    public double getDiversity(DifferentialEvolutionState state, RandomSource randomSource);
 
 }

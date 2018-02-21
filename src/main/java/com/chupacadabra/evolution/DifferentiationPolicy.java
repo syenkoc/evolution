@@ -42,21 +42,22 @@ import com.chupacadabra.evolution.threadsafe.Threadsafe;
  * threads if they are used in the parallel optimizer. You can obtain a
  * threadsafe decorator around any implementation of this interface using the
  * {@link Threadsafe} framework.
+ * <p>
+ * This is a functional interface whose function method is
+ * {@link #differentiate(DifferentialEvolutionState, RandomSource, int, CandidatePool)}
  */
 @FunctionalInterface
-public interface DifferentiationPolicy
-{
+public interface DifferentiationPolicy {
 
-	/**
-	 * Perform parameter differentiation.
-	 * 
-	 * @param state The state.
-	 * @param randomSource A source of randomness.
-	 * @param parentIndex The index of the parent in the pool.
-	 * @param pool The pool.
-	 * @return The trial or differentiated parameters.
-	 */
-	public double[] differentiate(DifferentialEvolutionState state,
-			RandomSource randomSource, int parentIndex, CandidatePool pool);
+    /**
+     * Perform parameter differentiation.
+     * 
+     * @param state The state.
+     * @param randomSource A source of randomness.
+     * @param parentIndex The index of the parent in the pool.
+     * @param pool The pool.
+     * @return The trial or differentiated parameters.
+     */
+    public double[] differentiate(DifferentialEvolutionState state, RandomSource randomSource, int parentIndex, CandidatePool pool);
 
 }

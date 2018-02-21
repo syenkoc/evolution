@@ -26,23 +26,22 @@ package com.chupacadabra.evolution;
 /**
  * Candidate feasibility classification.
  */
-public enum FeasibilityType
-{
+public enum FeasibilityType {
 
-	/**
-	 * The candidate is feasible.
-	 */
-	FEASIBLE,
+    /**
+     * The candidate is feasible.
+     */
+    FEASIBLE,
 
-	/**
-	 * The candidate is in violation of the constraints, but <i>may</i> be
-	 * allowed into the pool.
-	 */
-	VIOLATING,
+    /**
+     * The candidate is in violation of the constraints, but <i>may</i> be
+     * allowed into the pool.
+     */
+    VIOLATING,
 
-	/**
-	 * The candidate is infeasible and will not be allowed in the pool.
-	 */
-	INFEASIBLE,
+    /**
+     * The candidate is infeasible and will not be allowed in the pool.
+     */
+    INFEASIBLE,
 
 }

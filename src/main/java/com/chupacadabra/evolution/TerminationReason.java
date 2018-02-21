@@ -29,20 +29,17 @@ package com.chupacadabra.evolution;
  * Ideally, this would be an algebraic type. Instead, we'll have to make due
  * with a visitor pattern.
  */
-public interface TerminationReason
-{
+public interface TerminationReason {
 
-	/**
-	 * Accept the specified visitor.
-	 * 
-	 * @param <TPayload> The payload type.
-	 * @param <TReturn> The return type.
-	 * @param visitor The visitor to accept.
-	 * @param payload The payload.
-	 * @return The return value.
-	 */
-	public <TPayload, TReturn> TReturn accept(
-			TerminationReasonVisitor<TPayload, TReturn> visitor,
-			TPayload payload);
+    /**
+     * Accept the specified visitor.
+     * 
+     * @param <TPayload> The payload type.
+     * @param <TReturn> The return type.
+     * @param visitor The visitor to accept.
+     * @param payload The payload.
+     * @return The return value.
+     */
+    public <TPayload, TReturn> TReturn accept(TerminationReasonVisitor<TPayload, TReturn> visitor, TPayload payload);
 
 }

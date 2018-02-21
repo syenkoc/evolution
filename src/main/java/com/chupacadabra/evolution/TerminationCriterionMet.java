@@ -20,50 +20,44 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
  * SOFTWARE.  
- */ 
+ */
 package com.chupacadabra.evolution;
 
 /**
  * Termination due to a user-defined criterion being met.
  */
-public final class TerminationCriterionMet implements TerminationReason
-{
-	
-	/**
-	 * The criterion that caused us to terminate.
-	 */
-	private final TerminationCriterion terminationCriterion;
+public final class TerminationCriterionMet implements TerminationReason {
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param terminationCriterion The termination criterion.
-	 */
-	public TerminationCriterionMet(final TerminationCriterion terminationCriterion)
-	{
-		this.terminationCriterion = terminationCriterion;
-	}
-	
-	/**
-	 * Get the criterion that caused this optimization to terminate.
-	 * 
-	 * @return Said criterion.
-	 */
-	public TerminationCriterion getTerminationCriterion() 
-	{
-		return terminationCriterion;
-	}
-	
-	/**
-	 * @see com.chupacadabra.evolution.TerminationReason#accept(com.chupacadabra.evolution.TerminationReasonVisitor, java.lang.Object)
-	 */
-	@Override
-	public <TPayload, TReturn> TReturn accept(
-			final TerminationReasonVisitor<TPayload, TReturn> visitor,
-			final TPayload payload)
-	{
-		return visitor.visit(this, payload);
-	}
+    /**
+     * The criterion that caused us to terminate.
+     */
+    private final TerminationCriterion terminationCriterion;
 
+    /**
+     * Constructor.
+     * 
+     * @param terminationCriterion The termination criterion.
+     */
+    public TerminationCriterionMet(final TerminationCriterion terminationCriterion) {
+        this.terminationCriterion = terminationCriterion;
+    }
+
+    /**
+     * Get the criterion that caused this optimization to terminate.
+     * 
+     * @return Said criterion.
+     */
+    public TerminationCriterion getTerminationCriterion() {
+        return terminationCriterion;
+    }
+
+    /**
+     * @see com.chupacadabra.evolution.TerminationReason#accept(com.chupacadabra.evolution.TerminationReasonVisitor,
+     *      java.lang.Object)
+     */
+    @Override
+    public <TPayload, TReturn> TReturn accept(final TerminationReasonVisitor<TPayload, TReturn> visitor, final TPayload payload) {
+        return visitor.visit(this, payload);
+    }
 
 }
